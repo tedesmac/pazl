@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% load render_bundle from webpack_loader %}
+
+{% block extra_css %}
+  {% render_bundle 'login' 'css' 'CSS' %}
+{% endblock extra_css %}
