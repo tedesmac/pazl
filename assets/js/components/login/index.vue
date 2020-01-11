@@ -37,8 +37,16 @@ export default {
 
   methods: {
     authenticate() {
-      let data = { email: null, password: this.password, username: null }
-      if (this.isEmail(this.emailOrUser)) {
+      let data = {
+        email: null,
+        password: this.password,
+        token: window.localStorage.getItem('puzzle_token'),
+        username: null,
+      }
+
+      if (data.token) {
+        // do nothging
+      } else if (this.isEmail(this.emailOrUser)) {
         data.email = this.emailOrUser
       } else {
         data.username = this.emailOrUser
@@ -56,6 +64,10 @@ export default {
     },
 
     isEmail: string => email_re.test(string),
+  },
+
+  mounted() {
+    this.authenticate()
   },
 }
 </script>

@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 import json
 import jwt
+from puzzle.apps.user.models import User
 
 
 def admin(req):
@@ -20,19 +21,22 @@ class Login(View):
 
     def post(self, req):
         data = json.loads(req.body.decode('utf-8'))
-        print('data =>', data)
         email = data['email']
-        username = data['username']
         password = data['password']
+        token = data['token']
+        username = data['username']
 
-        if email:
-            print('is email')
+        if token:
+            payload = jwt.decode(
+                token,
+                settings.SECRET_KEY,
+                algorithms=['HS256']
+            )
+            user = User.objects.get(id=payload['user'])
+        elif email:
             user = authenticate(req, email=email, password=password)
         else:
-            print('is username')
             user = authenticate(req, username=username, password=password)
-
-        print('user =>', user)
 
         if user is not None:
             token = jwt.encode(
@@ -45,9 +49,7 @@ class Login(View):
             return JsonResponse({
                 'token': token.decode('utf-8'),
             })
-        return JsonResponse({
-            'status': 'err'
-        }, status=401)
+        return JsonResponse({}, status=401)
 
 
 class Logout(View):
