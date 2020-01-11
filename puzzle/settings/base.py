@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party apps
+    'rest_framework',
+    'webpack_loader',
+
     # puzzle apps
     'puzzle.apps.admin',
     'puzzle.apps.block',
@@ -133,3 +138,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets'),
+]
+
+
+# Django Webapck Loader
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/js/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'stats.js.json'),
+    },
+    'CSS': {
+        'BUNDLE_DIR_NAME': 'bundles/css/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'stats.css.json'),
+        'IGNORE': [r'^.+\.js$']
+    },
+}
