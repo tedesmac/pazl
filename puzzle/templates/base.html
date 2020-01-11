@@ -1,13 +1,25 @@
 {% spaceless %}
 <!DOCUMENT html>
-<html>
+<html lang="en">
   <head>
-    <title>Puzzle</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      {% block title %}
+        Puzzle
+      {% endblock title %}
+    </title>
+    {# Global CSS #}
+    {# Extra CSS #}
+    {% block extra_css %}{% endblock extra_css %}
   </head>
   <body>
     {% block content %}
     <h1>Hello Puzzle!</h1>
     {% endblock content %}
+    {# Global JS #}
+    {# Extra JS #}
+    {% block extra_js %}{% endblock extra_js %}
   </body>
 </html>
 {% endspaceless %}
