@@ -1,0 +1,35 @@
+@import 'colors';
+
+.form {
+  color: $black-ter;
+  padding: 0 1.5em;
+
+  button {
+    background: $red;
+    border: none;
+    border-radius: 20px;
+    color: $white-ter;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    position: relative;
+
+    &:active {
+      transform: translate(1px, 1px);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  input[type='password'],
+  input[type='text'] {
+    border: none;
+    border-bottom: 1px solid $black-ter;
+    font-size: 1em;
+  }
+
+  .field {
+    margin: 1.5em 0;
+  }
+}

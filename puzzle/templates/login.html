@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 
+{% load render_bundle from webpack_loader %}
+
 {% block title %}
-Puzzle | Login
+  Puzzle | Login
 {% endblock title %}
 
+{% block extra_css %}
+  {% render_bundle 'login' 'css' 'CSS' %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+  {% render_bundle 'login' %}
+{% endblock extra_js %}
+
 {% block content %}
-<h1>Login</h1>
+<div class="container">
+  <div id="login"></div>
+</div>
 {% endblock content %}
