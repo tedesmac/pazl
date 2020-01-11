@@ -1,0 +1,7 @@
+__pycache__
+*.sqlite3
+assets/bundles
+media
+node_modules
+static
+venv
