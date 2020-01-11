@@ -143,6 +143,11 @@ STATICFILES_DIRS = [
 ]
 
 
+# User
+
+AUTH_USER_MODEL = 'user.User'
+
+
 # Django Webapck Loader
 
 WEBPACK_LOADER = {
