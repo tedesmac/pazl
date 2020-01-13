@@ -1,9 +1,19 @@
 {% extends "base.html" %}
 
+{% load render_bundle from webpack_loader %}
+
 {% block title %}
-Puzzle | Admin
+  Puzzle | Admin
 {% endblock title %}
 
+{% block extra_css %}
+  {% render_bundle 'admin' 'css' 'CSS' %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+  {% render_bundle 'admin' %}
+{% endblock extra_js %}
+
 {% block content %}
-<h1>Admin</h1>
+  <div id="admin"></div>
 {% endblock content %}
