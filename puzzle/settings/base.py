@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'puzzle.apps.page',
     'puzzle.apps.user',
     'puzzle.apps.utils',
+    'puzzle.apps.website',
 ]
 
 MIDDLEWARE = [
