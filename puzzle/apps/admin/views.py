@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
@@ -18,10 +19,10 @@ class Login(View):
 
     def post(self, req):
         data = json.loads(req.body.decode('utf-8'))
-        email = data['email']
-        password = data['password']
-        token = data['token']
-        username = data['username']
+        email = data.get('email', '')
+        password = data.get('password', '')
+        token = data.get('token', '',)
+        username = data.get('username', '')
 
         if token:
             user = jwt.validate(token)
