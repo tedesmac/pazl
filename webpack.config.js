@@ -12,6 +12,7 @@ module.exports = [
       editor: path.resolve(__dirname, 'assets/js/editor.js'),
       login: path.resolve(__dirname, 'assets/js/login.js'),
       page: path.resolve(__dirname, 'assets/js/page.js'),
+      root: path.resolve(__dirname, 'assets/js/root.js'),
     },
     output: {
       chunkFilename: '[name].bundle.js',
@@ -21,7 +22,9 @@ module.exports = [
     },
     resolve: {
       alias: {
+        api: path.resolve(__dirname, 'assets/js/api'),
         components: path.resolve(__dirname, 'assets/js/components'),
+        utils: path.resolve(__dirname, 'assets/js/utils'),
         vue$: 'vue/dist/vue.esm.js',
       },
       extensions: ['.js', '.json', '.vue'],
