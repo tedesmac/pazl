@@ -1,6 +1,6 @@
-import { authenticate } from 'api'
+import Api from 'api'
 
-authenticate()
+Api.authenticate()
   .then(loged => {
     if (loged) {
       window.location = '/puzzle/admin/'

@@ -4,7 +4,7 @@ const TOKEN_NAME = 'puzzle_token'
 
 /**
  */
-export const authenticate = (credentials = {}) => {
+const authenticate = (credentials = {}) => {
   const token = window.localStorage.getItem(TOKEN_NAME)
   return Axios.post('/puzzle/login/', { ...credentials, token })
     .then(response => {
@@ -16,4 +16,8 @@ export const authenticate = (credentials = {}) => {
     .catch(error => {
       return false
     })
+}
+
+export default {
+  authenticate,
 }
