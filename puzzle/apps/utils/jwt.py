@@ -13,7 +13,7 @@ def generate(user: User) -> str:
             'exp': datetime.utcnow() + timedelta(days=7)
         },
         settings.SECRET_KEY,
-        algorithm='HS512'
+        algorithm='HS256'
     )
     return token
 
@@ -27,7 +27,7 @@ def validate(token: str) -> Union[User, None]:
         payload = jwt.decode(
             token,
             settings.SECRET_KEY,
-            algorithms=['HS512']
+            algorithms=['HS256']
         )
     except:
         return None
