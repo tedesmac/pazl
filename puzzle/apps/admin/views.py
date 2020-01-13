@@ -45,5 +45,5 @@ class Logout(View):
         return redirect('home')
 
 
-def puzzle_root(req):
-    return redirect('login')
+def root(req):
+    return render(req, 'root.html')

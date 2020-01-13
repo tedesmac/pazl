@@ -4,7 +4,7 @@ import puzzle.apps.editor.views as editor_views
 import puzzle.apps.page.views as page_views
 
 urlpatterns = [
-    path('puzzle/', admin_views.puzzle_root),
+    path('puzzle/', admin_views.root),
     path('puzzle/admin/', admin_views.admin, name='admin'),
     path('puzzle/editor/', editor_views.editor, name='editor'),
     path('puzzle/login/', admin_views.Login.as_view(), name='login'),

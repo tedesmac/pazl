@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% load render_bundle from webpack_loader %}
+
+{% block extra_js %}
+  {% render_bundle 'root' %}
+{% endblock extra_js %}
