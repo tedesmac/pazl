@@ -8,11 +8,11 @@ module.exports = [
   {
     target: 'web',
     entry: {
-      admin: path.resolve(__dirname, 'assets/js/admin.js'),
-      editor: path.resolve(__dirname, 'assets/js/editor.js'),
-      login: path.resolve(__dirname, 'assets/js/login.js'),
-      page: path.resolve(__dirname, 'assets/js/page.js'),
-      root: path.resolve(__dirname, 'assets/js/root.js'),
+      admin: path.resolve(__dirname, 'assets/js/admin'),
+      editor: path.resolve(__dirname, 'assets/js/editor'),
+      login: path.resolve(__dirname, 'assets/js/login'),
+      page: path.resolve(__dirname, 'assets/js/page'),
+      root: path.resolve(__dirname, 'assets/js/root'),
     },
     output: {
       chunkFilename: '[name].bundle.js',
