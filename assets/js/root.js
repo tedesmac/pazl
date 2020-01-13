@@ -1,7 +1,8 @@
 import Api from 'api'
 import { routes } from 'utils'
 
-Api.authenticate()
+Api.token
+  .post()
   .then(loged => {
     if (loged) {
       window.location = routes.admin

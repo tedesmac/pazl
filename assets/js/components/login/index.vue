@@ -45,8 +45,8 @@ export default {
         credentials['username'] = this.emailOrUser
       }
 
-      this.$api
-        .authenticate(credentials)
+      this.$api.token
+        .post(credentials)
         .then(loged => {
           if (loged) {
             window.location = this.$routes.admin
