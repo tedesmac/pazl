@@ -8,3 +8,16 @@ body {
   min-height: 100vh;
   min-width: 100vw;
 }
+
+.__hello-puzzle {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+
+  img {
+    height: auto;
+    width: 60vw;
+  }
+}

@@ -1,4 +1,5 @@
 {% spaceless %}
+{% load static %}
 <!DOCUMENT html>
 <html lang="en">
   <head>
@@ -15,7 +16,9 @@
   </head>
   <body>
     {% block content %}
-    <h1>Hello Puzzle!</h1>
+      <div class="__hello-puzzle">
+        <img src="{% static 'img/puzzle.svg' %}"/>
+      </div>
     {% endblock content %}
     {# Global JS #}
     {# Extra JS #}
