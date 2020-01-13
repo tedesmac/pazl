@@ -16,29 +16,6 @@ class Login(View):
         if req.user.is_authenticated:
             return redirect('admin')
         return render(req, 'login.html')
-
-    def post(self, req):
-        data = json.loads(req.body.decode('utf-8'))
-        email = data.get('email', '')
-        password = data.get('password', '')
-        token = data.get('token', '',)
-        username = data.get('username', '')
-
-        if token:
-            user = jwt.validate(token)
-        elif email:
-            user = authenticate(req, email=email, password=password)
-        else:
-            user = authenticate(req, username=username, password=password)
-
-        if user is not None:
-            token = jwt.generate(user)
-            return JsonResponse({
-                'token': token.decode('utf-8'),
-            })
-        return JsonResponse({}, status=401)
-
-
 class Logout(View):
 
     def get(self, req):
@@ -47,3 +24,29 @@ class Logout(View):
 
 def root(req):
     return render(req, 'root.html')
+
+
+class Token(View):
+
+    def post(self, req):
+        data = json.loads(req.body.decode('utf-8'))
+        email = data.get('email', '')
+        password = data.get('password', '')
+        token = data.get('token', '',)
+        username = data.get('username', '')
+
+        if email:
+            user = authenticate(req, email=email, password=password)
+        elif username:
+            user = authenticate(req, username=username, password=password)
+        elif token:
+            user = jwt.validate(token)
+        else:
+            user = None
+
+        if user is not None:
+            token = jwt.generate(user)
+            return JsonResponse({
+                'token': token.decode('utf-8'),
+            })
+        return JsonResponse({}, status=401)
