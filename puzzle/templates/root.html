@@ -2,6 +2,10 @@
 
 {% load render_bundle from webpack_loader %}
 
+{% block extra_css %}
+  {% render_bundle 'page' 'css' 'CSS' %}
+{% endblock extra_css %}
+
 {% block extra_js %}
   {% render_bundle 'root' %}
 {% endblock extra_js %}
