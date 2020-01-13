@@ -1,11 +1,12 @@
 import Api from 'api'
+import { routes } from 'utils'
 
 Api.authenticate()
   .then(loged => {
     if (loged) {
-      window.location = '/puzzle/admin/'
+      window.location = routes.admin
     } else {
-      window.location = '/puzzle/login/'
+      window.location = routes.login
     }
   })
   .catch(error => {
