@@ -1,11 +1,8 @@
-from django.conf import settings
-from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 import json
-import jwt
-from puzzle.apps.user.models import User
+import puzzle.apps.utils.jwt as jwt
 
 
 def admin(req):
@@ -27,25 +24,14 @@ class Login(View):
         username = data['username']
 
         if token:
-            payload = jwt.decode(
-                token,
-                settings.SECRET_KEY,
-                algorithms=['HS256']
-            )
-            user = User.objects.get(id=payload['user'])
+            user = jwt.validate(token)
         elif email:
             user = authenticate(req, email=email, password=password)
         else:
             user = authenticate(req, username=username, password=password)
 
         if user is not None:
-            token = jwt.encode(
-                {
-                    'user': user.id,
-                    'expires': 'never'
-                },
-                settings.SECRET_KEY,
-                algorithm='HS256')
+            token = jwt.generate(user)
             return JsonResponse({
                 'token': token.decode('utf-8'),
             })
