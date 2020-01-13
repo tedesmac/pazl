@@ -9,7 +9,7 @@ api_urlpatterns = [
 
 urlpatterns = [
     path('puzzle/', admin_views.root),
-    path('puzzle/admin/', admin_views.admin, name='admin'),
+    re_path('^puzzle/admin/(.*)?$', admin_views.admin, name='admin'),
     path('puzzle/api/', include(api_urlpatterns)),
     path('puzzle/editor/', editor_views.editor, name='editor'),
     path('puzzle/login/', admin_views.Login.as_view(), name='login'),

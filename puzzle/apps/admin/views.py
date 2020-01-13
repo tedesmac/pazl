@@ -6,7 +6,7 @@ import json
 import puzzle.apps.utils.jwt as jwt
 
 
-def admin(req):
+def admin(req, *args):
     return render(req, 'admin.html')
 
 
