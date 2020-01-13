@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import Axios from 'axios'
-
 const email_re = /\S+@\S+\.\S+/
 
 export default {
@@ -37,26 +35,24 @@ export default {
 
   methods: {
     authenticate() {
-      let data = {
-        email: null,
+      let credentials = {
         password: this.password,
-        token: window.localStorage.getItem('puzzle_token'),
-        username: null,
       }
 
-      if (data.token) {
-        // do nothging
-      } else if (this.isEmail(this.emailOrUser)) {
-        data.email = this.emailOrUser
+      if (this.isEmail(this.emailOrUser)) {
+        credentials['email'] = this.emailOrUser
       } else {
-        data.username = this.emailOrUser
+        credentials['username'] = this.emailOrUser
       }
-      Axios.post('/puzzle/login/', data)
-        .then(response => {
-          const { data } = response
-          const { token } = data
-          window.localStorage.setItem('puzzle_token', token)
-          window.location = '/puzzle/admin/'
+
+      this.$api
+        .authenticate(credentials)
+        .then(loged => {
+          if (loged) {
+            window.location = this.$routes.admin
+          } else {
+            // do something if loged is false
+          }
         })
         .catch(error => {
           console.error(error)
