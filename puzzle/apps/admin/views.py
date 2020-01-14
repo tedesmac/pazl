@@ -4,8 +4,10 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 import json
 import puzzle.apps.utils.jwt as jwt
+from puzzle.apps.utils.decorators import private
 
 
+@private
 def admin(req, *args):
     return render(req, 'admin.html')
 
@@ -13,17 +15,24 @@ def admin(req, *args):
 class Login(View):
 
     def get(self, req):
-        if req.user.is_authenticated:
+        if req.is_authenticated:
             return redirect('admin')
         return render(req, 'login.html')
+
+
 class Logout(View):
 
     def get(self, req):
-        return redirect('home')
+        req.user = None
+        res = redirect('home')
+        res.delete_cookie('puzzle_token')
+        return res
 
 
 def root(req):
-    return render(req, 'root.html')
+    if req.is_authenticated:
+        return redirect('admin')
+    return redirect('login')
 
 
 class Token(View):
@@ -46,7 +55,9 @@ class Token(View):
 
         if user is not None:
             token = jwt.generate(user)
-            return JsonResponse({
-                'token': token.decode('utf-8'),
+            res = JsonResponse({
+                'token': token,
             })
+            res.set_signed_cookie('puzzle_token', token)
+            return res
         return JsonResponse({}, status=401)
