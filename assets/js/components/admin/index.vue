@@ -12,13 +12,5 @@ import Sidebar from './sidebar'
 
 export default {
   components: { Sidebar },
-
-  beforeCreate() {
-    this.$api.token.post().then(loged => {
-      if (!loged) {
-        window.location = this.$routes.login
-      }
-    })
-  },
 }
 </script>

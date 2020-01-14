@@ -61,9 +61,5 @@ export default {
 
     isEmail: string => email_re.test(string),
   },
-
-  beforeCreate() {
-    this.authenticate()
-  },
 }
 </script>
