@@ -1,5 +1,9 @@
 import Axios from 'axios'
 
+Axios.defaults.baseURL = '/puzzle/api/'
+Axios.defaults.headers.common['Auth_Token'] = cookies.puzzle_token || ''
+Axios.defaults.withCredentials = true
+
 const TOKEN_NAME = 'puzzle_token'
 
 /**
@@ -7,7 +11,7 @@ const TOKEN_NAME = 'puzzle_token'
 const token = {
   post: (credentials = {}) => {
     const token = window.localStorage.getItem(TOKEN_NAME)
-    return Axios.post('/puzzle/api/token/', { ...credentials, token })
+    return Axios.post('token/', { ...credentials, token })
       .then(response => {
         const token = response.data.token
         window.localStorage.setItem(TOKEN_NAME, token)
@@ -19,6 +23,24 @@ const token = {
   },
 }
 
+const site = {
+  get: () =>
+    Axios.get('site/')
+      .then(_ => _)
+      .catch(error => {
+        console.error('[api.site.get] =>', error)
+        return Promise.reject(error)
+      }),
+  put: (data = {}) =>
+    Axios.put('site/', data)
+      .then(_ => _)
+      .catch(error => {
+        console.error('[api.site.put] =>', error)
+        return Promise.reject(error)
+      }),
+}
+
 export default {
+  site,
   token,
 }
