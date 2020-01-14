@@ -1,7 +1,6 @@
 import Axios from 'axios'
 
 Axios.defaults.baseURL = '/puzzle/api/'
-Axios.defaults.headers.common['Auth_Token'] = cookies.puzzle_token || ''
 Axios.defaults.withCredentials = true
 
 const TOKEN_NAME = 'puzzle_token'
