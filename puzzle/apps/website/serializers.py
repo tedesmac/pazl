@@ -14,9 +14,6 @@ class WebsiteSerializer(serializers.Serializer):
         max_length=50
     )
 
-    def create(self, validated_data):
-        return Website.objects.get_or_create(id=1)
-
     def update(self, instance, validated_data):
         instance.description = validated_data.get(
             'description',
