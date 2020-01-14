@@ -15,7 +15,7 @@ def generate(user: User) -> str:
         settings.SECRET_KEY,
         algorithm='HS256'
     )
-    return token
+    return token.decode('utf-8')
 
 
 def validate(token: str) -> Union[User, None]:
@@ -31,8 +31,6 @@ def validate(token: str) -> Union[User, None]:
         )
     except:
         return None
-
-    print(payload)
 
     try:
         user = User.objects.get(id=payload['user'])
