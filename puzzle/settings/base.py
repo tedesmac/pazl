@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -147,6 +148,11 @@ STATIC_URL = '/puzzle/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'assets'),
 ]
+
+# Media files
+
+MEDIA_URL = '/puzzle/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # User
