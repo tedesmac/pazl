@@ -1,31 +1,28 @@
-from django.http import JsonResponse
 from django.utils.decorators import method_decorator
-from django.views.generic import View
-import json
-import puzzle.apps.utils.jwt as jwt
-from puzzle.apps.website.models import Website
 from puzzle.apps.utils.decorators import private
+from puzzle.apps.website.models import Website
+from puzzle.apps.website.serializers import WebsiteSerializer
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
 
-class SiteAPI(View):
+class SiteAPI(APIView):
 
     @method_decorator(private)
     def get(self, req):
         website, _ = Website.objects.get_or_create(id=1)
-        return JsonResponse({
+        return Response({
             'description': website.description,
             'name': website.name
         })
 
     @method_decorator(private)
-    def post(self, req):
-        data = json.loads(req.body.decode('utf-8'))
-        description = data.get('description', '')
-        name = data.get('name', 'Puzzle Site')
-
-        website, _ = Website.objects.get_or_create(id=1)
-        website.description = description
-        website.name = name
-        website.save()
-
-        return JsonResponse({ 'status': 'ok' })
+    def put(self, req):
+        data = JSONParser().parse(req)
+        serializer = WebsiteSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response()
+        return Response(status=HTTP_400_BAD_REQUEST)
