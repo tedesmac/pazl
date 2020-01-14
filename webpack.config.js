@@ -12,7 +12,6 @@ module.exports = [
       editor: path.resolve(__dirname, 'assets/js/editor'),
       login: path.resolve(__dirname, 'assets/js/login'),
       page: path.resolve(__dirname, 'assets/js/page'),
-      root: path.resolve(__dirname, 'assets/js/root'),
     },
     output: {
       chunkFilename: '[name].bundle.js',
