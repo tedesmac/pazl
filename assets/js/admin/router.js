@@ -11,13 +11,13 @@ const Models = () =>
   import(/* webpackChunkName: 'adminModels' */ 'components/admin/models')
 const Pages = () =>
   import(/* webpackChunkName: 'adminPages' */ 'components/admin/pages')
-const SettingsGeneral = () =>
-  import(
-    /* webpackChunkName: 'adminSettingsGeneral' */ 'components/admin/settings-general'
-  )
 const SettingsProfile = () =>
   import(
     /* webpackChunkName: 'adminSettingsProfile' */ 'components/admin/settings-profile'
+  )
+const SettingsSite = () =>
+  import(
+    /* webpackChunkName: 'adminSettingsSite' */ 'components/admin/settings-site'
   )
 const SettingsUsers = () =>
   import(
@@ -56,14 +56,14 @@ const routes = [
     name: 'pages',
   },
   {
-    component: SettingsGeneral,
-    path: '/puzzle/admin/settings/general',
-    name: 'settingsGeneral',
-  },
-  {
     component: SettingsProfile,
     path: '/puzzle/admin/settings/profile',
     name: 'settingsProfile',
+  },
+  {
+    component: SettingsSite,
+    path: '/puzzle/admin/settings/site',
+    name: 'settingsSite',
   },
   {
     component: SettingsUsers,

@@ -28,8 +28,8 @@
 
     <div class="sidebar__section">
       <label>Settings</label>
-      <router-link :to="{ name: 'settingsGeneral' }">General</router-link>
       <router-link :to="{ name: 'settingsProfile' }">Profile</router-link>
+      <router-link :to="{ name: 'settingsSite' }">Site</router-link>
       <router-link :to="{ name: 'settingsUsers' }">Users</router-link>
     </div>
   </div>
