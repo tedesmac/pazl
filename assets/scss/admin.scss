@@ -1,5 +1,6 @@
 @import 'base';
 @import 'colors';
+@import 'form';
 
 .admin {
   background: $blue-grey;
@@ -8,12 +9,42 @@
   width: 100vw;
 }
 
+.button {
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  min-width: 3em;
+  padding: 0.5em 1em;
+  position: relative;
+
+  &:active {
+    transform: translate(1px, 1px);
+  }
+}
+
 .content {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   padding: 2em;
+}
+
+.logo-big {
+  background: $black-ter;
+  border-radius: 50%;
+  height: 15em;
+  width: 15em;
+}
+
+.section {
+  background: $white-ter;
+  border-radius: 5px;
+
+  &:empty {
+    display: none;
+  }
 }
 
 .sidebar {
@@ -63,4 +94,46 @@
     font-size: 0.8em;
     margin-bottom: 0.5em;
   }
+}
+
+.subsection {
+  margin: 1em;
+}
+
+// Modifiers
+
+.a-third {
+  width: 30%;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+}
+
+.is-cyan {
+  background: $cyan;
+}
+
+.is-horizontal {
+  @extend .container;
+}
+
+.is-vertical {
+  @extend .container;
+  flex-direction: column;
+}
+
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.justify-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.two-thirds {
+  width: 60%;
 }

@@ -5,10 +5,8 @@
   padding: 0 1.5em;
 
   button {
-    background: $red;
     border: none;
-    border-radius: 20px;
-    color: $white-ter;
+    border-radius: 5px;
     font-weight: bold;
     padding: 0.5em 1em;
     position: relative;
@@ -24,12 +22,34 @@
 
   input[type='password'],
   input[type='text'] {
-    border: none;
-    border-bottom: 1px solid $black-ter;
+    background: $white-ter;
+    border: 1px solid $black-ter;
+    border-radius: 5px;
+    box-sizing: border-box;
     font-size: 1em;
+    padding: 0.5em;
+    width: 100%;
+  }
+
+  label {
+    font-size: 0.8em;
+    margin-bottom: 0.2em;
+  }
+
+  textarea {
+    background: $white-ter;
+    border: 1px solid $black-ter;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    min-height: 8em;
+    padding: 0.5em;
   }
 
   .field {
+    display: flex;
+    flex-direction: column;
     margin: 1.5em 0;
+    width: 100%;
   }
 }
