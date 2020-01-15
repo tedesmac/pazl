@@ -55,8 +55,8 @@ INSTALLED_APPS = [
     'puzzle.apps.model',
     'puzzle.apps.page',
     'puzzle.apps.user',
-    'puzzle.apps.utils',
     'puzzle.apps.website',
+    'puzzle.utils',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'puzzle.apps.utils.middleware.PuzzleMiddleware',
+    'puzzle.utils.middleware.PuzzleMiddleware',
 ]
 
 # Cookie based session

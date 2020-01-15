@@ -1,4 +1,4 @@
-import puzzle.apps.utils.jwt as jwt
+import puzzle.utils.jwt as jwt
 
 
 class PuzzleMiddleware:

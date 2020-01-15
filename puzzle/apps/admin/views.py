@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 import json
-import puzzle.apps.utils.jwt as jwt
-from puzzle.apps.utils.decorators import requires_login
+from puzzle.utils.decorators import requires_login
+import puzzle.utils.jwt as jwt
 
 
 @requires_login
