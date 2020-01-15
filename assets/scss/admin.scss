@@ -10,20 +10,6 @@
   width: 100vw;
 }
 
-.button {
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  min-width: 3em;
-  padding: 0.5em 1em;
-  position: relative;
-
-  &:active {
-    transform: translate(1px, 1px);
-  }
-}
-
 .content {
   box-sizing: border-box;
   display: flex;
@@ -42,6 +28,7 @@
 .section {
   background: $white-ter;
   border-radius: 5px;
+  padding: 1em;
 
   &:empty {
     display: none;
