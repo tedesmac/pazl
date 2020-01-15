@@ -1,9 +1,19 @@
 {% extends "base.html" %}
 
+{% load render_bundle from webpack_loader %}
+
 {% block title %}
 Puzzle | Editor
 {% endblock title %}
 
+{% block extra_css %}
+  {% render_bundle "editor" "css" "CSS" %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+  {% render_bundle "editor" %}
+{% endblock extra_js %}
+
 {% block content %}
-<h1>Editor</h1>
+  {% include "puzzle.html" with id="editor" %}
 {% endblock content %}

@@ -109,9 +109,7 @@
   </head>
   <body>
     {% block content %}
-    <div class="__hello-puzzle">
-      <img src="{% static 'img/puzzle.svg' %}" />
-    </div>
+      {% include "puzzle.html" %}
     {% endblock content %}
     {% block extra_js %}{% endblock extra_js %}
   </body>
