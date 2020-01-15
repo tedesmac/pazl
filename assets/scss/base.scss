@@ -1,3 +1,5 @@
+@import 'colors';
+
 body {
   display: flex;
   flex-direction: column;
@@ -20,6 +22,7 @@ h6 {
 
 .__hello-puzzle {
   align-items: center;
+  background: $white-ter;
   display: flex;
   justify-content: center;
   height: 100vh;
@@ -28,5 +31,38 @@ h6 {
   img {
     height: auto;
     width: 60vw;
+  }
+}
+
+.__404 {
+  align-items: center;
+  background: $light-blue;
+  color: $black-ter;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  max-width: 100%;
+  width: 100vw;
+
+  a {
+    color: $white-ter;
+    font-weight: bolder;
+    margin: 0 2.5em;
+    text-decoration: none;
+  }
+
+  h1 {
+    font-size: 8em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  .links {
+    display: flex;
+    font-size: 1.2em;
+    margin: 2em 0 8em;
   }
 }
