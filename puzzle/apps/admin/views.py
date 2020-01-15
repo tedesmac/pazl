@@ -3,11 +3,11 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 import json
-from puzzle.utils.decorators import requires_login
+from puzzle.utils.decorators import login_required
 import puzzle.utils.jwt as jwt
 
 
-@requires_login
+@login_required
 def admin(req, *args):
     return render(req, 'admin.html')
 
