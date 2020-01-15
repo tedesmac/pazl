@@ -56,6 +56,9 @@ const routes = [
   {
     component: NotFound,
     path: '/puzzle/editor/*',
+    props: {
+      admin: true,
+    },
   },
 ]
 

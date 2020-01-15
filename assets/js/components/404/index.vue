@@ -8,7 +8,8 @@
         <FontAwesomeIcon :icon="faHome" />
         Go to Home
       </a>
-      <a href="/puzzle/admin/">
+
+      <a href="/puzzle/admin/" v-if="admin">
         <FontAwesomeIcon :icon="faTools" />
         Go to Admin
       </a>
@@ -26,6 +27,13 @@ export default {
   computed: {
     faHome: () => faHome,
     faTools: () => faTools,
+  },
+
+  props: {
+    admin: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
