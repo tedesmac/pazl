@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="section is-horizontal">
-      <div class="a-third form is-vertical subsection">
+      <div class="form is-a-third is-vertical subsection">
         <div class="logo-big" />
 
         <div class="field">
@@ -11,7 +11,7 @@
         </div>
       </div>
 
-      <div class="form is-vertical two-thirds subsection">
+      <div class="form is-two-thirds is-vertical subsection">
         <div class="field">
           <label>Name</label>
           <input type="text" v-model="name" />
