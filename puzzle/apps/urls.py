@@ -1,10 +1,12 @@
 from django.urls import include, path, re_path
 import puzzle.apps.admin.views as admin_views
 import puzzle.apps.editor.views as editor_views
+import puzzle.apps.model.views as model_views
 import puzzle.apps.page.views as page_views
 import puzzle.apps.website.views as site_views
 
 api_urlpatterns = [
+    path('models/', model_views.ModelAPI.as_view()),
     path('site/', site_views.SiteAPI.as_view()),
     path('token/', admin_views.Token.as_view()),
 ]
