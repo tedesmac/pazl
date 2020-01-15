@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="section is-horizontal space-between">
+    <div class="section is-horizontal space-around">
       <h2>Blocks</h2>
 
       <button class="is-cyan">New</button>
