@@ -1,0 +1,37 @@
+@import 'colors';
+
+.container {
+  align-items: center;
+  display: flex;
+}
+
+.is-a-third {
+  width: 30%;
+}
+
+.is-cyan {
+  background: $cyan;
+}
+
+.is-horizontal {
+  @extend .container;
+}
+
+.is-two-thirds {
+  width: 60%;
+}
+
+.is-vertical {
+  @extend .container;
+  flex-direction: column;
+}
+
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.justify-right {
+  display: flex;
+  justify-content: flex-end;
+}

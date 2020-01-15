@@ -1,6 +1,7 @@
 @import 'base';
 @import 'colors';
 @import 'form';
+@import 'modifiers';
 
 .admin {
   background: $blue-grey;
@@ -98,42 +99,4 @@
 
 .subsection {
   margin: 1em;
-}
-
-// Modifiers
-
-.a-third {
-  width: 30%;
-}
-
-.container {
-  align-items: center;
-  display: flex;
-}
-
-.is-cyan {
-  background: $cyan;
-}
-
-.is-horizontal {
-  @extend .container;
-}
-
-.is-vertical {
-  @extend .container;
-  flex-direction: column;
-}
-
-.justify-center {
-  display: flex;
-  justify-content: center;
-}
-
-.justify-right {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.two-thirds {
-  width: 60%;
 }
