@@ -51,7 +51,7 @@ const routes = [
     name: 'models',
   },
   {
-    components: Pages,
+    component: Pages,
     path: '/puzzle/admin/pages',
     name: 'pages',
   },
