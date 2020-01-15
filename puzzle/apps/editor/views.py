@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 
-def editor(req):
+def editor(req, *args):
     return render(req, 'editor.html')

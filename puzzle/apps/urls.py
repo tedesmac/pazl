@@ -15,7 +15,7 @@ urlpatterns = [
     path('puzzle/', admin_views.root),
     re_path('^puzzle/admin/(.*)?$', admin_views.admin, name='admin'),
     path('puzzle/api/', include(api_urlpatterns)),
-    path('puzzle/editor/', editor_views.editor, name='editor'),
+    re_path('^puzzle/editor/(.*)?$', editor_views.editor, name='editor'),
     path('puzzle/login/', admin_views.Login.as_view(), name='login'),
     path('puzzle/logout/', admin_views.Logout.as_view(), name='logout'),
     path('', page_views.home, name='home'),
