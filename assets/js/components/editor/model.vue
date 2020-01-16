@@ -28,11 +28,17 @@
         </div>
       </div>
 
-      <Draggable class="model-block-container" group="blocks" v-model="blocks">
+      <Draggable
+        class="model-block-container"
+        group="blocks"
+        v-model="blocks"
+        @end="onEnd"
+      >
         <div
-          class="model-block"
-          :key="`block_${index}`"
           v-for="(block, index) in blocks"
+          class="model-block"
+          :block="index"
+          :key="`block_${index}`"
         >
           <div class="type">
             {{ block.type }}
@@ -57,6 +63,7 @@
 </template>
 
 <script>
+import { BlockEditorMixin } from 'components/mixins'
 import Draggable from 'vuedraggable'
 
 const defaultBlocks = [
@@ -78,11 +85,12 @@ const defaultBlocks = [
 ]
 
 export default {
+  mixins: [BlockEditorMixin],
+
   components: { Draggable },
 
   data() {
     return {
-      blocks: [],
       name: '',
       saving: false,
       defaultBlocks,

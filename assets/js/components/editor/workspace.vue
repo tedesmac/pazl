@@ -1,5 +1,5 @@
 <template>
-  <div class="workspace">
+  <div class="workspace" id="workspace">
     <div class="workspace-area" :style="style">
       <slot />
     </div>
