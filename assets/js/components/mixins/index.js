@@ -48,7 +48,7 @@ export const BlockEditorMixin = {
       this.blocks = this.blocks.filter((block, index) => {
         if (block.id && block.id !== id) {
           return block
-        } else if (index !== index) {
+        } else if (index !== Number(id)) {
           return block
         }
       })
