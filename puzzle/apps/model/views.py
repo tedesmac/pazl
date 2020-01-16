@@ -22,9 +22,6 @@ class ModelAPI(View):
         data['data'] = json.dumps(data.get('data', {}))
         serializer = ModelSerializer(data=data)
         if serializer.is_valid():
-            # serializer.save()
-            response = serializer.data
-            if response['data']:
-                response['data'] = json.loads(response['data'])
-            return JsonResponse(response)
+            serializer.save()
+            return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)

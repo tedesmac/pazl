@@ -15,10 +15,14 @@ class ModelSerializer(serializers.Serializer):
     )
 
     def create(self, validated_data):
-        return Model.objects.create(**validated_data)
+        newData = {
+            'data': validated_data.get('data_as_json', '{}'),
+            'name': validated_data.get('name', '')
+        }
+        return Model.objects.create(**newData)
 
     def update(self, instance, validated_data):
-        instance.data = validated_data.get('data', instance.data)
+        instance.data = validated_data.get('data_as_json', instance.data)
         instance.name = validated_data.get('name', instance.name)
         instance.save()
         return instance
