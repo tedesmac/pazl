@@ -1,5 +1,7 @@
 <template>
   <div class="workspace">
-    <slot />
+    <div class="workspace-area">
+      <slot />
+    </div>
   </div>
 </template>
