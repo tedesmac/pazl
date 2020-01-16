@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 
 class Model(models.Model):
@@ -7,3 +8,7 @@ class Model(models.Model):
 
     class Meta:
         db_table = 'puzzle_model'
+
+    @property
+    def data_as_json(self):
+        return json.loads(self.data)
