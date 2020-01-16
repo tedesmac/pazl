@@ -170,7 +170,7 @@ export default {
     verifyUniqueNames() {
       let allUniqueNames = true
       for (let i = 0; i < this.blocks.length - 1; i++) {
-        for (let j = i + 1; i < this.blocks.length; j++) {
+        for (let j = i + 1; j < this.blocks.length; j++) {
           if (this.blocks[i].name === this.blocks[j].name) {
             allUniqueNames = false
             break
