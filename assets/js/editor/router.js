@@ -41,6 +41,9 @@ const routes = [
   {
     component: Model,
     path: '/puzzle/editor/model',
+    props: route => ({
+      id: Number(route.query.id) || 0,
+    }),
   },
   {
     component: Page,
