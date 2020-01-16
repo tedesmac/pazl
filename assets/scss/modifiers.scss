@@ -26,6 +26,10 @@
   flex-direction: column;
 }
 
+.is-yellow {
+  background: $yellow;
+}
+
 .justify-center {
   display: flex;
   justify-content: center;

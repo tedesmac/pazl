@@ -18,6 +18,30 @@
   padding: 2em;
 }
 
+.entry {
+  align-items: center;
+  background: $grey;
+  box-sizing: border-box;
+  display: flex;
+  padding: 0.5em;
+  width: 100%;
+
+  button {
+    align-items: center;
+    height: 1.8em;
+    justify-content: center;
+    margin: 0 0.05em;
+    min-width: auto;
+    padding: 0.2em;
+    width: 1.8em;
+  }
+}
+
+.entry-alt {
+  @extend .entry;
+  background: $light-grey;
+}
+
 .logo-big {
   background: $black-ter;
   border-radius: 50%;
@@ -28,6 +52,7 @@
 .section {
   background: $white-ter;
   border-radius: 5px;
+  margin-bottom: 1.5em;
   padding: 1em;
 
   &:empty {
