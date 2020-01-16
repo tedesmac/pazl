@@ -30,13 +30,31 @@
   background: $white-ter;
   box-shadow: 0 2px 5px $grey;
   box-sizing: border-box;
+  display: flex;
   height: 2em;
-  justify-content: space-around;
+  justify-content: space-between;
   left: 0;
+  padding: 0 1em;
   position: absolute;
   top: 0;
   width: 100vw;
   z-index: 1;
+
+  button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: $black-ter;
+    cursor: pointer;
+    height: auto;
+    margin: 0 0.5em;
+    position: relative;
+    width: auto;
+
+    &:active {
+      transform: translate(1px, 1px);
+    }
+  }
 }
 
 .workspace {

@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar />
+    <Topbar backUrl="/puzzle/admin/models/" />
     <Sidebar />
     <Workspace />
   </Editor>
