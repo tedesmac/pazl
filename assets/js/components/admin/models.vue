@@ -16,7 +16,7 @@
 export default {
   methods: {
     onNewModel() {
-      window.location = '/puzzle/editor/model?op=new'
+      window.location = '/puzzle/editor/model/'
     },
   },
 }
