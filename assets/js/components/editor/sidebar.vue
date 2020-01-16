@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="sidebar">
     <slot />
   </div>
 </template>

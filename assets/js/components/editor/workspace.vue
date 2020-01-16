@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="workspace">
     <slot />
   </div>
 </template>
