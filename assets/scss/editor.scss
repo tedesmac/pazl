@@ -2,6 +2,16 @@
 @import 'colors';
 @import 'modifiers';
 
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .editor {
   background: $white-ter;
   display: flex;
@@ -9,6 +19,43 @@
   max-width: 100%;
   min-height: 100vh;
   width: 100vw;
+}
+
+.model-block {
+  border: 1px solid $grey;
+  box-shadow: 0 0 5px $grey;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em;
+  padding: 0.5em;
+
+  .field {
+    align-items: center;
+    display: flex;
+    width: 100%;
+    margin: 0.2em 0;
+
+    input {
+      flex-grow: 1;
+    }
+
+    label {
+      margin-right: 0.5em;
+    }
+  }
+
+  .type {
+    background: $blue-grey;
+    border-radius: 5px;
+    color: $white;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 0.2em 0.5em;
+  }
+}
+
+.model-block-container {
+  flex-grow: 1;
 }
 
 .sidebar {
@@ -23,6 +70,13 @@
   top: 0;
   width: 20vw;
   z-index: 0;
+}
+
+.spinner {
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-name: rotate;
+  animation-timing-function: linear;
 }
 
 .topbar {
@@ -47,13 +101,17 @@
     color: $black-ter;
     cursor: pointer;
     height: auto;
-    margin: 0 0.5em;
+    margin: 0 0.1em;
     position: relative;
     width: auto;
 
     &:active {
       transform: translate(1px, 1px);
     }
+  }
+
+  div {
+    display: flex;
   }
 }
 
@@ -69,5 +127,8 @@
 
 .workspace-area {
   background: $white;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   min-height: 90vh;
 }
