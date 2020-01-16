@@ -11,7 +11,7 @@
     </div>
 
     <div>
-      <FontAwesomeIcon :icon="faSpinner" />
+      <FontAwesomeIcon class="spinner" :icon="faSpinner" v-if="saving" />
       <button @click="onSave">
         <FontAwesomeIcon :icon="faSave" />
       </button>
@@ -40,6 +40,11 @@ export default {
     backUrl: {
       type: String,
       default: '/puzzle/admin/',
+    },
+
+    saving: {
+      type: Boolean,
+      default: false,
     },
   },
 
