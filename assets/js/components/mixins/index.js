@@ -19,6 +19,12 @@ export const BlockEditorMixin = {
     }
   },
 
+  props: {
+    id: {
+      type: Number,
+    },
+  },
+
   methods: {
     onDragOver(event) {
       this.mouseX = event.clientX
