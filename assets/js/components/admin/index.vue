@@ -12,5 +12,15 @@ import Sidebar from './sidebar'
 
 export default {
   components: { Sidebar },
+
+  methods: {
+    fetchModels() {
+      this.$store.dispatch('fetchModels')
+    },
+  },
+
+  mounted() {
+    this.fetchModels()
+  },
 }
 </script>

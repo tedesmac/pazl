@@ -69,9 +69,9 @@ const routes = [
         component: Entries,
         path: 'entries/:model',
         name: 'entries',
-        props: route => {
-          model: route.params.model
-        },
+        props: route => ({
+          modelId: Number(route.params.model),
+        }),
       },
       {
         component: Models,

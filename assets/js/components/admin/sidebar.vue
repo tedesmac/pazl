@@ -12,6 +12,13 @@
 
     <div class="sidebar__section">
       <label>Entries</label>
+      <router-link
+        v-for="(model, index) in models"
+        :key="`model_${model.name}`"
+        :to="{ name: 'entries', params: { model: model.id } }"
+      >
+        {{ model.name }}
+      </router-link>
     </div>
 
     <div class="sidebar__section">
@@ -34,3 +41,13 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  computed: mapState({
+    models: state => state.models,
+  }),
+}
+</script>
