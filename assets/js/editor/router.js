@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Editor from 'components/editor'
 
 Vue.use(VueRouter)
 
@@ -32,26 +31,27 @@ const NotFound = () =>
 
 const routes = [
   {
-    component: Editor,
+    component: Block,
+    path: '/puzzle/editor/block',
+  },
+  {
+    component: Entry,
+    path: '/puzzle/editor/entry',
+  },
+  {
+    component: Model,
+    path: '/puzzle/editor/model',
+  },
+  {
+    component: Page,
+    path: '/puzzle/editor/page',
+  },
+  {
+    component: NotFound,
     path: '/puzzle/editor',
-    children: [
-      {
-        component: Block,
-        path: 'block',
-      },
-      {
-        component: Entry,
-        path: 'entry',
-      },
-      {
-        component: Model,
-        path: 'model',
-      },
-      {
-        component: Page,
-        path: 'page',
-      },
-    ],
+    props: {
+      admin: true,
+    },
   },
   {
     component: NotFound,
