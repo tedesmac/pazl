@@ -5,21 +5,43 @@ Axios.defaults.withCredentials = true
 
 const TOKEN_NAME = 'puzzle_token'
 
-/**
- */
-const token = {
-  post: (credentials = {}) => {
-    const token = window.localStorage.getItem(TOKEN_NAME)
-    return Axios.post('token/', { ...credentials, token })
-      .then(response => {
-        const token = response.data.token
-        window.localStorage.setItem(TOKEN_NAME, token)
-        return true
-      })
+const calls = {
+  delete: () => {},
+
+  get: (url, data) => {
+    const { id = null, ...params } = data
+    let newUrl = url
+    if (id) {
+      newUrl = `${url}${id}/`
+    }
+    return Axios.get(newUrl, { params })
+      .then(response => response.data)
       .catch(error => {
-        return false
+        console.error(`[api.get.${url}] =>`, error)
+        return Promise.reject(error)
       })
   },
+
+  post: (url, data) => {
+    return Axios.post(url, data)
+      .then(response => response.data)
+      .catch(error => {
+        console.error(`[api.get.${url}] =>`, error)
+        return Promise.reject(error)
+      })
+  },
+
+  put: () => {},
+}
+
+const apiFactory = (url, methods = ['delete', 'get', 'post', 'put']) => {
+  const api = {}
+
+  methods.forEach(method => {
+    api[method] = (data = {}) => calls[method](url, data)
+  })
+
+  return api
 }
 
 const site = {
@@ -39,7 +61,25 @@ const site = {
       }),
 }
 
+/**
+ */
+const token = {
+  post: (credentials = {}) => {
+    const token = window.localStorage.getItem(TOKEN_NAME)
+    return Axios.post('token/', { ...credentials, token })
+      .then(response => {
+        const token = response.data.token
+        window.localStorage.setItem(TOKEN_NAME, token)
+        return true
+      })
+      .catch(error => {
+        return false
+      })
+  },
+}
+
 export default {
+  models: apiFactory('models/'),
   site,
   token,
 }
