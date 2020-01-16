@@ -1,8 +1,13 @@
+import Entry from 'components/admin/entry'
 import Editor from 'components/editor'
 import Error from 'components/editor/error'
 import Sidebar from 'components/editor/sidebar'
 import Topbar from 'components/editor/topbar'
 import Workspace from 'components/editor/workspace'
+
+export const AdminListingMixin = {
+  components: { Entry },
+}
 
 export const BlockEditorMixin = {
   components: {
