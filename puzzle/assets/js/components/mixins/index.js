@@ -1,3 +1,4 @@
+import Collapsible from 'components/editor/collapsible'
 import Entry from 'components/admin/entry'
 import Editor from 'components/editor'
 import Error from 'components/editor/error'
@@ -12,6 +13,7 @@ export const AdminListingMixin = {
 
 export const BlockEditorMixin = {
   components: {
+    Collapsible,
     Draggable,
     Editor,
     Error,

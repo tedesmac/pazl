@@ -1,5 +1,6 @@
 @import 'base';
 @import 'colors';
+@import 'form';
 @import 'modifiers';
 
 @keyframes rotate {
@@ -9,6 +10,40 @@
 
   to {
     transform: rotate(360deg);
+  }
+}
+
+.collapsible {
+  border: 1px solid $grey;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em 0;
+  padding: 0.5em;
+
+  button {
+    background: $light-grey;
+    border-radius: 0;
+    color: $black-ter;
+    font-size: 0.8em;
+    font-weight: normal;
+    height: 1.4em;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+    position: relative;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .icon {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-5px, -50%);
   }
 }
 
@@ -39,6 +74,13 @@
     position: absolute;
     right: 4px;
     top: 3px;
+  }
+}
+
+.form {
+  .field {
+    margin: 0;
+    margin-bottom: 1em;
   }
 }
 
