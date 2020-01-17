@@ -29,6 +29,7 @@ export const BlockEditorMixin = {
       errorMessage: '',
       eventListener: false,
       mouseX: 0,
+      saving: false,
     }
   },
 

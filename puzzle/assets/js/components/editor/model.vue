@@ -93,8 +93,6 @@ export default {
     return {
       name: '',
       defaultBlocks,
-      modelId: 0,
-      saving: false,
     }
   },
 
