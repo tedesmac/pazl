@@ -127,10 +127,9 @@ export default {
               name: this.name,
             })
             .then(data => {
-              // this.blocks = data.data.blocks
-              // this.modelId = data.id
-              // this.name = data.name
+              console.log('[saved] =>', data)
               this.saving = false
+              this.$router.push({ path: `/puzzle/editor/model?id=${data.id}` })
             })
             .catch(() => {
               this.saving = false
@@ -147,9 +146,7 @@ export default {
               name: this.name,
             })
             .then(data => {
-              // this.blocks = data.data.blocks
-              // this.modelId = data.id
-              // this.name = data.name
+              console.log('[saved] =>', data)
               this.saving = false
             })
             .catch(() => {
@@ -208,11 +205,15 @@ export default {
 
   mounted() {
     if (this.id > 0) {
-      this.$api.models.get({ id: this.id }).then(data => {
-        console.log(data)
-        this.name = data.name
-        this.blocks = data.data.blocks
-      })
+      this.$api.models
+        .get({ id: this.id })
+        .then(data => {
+          this.name = data.name
+          this.blocks = data.data.blocks
+        })
+        .catch(() => {
+          window.location = '/puzzle/admin/models'
+        })
     }
   },
 }

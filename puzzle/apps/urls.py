@@ -7,6 +7,7 @@ import puzzle.apps.website.views as site_views
 
 api_urlpatterns = [
     path('models/', model_views.ModelAPI.as_view()),
+    path('models/<int:id>/', model_views.ModelDetailAPI.as_view()),
     path('site/', site_views.SiteAPI.as_view()),
     path('token/', admin_views.Token.as_view()),
 ]
