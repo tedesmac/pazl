@@ -32,5 +32,22 @@ const StringBlock = import(
 
 export default {
   components: { HtmlBlock, ImageBlock, LinkBlock, MarkdownBlock, StringBlock },
+
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+
+    edit: {
+      type: Boolean,
+      default: true,
+    },
+
+    type: {
+      type: String,
+      required: true,
+    },
+  },
 }
 </script>
