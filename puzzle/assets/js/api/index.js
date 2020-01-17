@@ -59,6 +59,8 @@ const apiFactory = (url, methods = ['delete', 'get', 'post', 'put']) => {
   return api
 }
 
+const me = () => 'Not yet implemented'
+
 const site = {
   get: () =>
     Axios.get('site/')
@@ -94,7 +96,12 @@ const token = {
 }
 
 export default {
+  blocks: apiFactory('blocks/'),
+  entries: apiFactory('entries/'),
   models: apiFactory('models/'),
+  pages: apiFactory('pages/'),
+  users: apiFactory('users/'),
+  me,
   site,
   token,
 }
