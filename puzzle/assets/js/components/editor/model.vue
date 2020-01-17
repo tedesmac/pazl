@@ -67,7 +67,6 @@
 
 <script>
 import { BlockEditorMixin } from 'components/mixins'
-import Draggable from 'vuedraggable'
 
 const defaultBlocks = [
   {
@@ -89,8 +88,6 @@ const defaultBlocks = [
 
 export default {
   mixins: [BlockEditorMixin],
-
-  components: { Draggable },
 
   data() {
     return {
