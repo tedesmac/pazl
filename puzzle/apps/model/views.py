@@ -14,16 +14,13 @@ class ModelDetailAPI(View):
     def delete(self, request, id):
         pass
 
-    @method_decorator(private)
     def get(self, request, id):
         try:
             model = Model.objects.get(id=id)
         except Model.DoesNotExist:
-            model = None
-        if model:
-            serializer = ModelSerializer(model)
-            return JsonResponse(serializer.data)
-        return JsonResponse({}, status=400)
+            return JsonResponse({}, status=400)
+        serializer = ModelSerializer(model)
+        return JsonResponse(serializer.data)
 
     @method_decorator(private)
     def put(self, request, id):
@@ -41,7 +38,6 @@ class ModelDetailAPI(View):
 
 class ModelListAPI(View):
 
-    @method_decorator(private)
     def get(self, request):
         models = Model.objects.all()
         serializer = ModelSerializer(models, many=True)
