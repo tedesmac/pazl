@@ -47,8 +47,9 @@
           <div class="field">
             <label>Name :</label>
             <input
-              type="text"
               maxlength="50"
+              type="text"
+              :value="block.name"
               @input="onBlockName($event, index)"
             />
           </div>
@@ -117,25 +118,46 @@ export default {
       this.verifyAll()
       if (!this.error) {
         this.saving = true
-        this.$api.models
-          .post({
-            data: {
-              blocks: this.blocks,
-            },
-            name: this.name,
-          })
-          .then(data => {
-            console.log('[model saved] =>', data)
-            this.blocks = data.data.blocks
-            this.modelId = data.id
-            this.name = data.name
-            this.saving = false
-          })
-          .catch(() => {
-            this.saving = false
-            this.error = true
-            this.errorMessage = 'Unable to save, please try again later'
-          })
+        if (this.id == 0) {
+          this.$api.models
+            .post({
+              data: {
+                blocks: this.blocks,
+              },
+              name: this.name,
+            })
+            .then(data => {
+              // this.blocks = data.data.blocks
+              // this.modelId = data.id
+              // this.name = data.name
+              this.saving = false
+            })
+            .catch(() => {
+              this.saving = false
+              this.error = true
+              this.errorMessage = 'Unable to save, please try again later'
+            })
+        } else {
+          this.$api.models
+            .put({
+              id: this.id,
+              data: {
+                blocks: this.blocks,
+              },
+              name: this.name,
+            })
+            .then(data => {
+              // this.blocks = data.data.blocks
+              // this.modelId = data.id
+              // this.name = data.name
+              this.saving = false
+            })
+            .catch(() => {
+              this.saving = false
+              this.error = true
+              this.errorMessage = 'Unable to save, please try again later'
+            })
+        }
       }
     },
 
@@ -187,6 +209,7 @@ export default {
   mounted() {
     if (this.id > 0) {
       this.$api.models.get({ id: this.id }).then(data => {
+        console.log(data)
         this.name = data.name
         this.blocks = data.data.blocks
       })

@@ -1,6 +1,6 @@
 __pycache__
 *.sqlite3
-assets/bundles
+puzzle/assets/bundles
 media
 node_modules
 static

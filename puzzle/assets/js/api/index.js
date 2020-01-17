@@ -6,7 +6,15 @@ Axios.defaults.withCredentials = true
 const TOKEN_NAME = 'puzzle_token'
 
 const calls = {
-  delete: () => {},
+  delete: (url, data) => {
+    const { id, ...params } = data
+    return Axios.delete(`${url}${id}/`, params)
+      .then(response => response.data)
+      .catch(error => {
+        console.error(`[api.put.${url}] =>`, error)
+        return Promise.reject(error)
+      })
+  },
 
   get: (url, data) => {
     const { id = null, ...params } = data
@@ -22,16 +30,23 @@ const calls = {
       })
   },
 
-  post: (url, data) => {
-    return Axios.post(url, data)
+  post: (url, data) =>
+    Axios.post(url, data)
       .then(response => response.data)
       .catch(error => {
         console.error(`[api.get.${url}] =>`, error)
         return Promise.reject(error)
+      }),
+
+  put: (url, data) => {
+    const { id, ...params } = data
+    return Axios.put(`${url}${id}/`, params)
+      .then(response => response.data)
+      .catch(error => {
+        console.error(`[api.put.${url}] =>`, error)
+        return Promise.reject(error)
       })
   },
-
-  put: () => {},
 }
 
 const apiFactory = (url, methods = ['delete', 'get', 'post', 'put']) => {
