@@ -39,7 +39,7 @@ class ModelDetailAPI(View):
         return JsonResponse(serializer.errors, status=400)
 
 
-class ModelAPI(View):
+class ModelListAPI(View):
 
     @method_decorator(private)
     def get(self, request):
