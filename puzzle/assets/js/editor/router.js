@@ -48,6 +48,9 @@ const routes = [
   {
     component: Page,
     path: '/puzzle/editor/page',
+    props: route => ({
+      id: Number(route.query.id) || 0,
+    }),
   },
   {
     component: NotFound,
