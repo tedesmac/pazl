@@ -11,3 +11,8 @@ class PageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = ['id', 'data', 'description', 'name', 'parent', 'slug']
+
+    def create(self, validated_data):
+        validated_data['data'] = validated_data.get('data_as_json', '{}')
+        validated_data.pop('data_as_json', None)
+        return Page.objects.create(**validated_data)

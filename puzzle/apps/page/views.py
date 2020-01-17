@@ -23,7 +23,6 @@ class PageDetailAPI(View):
     def delete(self, request, id):
         pass
 
-    @method_decorator(private)
     def get(self, request, id):
         try:
             page = Page.objects.get(id=id)
@@ -48,7 +47,6 @@ class PageDetailAPI(View):
 
 class PageListAPI(View):
 
-    @method_decorator(private)
     def get(self, request):
         pages = Page.objects.all()
         serializer = PageSerializer(pages, many=True)
@@ -57,7 +55,10 @@ class PageListAPI(View):
     @method_decorator(private)
     def post(self, request):
         data = JSONParser().parse(request)
+        data['data'] = json.dumps(data.get('data', {}))
         serializer = PageSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=400)
