@@ -133,6 +133,31 @@
   top: 0;
   width: 20vw;
   z-index: 0;
+
+  .active {
+    background: $white-ter !important;
+    border-bottom: none !important;
+  }
+
+  .separator {
+    background: $grey;
+    height: 100%;
+    width: 1px;
+  }
+
+  .tab {
+    background: $light-grey;
+    border-bottom: 1px solid $grey;
+    cursor: pointer;
+    flex-grow: 1;
+    padding-bottom: 0.2em;
+    text-align: center;
+  }
+
+  .tab-list {
+    display: flex;
+    flex-wrap: nowrap;
+  }
 }
 
 .spinner {
