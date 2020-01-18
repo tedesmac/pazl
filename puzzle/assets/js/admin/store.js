@@ -8,7 +8,11 @@ export default () =>
   new Vuex.Store({
     state: () => ({
       models: [],
-      site: null,
+      site: {
+        description: 'A Puzzle site',
+        home_page: 0,
+        name: 'Puzzle',
+      },
       user: null,
     }),
 
@@ -38,7 +42,17 @@ export default () =>
           })
       },
 
-      fetchSite() {},
+      fetchSite(context) {
+        Api.site
+          .get()
+          .then(response => {
+            context.commit('setSite', response.data)
+          })
+          .catch(error => {
+            console.error('[admin.store.fetchSite] =>', error)
+            return Promise.reject(error)
+          })
+      },
 
       fetchUser() {},
     },

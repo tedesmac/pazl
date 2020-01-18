@@ -17,10 +17,15 @@ export default {
     fetchModels() {
       this.$store.dispatch('fetchModels')
     },
+
+    fetchSite() {
+      this.$store.dispatch('fetchSite')
+    },
   },
 
   mounted() {
     this.fetchModels()
+    this.fetchSite()
   },
 }
 </script>
