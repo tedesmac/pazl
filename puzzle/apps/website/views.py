@@ -12,10 +12,8 @@ class SiteAPI(View):
     @method_decorator(private)
     def get(self, req):
         website, _ = Website.objects.get_or_create(id=1)
-        return JsonResponse({
-            'description': website.description,
-            'name': website.name
-        })
+        serializer = WebsiteSerializer(website)
+        return JsonResponse(serializer.data)
 
     @method_decorator(private)
     def put(self, req):
