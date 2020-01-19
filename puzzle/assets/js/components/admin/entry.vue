@@ -1,10 +1,14 @@
 <template>
-  <div :class="['space-around', { entry: !isAlt, 'entry-alt': isAlt }]">
+  <div
+    :class="['space-around', index % 2 === 0 ? 'entry' : 'entry-alt']"
+    :style="style"
+    @click="onClick"
+  >
     <div>
       <p>{{ name }}</p>
     </div>
 
-    <div>
+    <div v-show="buttons">
       <button class="is-yellow">
         <FontAwesomeIcon :icon="faAngleDown" />
       </button>
@@ -24,30 +28,54 @@ export default {
   components: { FontAwesomeIcon },
 
   props: {
-    editUrl: {
-      type: String,
-      required: true,
+    buttons: {
+      type: Boolean,
+      default: true,
     },
 
-    isAlt: {
-      type: Boolean,
-      default: false,
+    editUrl: {
+      type: String,
+      default: '',
+    },
+
+    index: {
+      type: Number,
+      default: 0,
     },
 
     name: {
       type: String,
       required: true,
     },
+
+    selectable: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
+    style() {
+      return {
+        cursor: this.selectable ? 'pointer' : 'auto',
+      }
+    },
+
     faAngleDown: () => faAngleDown,
     faEdit: () => faEdit,
   },
 
   methods: {
+    onClick() {
+      if (this.selectable) {
+        this.$emit('selected')
+      }
+    },
+
     onEdit() {
-      window.location = this.editUrl
+      if (this.editUrl) {
+        window.location = this.editUrl
+      }
     },
   },
 }
