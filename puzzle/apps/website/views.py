@@ -22,5 +22,5 @@ class SiteAPI(View):
         serializer = WebsiteSerializer(website, data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse({})
-        return JsonResponse({}, status=400)
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
