@@ -8,6 +8,13 @@ export const routes = {
   login: '/puzzle/login',
 }
 
+import(
+  /* webpackChunkName: 'modal' */
+  'vue-js-modal'
+).then(_ => {
+  Vue.use(_.default)
+})
+
 Vue.prototype.$api = Api
 Vue.prototype.$routes = routes
 /**
