@@ -112,12 +112,16 @@ export default {
     },
 
     updateBlocks(state, blocks) {
-      const parent = blocks[0].parent
-      const notParent = state.blocks.filter(b => b.parent !== parent)
-      state.blocks = [
-        ...notParent,
-        ...blocks.map((b, i) => ({ ...b, index: i })),
-      ]
+      if (blocks.length > 0) {
+        const parent = blocks[0].parent
+        const notParent = state.blocks.filter(b => b.parent !== parent)
+        state.blocks = [
+          ...notParent,
+          ...blocks.map((b, i) => ({ ...b, index: i })),
+        ]
+      } else {
+        state.blocks = []
+      }
     },
   },
 }
