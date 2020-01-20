@@ -5,7 +5,7 @@
     <Workspace>
       <Draggable v-model="blocks" group="blocks" :clone="onClone" @end="onEnd">
         <div
-          v-for="(block, index) in blocks"
+          v-for="(block, index) in pageBlocks"
           class="model-block"
           :key="`default_block_${index}`"
         >
@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import PageStore from '@/store/page'
 import Block from 'components/block'
 import { BlockEditorMixin } from 'components/mixins'
 import Slug from 'slug'
@@ -113,14 +114,70 @@ export default {
   data() {
     return {
       activeTab: 'Blocks',
-      blocks: [],
       defaultBlocks,
-      description: '',
-      image: '',
-      name: '',
-      slug: '',
-      style: {},
     }
+  },
+
+  computed: {
+    pageBlocks: {
+      get() {
+        return this.$store.state.page.blocks
+      },
+
+      set(value) {
+        this.$store.commit('page/setBlocks', value)
+      },
+    },
+
+    description: {
+      get() {
+        return this.$store.state.page.description
+      },
+
+      set(value) {
+        this.$store.commit('page/setDescription', value)
+      },
+    },
+
+    image: {
+      get() {
+        return this.$store.state.page.image
+      },
+
+      set(value) {
+        this.$store.commit('page/setImage', value)
+      },
+    },
+
+    name: {
+      get() {
+        return this.$store.state.page.name
+      },
+
+      set(value) {
+        this.$store.commit('page/setName', value)
+      },
+    },
+
+    slug: {
+      get() {
+        return this.$store.state.page.slug
+      },
+
+      set(value) {
+        this.$store.commit('page/setSlug', value)
+      },
+    },
+
+    style: {
+      get() {
+        return this.$store.state.page.syle
+      },
+
+      set(value) {
+        this.$store.commit('page/setStyle', value)
+      },
+    },
   },
 
   methods: {
@@ -187,26 +244,18 @@ export default {
   },
 
   beforeDestroy() {
-    // this.$store.unregisterModule('page')
+    this.$store.unregisterModule('page')
   },
 
-  mounted() {
-    // this.$store.registerModule('page', PageStore).then(() => {
-    //   console.log('PageStore registered')
-    // })
+  created() {
+    this.$store.registerModule('page', PageStore)
+  },
 
+  beforeMount() {
     if (this.id > 0) {
-      this.$api.pages
-        .get({ id: this.id })
-        .then(data => {
-          this.blocks = data.data.blocks
-          this.description = data.description
-          this.name = data.name
-          this.slug = data.slug
-        })
-        .catch(() => {
-          window.location = '/puzzle/admin/pages'
-        })
+      this.$store.dispatch('page/fetchPageById', this.id).catch(() => {
+        window.location = '/puzzle/admin/pages'
+      })
     }
   },
 }
