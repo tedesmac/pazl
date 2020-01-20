@@ -6,68 +6,12 @@ export default {
   state: () => ({
     blocks: [],
     description: '',
+    edit: false,
     image: '',
     name: '',
     slug: '',
     style: {},
   }),
-
-  mutations: {
-    removeBlock(state, block) {
-      state.blocks = state.blocks.filter(pageBlock => {
-        if (pageBlock.id !== block.id) {
-          return pageBlock
-        }
-      })
-    },
-
-    setBlock(state, block) {
-      const index = state.blocks.findIndex(b => b.id === block.id)
-
-      if (index) {
-        state.blocks[index] = { ...state.blocks[index], ...block }
-      } else {
-        state.blocks = [...state.blocks, block]
-      }
-    },
-
-    setBlocks(state, blocks) {
-      state.blocks = blocks
-    },
-
-    setDescription(state, description) {
-      state.description = description
-    },
-
-    setImage(state, image) {
-      state.image = image
-    },
-
-    setName(state, name) {
-      state.name = name
-    },
-
-    setSlug(state, slug) {
-      state.slug = slug
-    },
-
-    setStyle(state, style) {
-      state.style = style
-    },
-
-    updateBlocks(state, blocks) {
-      let newBlocks = []
-      blocks.forEach(block => {
-        const index = state.blocks.findIndex(b => b.id === block.id)
-        if (index > -1) {
-          state.blocks[index] = { ...state.blocks[index], ...block }
-        } else {
-          newBlocks = [...newBlocks, block]
-        }
-      })
-      state.blocks = [...state.blocks, ...newBlocks]
-    },
-  },
 
   actions: {
     fetchPageById(context, id) {
@@ -103,6 +47,77 @@ export default {
           console.log('[pageStore.fetchPageById] =>', error)
           return Promise.reject(error.response.data)
         })
+    },
+  },
+
+  getters: {
+    getBlock: state => id => {
+      const index = state.blocks.findIndex(b => b.id === id)
+      if (index > 0) {
+        return state.blocks[index]
+      }
+      return {}
+    },
+
+    getChildren: state => id =>
+      state.blocks
+        .filter(block => block.parent === id)
+        .sort((a, b) => {
+          if (a.index < b.index) {
+            return -1
+          }
+          if (a.index > b.index) {
+            return 1
+          }
+          return 0
+        }),
+  },
+
+  mutations: {
+    setBlock(state, block) {
+      state.blocks = state.blocks.map(pageBlock => {
+        if (pageBlock.id === block.id) {
+          return { ...pageBlock, ...block }
+        }
+        return pageBlock
+      })
+    },
+
+    setBlocks(state, blocks) {
+      state.blocks = blocks
+    },
+
+    setDescription(state, description) {
+      state.description = description
+    },
+
+    setEdit(state, edit) {
+      state.edit = edit
+    },
+
+    setImage(state, image) {
+      state.image = image
+    },
+
+    setName(state, name) {
+      state.name = name
+    },
+
+    setSlug(state, slug) {
+      state.slug = slug
+    },
+
+    setStyle(state, style) {
+      state.style = style
+    },
+
+    updateBlocks(state, blocks) {
+      const parent = blocks[0].parent
+      const notParent = state.blocks.filter(b => b.parent !== parent)
+      state.blocks = [
+        ...notParent,
+        ...blocks.map((b, i) => ({ ...b, index: i })),
+      ]
     },
   },
 }
