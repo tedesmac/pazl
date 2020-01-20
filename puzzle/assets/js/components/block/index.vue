@@ -1,6 +1,6 @@
 <template>
   <div>
-    Block
+    {{ type }}
   </div>
 </template>
 
@@ -34,20 +34,28 @@ export default {
   components: { HtmlBlock, ImageBlock, LinkBlock, MarkdownBlock, StringBlock },
 
   props: {
-    data: {
-      type: Object,
-      default: () => ({}),
+    index: {
+      type: Number,
+      required: true,
     },
 
-    edit: {
-      type: Boolean,
-      default: true,
+    parent: {
+      type: String,
+      required: true,
     },
 
     type: {
       type: String,
       required: true,
     },
+  },
+
+  created() {
+    this.$store.commit('page/setBlock', {
+      id: this.$attrs.block,
+      index: this.index,
+      parent: this.parent,
+    })
   },
 }
 </script>
