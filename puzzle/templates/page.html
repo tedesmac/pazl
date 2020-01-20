@@ -7,9 +7,9 @@
 {% endblock extra_css %}
 
 {% block extra_js %}
-  {% render_bundle 'page' %}
+  {% render_bundle 'app' %}
 {% endblock extra_js %}
 
 {% block content %}
-  {% include "puzzle.html" with id="page" %}
+  {% include "puzzle.html" with id="app" %}
 {% endblock content %}

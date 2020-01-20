@@ -27,7 +27,7 @@ export default {
   mixins: [AdminListingMixin],
 
   computed: mapState({
-    models: state => state.models,
+    models: state => state.admin.models,
   }),
 
   methods: {

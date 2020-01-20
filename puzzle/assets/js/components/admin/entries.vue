@@ -24,7 +24,7 @@ export default {
   computed: mapState({
     modelName: state => {
       const modelId = Number(state.route.params.model)
-      return state.models.reduce((_, model) => {
+      return state.admin.models.reduce((_, model) => {
         if (model.id === modelId) {
           console.log('here')
           return model.name

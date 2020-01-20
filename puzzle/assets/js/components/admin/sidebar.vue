@@ -15,7 +15,7 @@
       <router-link
         v-for="(model, index) in models"
         :key="`model_${model.name}`"
-        :to="{ name: 'entries', params: { model: model.id } }"
+        :to="{ name: 'adminEntries', params: { model: model.id } }"
       >
         {{ model.name }}
       </router-link>
@@ -23,14 +23,14 @@
 
     <div class="sidebar__section">
       <label>Media</label>
-      <router-link :to="{ name: 'images' }">Images</router-link>
+      <router-link :to="{ name: 'adminImages' }">Images</router-link>
     </div>
 
     <div class="sidebar__section">
       <label>Site</label>
-      <router-link :to="{ name: 'blocks' }">Blocks</router-link>
-      <router-link :to="{ name: 'models' }">Models</router-link>
-      <router-link :to="{ name: 'pages' }">Pages</router-link>
+      <router-link :to="{ name: 'adminBlocks' }">Blocks</router-link>
+      <router-link :to="{ name: 'adminModels' }">Models</router-link>
+      <router-link :to="{ name: 'adminPages' }">Pages</router-link>
     </div>
 
     <div class="sidebar__section">
@@ -47,7 +47,7 @@ import { mapState } from 'vuex'
 
 export default {
   computed: mapState({
-    models: state => state.models,
+    models: state => state.admin.models,
   }),
 }
 </script>

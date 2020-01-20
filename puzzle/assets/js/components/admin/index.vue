@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import AdminStore from '@/store/admin'
 import Sidebar from './sidebar'
 
 export default {
@@ -15,15 +16,23 @@ export default {
 
   methods: {
     fetchModels() {
-      this.$store.dispatch('fetchModels')
+      this.$store.dispatch('admin/fetchModels')
     },
 
     fetchSite() {
-      this.$store.dispatch('fetchSite')
+      this.$store.dispatch('admin/fetchSite')
     },
   },
 
-  mounted() {
+  beforeDestroy() {
+    this.$store.unregisterModule('admin')
+  },
+
+  created() {
+    this.$store.registerModule('admin', AdminStore)
+  },
+
+  beforeMount() {
     this.fetchModels()
     this.fetchSite()
   },

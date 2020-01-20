@@ -8,10 +8,7 @@ module.exports = [
   {
     target: 'web',
     entry: {
-      admin: path.resolve(__dirname, 'puzzle/assets/js/admin'),
-      editor: path.resolve(__dirname, 'puzzle/assets/js/editor'),
-      login: path.resolve(__dirname, 'puzzle/assets/js/login'),
-      page: path.resolve(__dirname, 'puzzle/assets/js/page'),
+      app: path.resolve(__dirname, 'puzzle/assets/js'),
     },
     output: {
       chunkFilename: '[name].bundle.js',
@@ -21,6 +18,7 @@ module.exports = [
     },
     resolve: {
       alias: {
+        '@': path.resolve(__dirname, 'puzzle/assets/js'),
         api: path.resolve(__dirname, 'puzzle/assets/js/api'),
         components: path.resolve(__dirname, 'puzzle/assets/js/components'),
         utils: path.resolve(__dirname, 'puzzle/assets/js/utils'),

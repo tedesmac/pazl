@@ -14,7 +14,13 @@
     </div>
 
     <div class="section is-vertical">
-      <Draggable />
+      <Entry
+        v-for="(page, index) in pages"
+        :editUrl="`/puzzle/editor/page?id=${page.id}`"
+        :index="index"
+        :key="`tree_page_${page.id}`"
+        :name="page.name"
+      />
     </div>
 
     <div class="section"></div>
@@ -54,7 +60,7 @@ export default {
   computed: {
     homePage() {
       const state = this.$store.state
-      const id = state.site.home_page
+      const id = this.site.home_page
       if (id) {
         return this.pages.reduce((acc, page) => {
           if (id === page.id) {
@@ -67,7 +73,7 @@ export default {
     },
 
     ...mapState({
-      site: state => state.site,
+      site: state => state.admin.site,
     }),
   },
 
@@ -86,7 +92,7 @@ export default {
         .put({ ...this.site, home_page: id })
         .then(response => {
           const site = response.data
-          this.$store.commit('setSite', site)
+          this.$store.commit('admin/setSite', site)
         })
         .catch(error => {
           // alert(error)

@@ -2,6 +2,18 @@
   <Editor>
     <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave" />
 
+    <Workspace>
+      <Draggable v-model="blocks" group="blocks" :clone="onClone" @end="onEnd">
+        <div
+          v-for="(block, index) in blocks"
+          class="model-block"
+          :key="`default_block_${index}`"
+        >
+          {{ block.type }}
+        </div>
+      </Draggable>
+    </Workspace>
+
     <Sidebar>
       <div class="tab-list">
         <div
@@ -30,9 +42,27 @@
         </div>
       </div>
 
-      <div v-if="activeTab === 'Blocks'">Blocks</div>
+      <!-- Blocks -->
+      <div v-if="activeTab === 'Blocks'">
+        <Draggable
+          v-model="defaultBlocks"
+          :clone="onClone"
+          :group="{ name: 'blocks', pull: 'clone', put: false }"
+        >
+          <div
+            v-for="(block, index) in defaultBlocks"
+            class="model-block"
+            :key="`default_block_${index}`"
+          >
+            {{ block.type }}
+          </div>
+        </Draggable>
+      </div>
+
+      <!-- Block Settings -->
       <div v-if="activeTab === 'Block'">Block</div>
 
+      <!-- Page Settings -->
       <div v-if="activeTab === 'Page'">
         <Collapsible class="form" string="Settings">
           <div class="field">
@@ -56,8 +86,6 @@
         <Collapsible string="Style" />
       </div>
     </Sidebar>
-
-    <Workspace></Workspace>
 
     <Error :message="errorMessage" :show="error" @close="error = false" />
   </Editor>
@@ -96,6 +124,10 @@ export default {
   },
 
   methods: {
+    onClone(block) {
+      return block
+    },
+
     onSave() {
       this.saving = true
 
@@ -113,7 +145,7 @@ export default {
       if (this.slug) {
         data['slug'] = this.slug
       } else {
-        data['slug'] = Slug(this.name)
+        data['slug'] = Slug(this.name.toLowerCase())
       }
 
       if (this.id === 0) {
@@ -154,7 +186,15 @@ export default {
     },
   },
 
+  beforeDestroy() {
+    // this.$store.unregisterModule('page')
+  },
+
   mounted() {
+    // this.$store.registerModule('page', PageStore).then(() => {
+    //   console.log('PageStore registered')
+    // })
+
     if (this.id > 0) {
       this.$api.pages
         .get({ id: this.id })
