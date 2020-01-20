@@ -3,14 +3,16 @@
     <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave" />
 
     <Workspace>
-      <Draggable v-model="blocks" group="blocks" :clone="onClone" @end="onEnd">
-        <div
+      <Draggable v-model="pageBlocks" group="blocks" @end="onEnd">
+        <Block
           v-for="(block, index) in pageBlocks"
           class="model-block"
-          :key="`default_block_${index}`"
-        >
-          {{ block.type }}
-        </div>
+          parent="root"
+          :block="block.id"
+          :index="index"
+          :key="block.id"
+          :type="block.type"
+        />
       </Draggable>
     </Workspace>
 
@@ -96,6 +98,7 @@ import PageStore from '@/store/page'
 import Block from 'components/block'
 import { BlockEditorMixin } from 'components/mixins'
 import Slug from 'slug'
+import { genId } from 'utils'
 
 const defaultBlocks = [
   { type: 'container' },
@@ -121,11 +124,11 @@ export default {
   computed: {
     pageBlocks: {
       get() {
-        return this.$store.state.page.blocks
+        return this.$store.getters['page/getChildren']('root')
       },
 
       set(value) {
-        this.$store.commit('page/setBlocks', value)
+        this.$store.commit('page/updateBlocks', value)
       },
     },
 
@@ -182,7 +185,11 @@ export default {
 
   methods: {
     onClone(block) {
-      return block
+      return {
+        ...block,
+        id: genId(),
+        parent: 'root',
+      }
     },
 
     onSave() {
@@ -241,6 +248,16 @@ export default {
           this.errorMessage = 'Unable to save, please try again later'
         })
     },
+
+    removeBlock(id) {
+      this.pageBlocks = this.pageBlocks.filter((block, index) => {
+        if (block.id && block.id !== id) {
+          return block
+        } else if (!block.id && index !== Number(id)) {
+          return block
+        }
+      })
+    },
   },
 
   beforeDestroy() {
@@ -257,6 +274,7 @@ export default {
         window.location = '/puzzle/admin/pages'
       })
     }
+    this.$store.commit('page/setEdit', true)
   },
 }
 </script>
