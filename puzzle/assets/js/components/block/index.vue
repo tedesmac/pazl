@@ -1,37 +1,68 @@
 <template>
-  <div>
-    {{ type }}
-  </div>
+  <component
+    :class="{ block: edit }"
+    :block="this.id"
+    :is="selectedComponent"
+  />
 </template>
 
 <script>
-const ContainerBlock = import(
-  /* webpackChunkName: 'containerBlock' */
-  'components/block/container'
-)
-const HtmlBlock = import(
-  /* webpackChunkName: 'htmlBlock' */
-  'components/block/html'
-)
-const ImageBlock = import(
-  /* webpackChunkName: 'imageBlock' */
-  'components/block/image'
-)
-const LinkBlock = import(
-  /* webpackChunkName: 'linkBlock' */
-  'components/block/link'
-)
-const MarkdownBlock = import(
-  /* webpackChunkName: 'markdownBlock' */
-  'components/block/markdown'
-)
-const StringBlock = import(
-  /* webpackChunkName: 'stringBlock' */
-  'components/block/string'
-)
+import { mapState } from 'vuex'
+
+const containerBlock = () =>
+  import(
+    /* webpackChunkName: 'containerBlock' */
+    'components/block/container'
+  )
+const htmlBlock = () =>
+  import(
+    /* webpackChunkName: 'htmlBlock' */
+    'components/block/html'
+  )
+const imageBlock = () =>
+  import(
+    /* webpackChunkName: 'imageBlock' */
+    'components/block/image'
+  )
+const linkBlock = () =>
+  import(
+    /* webpackChunkName: 'linkBlock' */
+    'components/block/link'
+  )
+const markdownBlock = () =>
+  import(
+    /* webpackChunkName: 'markdownBlock' */
+    'components/block/markdown'
+  )
+const stringBlock = () =>
+  import(
+    /* webpackChunkName: 'stringBlock' */
+    'components/block/string'
+  )
 
 export default {
-  components: { HtmlBlock, ImageBlock, LinkBlock, MarkdownBlock, StringBlock },
+  components: {
+    containerBlock,
+    htmlBlock,
+    imageBlock,
+    linkBlock,
+    markdownBlock,
+    stringBlock,
+  },
+
+  data() {
+    return { selectedComponent: `${this.type}Block` }
+  },
+
+  computed: {
+    id() {
+      return this.$attrs.block
+    },
+
+    ...mapState({
+      edit: state => state.page.edit,
+    }),
+  },
 
   props: {
     index: {
@@ -52,7 +83,7 @@ export default {
 
   created() {
     this.$store.commit('page/setBlock', {
-      id: this.$attrs.block,
+      id: this.id,
       index: this.index,
       parent: this.parent,
     })
