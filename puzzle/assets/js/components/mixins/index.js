@@ -6,9 +6,77 @@ import Sidebar from 'components/editor/sidebar'
 import Topbar from 'components/editor/topbar'
 import Workspace from 'components/editor/workspace'
 import Draggable from 'vuedraggable'
+import { mapState } from 'vuex'
 
 export const AdminListingMixin = {
   components: { Entry },
+}
+
+export const BlockMixin = {
+  computed: {
+    blockIndex() {
+      return this.$store.state.page.blocks.findIndex(b => b.id === this.id)
+    },
+
+    data: {
+      get() {
+        return this.$store.state.page.blocks[this.blockIndex].data
+      },
+
+      set(value) {
+        this.$store.commit('page/setBlock', {
+          id: this.id,
+          data: value,
+        })
+      },
+    },
+
+    id() {
+      return this.$attrs.block
+    },
+
+    options: {
+      get() {
+        return this.$store.state.page.blocks[this.blockIndex].options
+      },
+
+      set(value) {
+        this.$store.commit('page/setBlock', {
+          id: this.id,
+          options: value,
+        })
+      },
+    },
+
+    style: {
+      get() {
+        return this.$store.state.page.blocks[this.blockIndex].style
+      },
+
+      set(value) {
+        this.$store.commit('page/setBlock', {
+          id: this.id,
+          style: value,
+        })
+      },
+    },
+
+    ...mapState({
+      edit: state => state.page.edit,
+    }),
+  },
+
+  beforeMount() {
+    if (this.data === undefined) {
+      this.data = null
+    }
+    if (this.options === undefined) {
+      this.options = {}
+    }
+    if (this.style === undefined) {
+      this.style = {}
+    }
+  },
 }
 
 export const BlockEditorMixin = {
