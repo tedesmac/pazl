@@ -35,6 +35,28 @@ p {
   }
 }
 
+.__puzzle_block {
+  flex-grow: 1;
+}
+
+.__puzzle_horizontal {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.__puzzle_page {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.__puzzle_vertical {
+  display: flex;
+  flex-direction: column;
+}
+
 .__404 {
   align-items: center;
   background: $light-blue;
