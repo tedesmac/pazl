@@ -72,6 +72,20 @@ body {
   width: 100vw;
 }
 
+.entry-block {
+  margin-bottom: 1em;
+
+  label {
+    font-size: 0.8em;
+  }
+}
+
+.entry-workspace {
+  .workspace-area {
+    background: $white-ter;
+  }
+}
+
 .error {
   background: $red;
   border-radius: 5px;

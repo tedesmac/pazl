@@ -160,6 +160,10 @@ const routes = [
   {
     component: EntryEditor,
     path: '/puzzle/editor/entry',
+    props: route => ({
+      id: Number(route.query.id) || 0,
+      modelId: Number(route.query.model) || 0,
+    }),
   },
   {
     component: ModelEditor,
