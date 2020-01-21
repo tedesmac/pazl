@@ -3,10 +3,14 @@
     <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave" />
 
     <Workspace>
-      <Draggable v-model="pageBlocks" group="blocks" @end="onEnd">
+      <Draggable
+        v-model="pageBlocks"
+        group="blocks"
+        :class="{ 'block-container': edit, __puzzle_page: !edit }"
+        @end="onEnd"
+      >
         <Block
           v-for="(block, index) in pageBlocks"
-          class="model-block"
           parent="root"
           :block="block.id"
           :index="index"
@@ -99,6 +103,7 @@ import Block from 'components/block'
 import { BlockEditorMixin } from 'components/mixins'
 import Slug from 'slug'
 import { genId } from 'utils'
+import { mapState } from 'vuex'
 
 const defaultBlocks = [
   { type: 'container' },
@@ -128,7 +133,10 @@ export default {
       },
 
       set(value) {
-        this.$store.commit('page/updateBlocks', value)
+        this.$store.commit('page/updateBlocks', {
+          blocks: value.map(b => ({ ...b, parent: 'root' })),
+          parent: 'root',
+        })
       },
     },
 
@@ -181,6 +189,10 @@ export default {
         this.$store.commit('page/setStyle', value)
       },
     },
+
+    ...mapState({
+      edit: state => state.page.edit,
+    }),
   },
 
   methods: {
