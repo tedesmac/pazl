@@ -1,6 +1,6 @@
 <template>
   <component
-    :class="{ block: edit }"
+    :class="['__puzzle_block', { block: edit }]"
     :block="this.id"
     :is="selectedComponent"
   />
