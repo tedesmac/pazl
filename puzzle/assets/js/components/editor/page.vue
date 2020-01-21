@@ -31,13 +31,6 @@
 
         <div class="separator" />
 
-        <div
-          :class="['tab', { active: activeTab === 'Block' }]"
-          @click="activeTab = 'Block'"
-        >
-          Block
-        </div>
-
         <div class="separator" />
 
         <div
@@ -64,9 +57,6 @@
           </div>
         </Draggable>
       </div>
-
-      <!-- Block Settings -->
-      <div v-if="activeTab === 'Block'">Block</div>
 
       <!-- Page Settings -->
       <div v-if="activeTab === 'Page'">
