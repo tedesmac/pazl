@@ -127,6 +127,28 @@ export const BlockContainerMixin = {
   },
 }
 
+export const EditorMixin = {
+  components: {
+    Collapsible,
+    Editor,
+    Sidebar,
+    Topbar,
+    Workspace,
+  },
+
+  data() {
+    return {
+      saving: false,
+    }
+  },
+
+  props: {
+    id: {
+      type: Number,
+    },
+  },
+}
+
 export const BlockEditorMixin = {
   components: {
     Collapsible,
