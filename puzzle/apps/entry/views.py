@@ -1,3 +1,17 @@
-from django.shortcuts import render
+from puzzle.utils.views import DetailAPIView, ListAPIView
+from puzzle.apps.entry.models import Entry
+from puzzle.apps.entry.serializers import EntrySerializer
 
-# Create your views here.
+
+class EntryDetailAPI(DetailAPIView):
+
+    class Meta:
+        model = Entry
+        serializer = EntrySerializer
+
+
+class EntryListAPI(ListAPIView):
+
+    class Meta:
+        model = Entry
+        serializer = EntrySerializer
