@@ -35,6 +35,11 @@ const AdminPages = () =>
     /* webpackChunkName: 'adminPages' */
     'components/admin/pages'
   )
+const AdminUpload = () =>
+  import(
+    /* webpackChunkName: 'adminUpload' */
+    'components/admin/upload'
+  )
 const SettingsProfile = () =>
   import(
     /* webpackChunkName: 'adminSettingsProfile' */
@@ -149,6 +154,11 @@ const routes = [
         component: SettingsUsers,
         path: 'settings/users',
         name: 'settingsUsers',
+      },
+      {
+        component: AdminUpload,
+        path: 'upload',
+        name: 'upload',
       },
     ],
   },
