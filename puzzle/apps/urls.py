@@ -2,6 +2,7 @@ from django.urls import include, path, re_path
 import puzzle.apps.admin.views as admin_views
 import puzzle.apps.editor.views as editor_views
 import puzzle.apps.entry.views as entry_views
+import puzzle.apps.file.views as file_views
 import puzzle.apps.model.views as model_views
 import puzzle.apps.page.views as page_views
 import puzzle.apps.website.views as site_views
@@ -9,6 +10,7 @@ import puzzle.apps.website.views as site_views
 api_urlpatterns = [
     path('entries/', entry_views.EntryListAPI.as_view()),
     path('entries/<int:id>/', entry_views.EntryDetailAPI.as_view()),
+    path('images/', file_views.ImageListAPI.as_view()),
     path('models/', model_views.ModelListAPI.as_view()),
     path('models/<int:id>/', model_views.ModelDetailAPI.as_view()),
     path('pages/', page_views.PageListAPI.as_view()),
