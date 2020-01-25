@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'puzzle.apps.block',
     'puzzle.apps.editor',
     'puzzle.apps.entry',
+    'puzzle.apps.file',
     'puzzle.apps.model',
     'puzzle.apps.page',
     'puzzle.apps.user',
