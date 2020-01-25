@@ -39,6 +39,7 @@
   "scripts": {
     "build": "webpack -p",
     "dev": "webpack -d",
+    "test": "jest",
     "watch": "webpack --watch"
   }
 }
