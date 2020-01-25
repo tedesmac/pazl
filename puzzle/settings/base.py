@@ -156,6 +156,11 @@ MEDIA_URL = '/puzzle/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+# Storage
+
+DEFAULT_FILE_STORAGE = 'puzzle.utils.storage.PuzzleStorage'
+
+
 # User
 
 AUTH_USER_MODEL = 'user.User'
