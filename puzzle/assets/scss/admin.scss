@@ -112,3 +112,22 @@
 .subsection {
   margin: 1em;
 }
+
+.upload-area {
+  align-items: center;
+  border: dashed $blue-grey;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  min-height: 12em;
+}
+
+.upload-area-active {
+  @extend .upload-area;
+  background: $blue-grey;
+  color: $white-ter;
+  font-weight: bolder;
+}
+
+.uploader {
+}
