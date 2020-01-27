@@ -98,6 +98,8 @@ const token = {
 export default {
   blocks: apiFactory('blocks/'),
   entries: apiFactory('entries/'),
+  files: apiFactory('files/'),
+  images: apiFactory('images/'),
   models: apiFactory('models/'),
   pages: apiFactory('pages/'),
   users: apiFactory('users/'),
