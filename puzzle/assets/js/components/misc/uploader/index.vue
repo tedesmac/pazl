@@ -1,7 +1,12 @@
 <template>
-  <div v-if="status === 'uploading'" class="uploader is-vertical">
-    <p>Uploading</p>
-    <div class="progress-bar"></div>
+  <div
+    v-if="status === 'uploading'"
+    class="uploader is-vertical justify-center"
+  >
+    <p>Uploading...</p>
+    <div class="progress-bar">
+      <div class="progress" :style="progressWidth" />
+    </div>
   </div>
 
   <div v-else-if="status === 'invalid'" class="uploader">
@@ -86,7 +91,7 @@ export default {
 
   methods: {
     onUploadProgress(event) {
-      this.progress = ((event.loaded / event.total) * 100).toFixed(100)
+      this.progress = (event.loaded / event.total) * 100
     },
 
     upload() {
@@ -96,7 +101,7 @@ export default {
         this.uploadAudio(formData)
       } else if (this.type === 'file') {
         this.uploadFile(formData)
-      } else if (this.file === 'image') {
+      } else if (this.type === 'image') {
         this.uploadImage(formData)
       }
     },
