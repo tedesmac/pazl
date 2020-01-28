@@ -19,7 +19,7 @@
 
   <div v-else class="uploader is-horizontal space-around">
     <div class="preview is-a-third" :style="style">
-      <FontAwesomeIcon v-if="isImage" class="icon" :icon="icon" />
+      <FontAwesomeIcon v-if="!isImage" class="icon" :icon="icon" />
     </div>
 
     <div class="form is-two-thirds">
@@ -83,7 +83,7 @@ export default {
     style() {
       let style = {}
       if (this.isImage) {
-        style['background-image'] = `url(${this.url})`
+        style['background-image'] = `url(${this.image})`
       }
       return style
     },
@@ -91,6 +91,7 @@ export default {
 
   methods: {
     onUploadProgress(event) {
+      console.log(event)
       this.progress = (event.loaded / event.total) * 100
     },
 
@@ -137,12 +138,13 @@ export default {
           onUploadProgress: this.onUploadProgress,
         })
         .then(data => {
+          console.log(data)
           this.image = data.url
           this.name = data.name
-          this.state = 'done'
+          this.status = 'done'
         })
         .catch(() => {
-          this.state = 'error'
+          this.status = 'error'
         })
     },
   },
@@ -156,10 +158,10 @@ export default {
     } else if (isImage(type)) {
       this.type = 'image'
     } else {
-      this.state = 'invalid'
+      this.status = 'invalid'
     }
 
-    if (this.state !== 'invalid') {
+    if (this.status !== 'invalid') {
       this.upload()
     }
   },
