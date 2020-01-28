@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.urls import include, path, re_path
+from django.views.static import serve
 import puzzle.apps.admin.views as admin_views
 import puzzle.apps.editor.views as editor_views
 import puzzle.apps.entry.views as entry_views
@@ -24,6 +26,9 @@ urlpatterns = [
     re_path('^puzzle/admin/(.*)?$', admin_views.admin, name='admin'),
     path('puzzle/api/', include(api_urlpatterns)),
     re_path('^puzzle/editor/(.*)?$', editor_views.editor, name='editor'),
+    re_path(r'^puzzle/media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
     path('puzzle/login/', admin_views.Login.as_view(), name='login'),
     path('puzzle/logout/', admin_views.Logout.as_view(), name='logout'),
     path('', page_views.home, name='home'),
