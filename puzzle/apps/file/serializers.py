@@ -1,9 +1,10 @@
 from puzzle.apps.file.models import Image
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 
-class ImageSerializer(ModelSerializer):
+class ImageSerializer(serializers.ModelSerializer):
+    url = serializers.URLField(read_only=True)
 
     class Meta:
-        fields = ['id', 'image', 'name']
+        fields = ['id', 'name', 'url']
         model = Image
