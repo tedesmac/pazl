@@ -1,5 +1,10 @@
 @import 'colors';
 
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
 .container {
   align-items: center;
   display: flex;
@@ -41,6 +46,11 @@
 }
 
 .space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.space-between {
   display: flex;
   justify-content: space-between;
 }

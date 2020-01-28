@@ -130,4 +130,36 @@
 }
 
 .uploader {
+  align-items: center;
+  display: flex;
+  height: 12em;
+
+  .icon {
+    color: $black-ter;
+    font-size: 6em;
+  }
+
+  .preview {
+    align-items: center;
+    border: 2px solid $black-ter;
+    border-radius: 5px;
+    display: flex;
+    height: 10em;
+    justify-content: center;
+    width: 10em;
+  }
+
+  .progress {
+    background: $blue-grey;
+    height: 100%;
+  }
+
+  .progress-bar {
+    border: 1px solid $blue-grey;
+    border-radius: 5px;
+    height: 2em;
+    margin-top: 1.5em;
+    overflow: hidden;
+    width: 95%;
+  }
 }
