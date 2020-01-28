@@ -1,27 +1,15 @@
-from django.core.files import File, ImageFile
-from django.core.files.storage import Storage
-from django.utils.deconstruc import deconstructible
-from os import path
-from uuid import uuid4
+from django.core.files.storage import FileSystemStorage
+from django.utils.deconstruct import deconstructible
 
 
 @deconstructible
-class PuzzleStorage(Storage):
+class PuzzleStorage(FileSystemStorage):
 
-    def _open(self, name, mode='rb'):
-        print('[Sotrage._open] => {}'.format(name))
-        with open(name, mode) as file:
-            root, ext = path.splitext(name)
-            if ext in ['.jpeg', '.jpg', '.png', '.svg']:
-                return ImageFile(file)
-            return File(file)
+    def get_available_name(self, name, max_length=None):
+        return name
 
-    def _save(self, content):
-        root, ext = path.splitext(name)
-        head, tail = path.split(root)
-        filename = '{}{}'.format(uuid4(), ext.lower())
-        print('[Srtorage._save] => {}'.format(filename))
-        return path.join(head, filename)
+    def get_valid_name(self, name):
+        return name
 
-    def url(self, name):
-        return '{}{}'.format(settings.MEDIA_URL, name)
+    def _save(self, name, content):
+        return name
