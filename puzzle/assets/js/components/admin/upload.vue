@@ -13,7 +13,7 @@
     </div>
 
     <div v-for="(file, index) in files" class="section" :key="`file_${index}`">
-      <Uploader :file="file"
+      <Uploader :file="file" />
     </div>
   </div>
 </template>
