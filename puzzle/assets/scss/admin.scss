@@ -141,6 +141,9 @@
 
   .preview {
     align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     border: 2px solid $black-ter;
     border-radius: 5px;
     display: flex;
