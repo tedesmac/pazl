@@ -1,6 +1,10 @@
 <template>
   <Editor>
-    <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave" />
+    <Topbar
+      backUrl="/puzzle/admin/pages"
+      :saving="saving"
+      @save="onSave"
+    ></Topbar>
 
     <Workspace>
       <Draggable
