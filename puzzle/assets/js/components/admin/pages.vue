@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="section is-horizontal space-around">
+    <div class="section is-horizontal space-between">
       <h2>Pages</h2>
 
       <button class="is-cyan" @click="onNew">New</button>
     </div>
 
-    <div class="section is-horizontal space-around">
+    <div class="section is-horizontal space-between">
       <button @click="onOpenSelectPage">Select Home Page</button>
 
       <p v-if="homePage !== null">{{ homePage }}</p>

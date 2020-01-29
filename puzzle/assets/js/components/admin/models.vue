@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="section is-horizontal space-around">
+    <div class="section is-horizontal space-between">
       <h2>Models</h2>
 
       <button class="is-cyan" @click="onNewModel">

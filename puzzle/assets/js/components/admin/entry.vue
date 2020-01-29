@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['space-around', index % 2 === 0 ? 'entry' : 'entry-alt']"
+    :class="['space-between', index % 2 === 0 ? 'entry' : 'entry-alt']"
     :style="style"
     @click="onClick"
   >
