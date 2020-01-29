@@ -1,10 +1,8 @@
 <template>
   <Editor>
-    <Topbar
-      backUrl="/puzzle/admin/pages"
-      :saving="saving"
-      @save="onSave"
-    ></Topbar>
+    <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave">
+      <Toggle />
+    </Topbar>
 
     <Workspace>
       <Draggable
@@ -98,6 +96,7 @@ import { BlockEditorMixin } from 'components/mixins'
 import Slug from 'slug'
 import { genId } from 'utils'
 import { mapState } from 'vuex'
+import Toggle from './toggle'
 
 const defaultBlocks = [
   { type: 'container' },
@@ -111,7 +110,7 @@ const defaultBlocks = [
 export default {
   mixins: [BlockEditorMixin],
 
-  components: { Block },
+  components: { Block, Toggle },
 
   data() {
     return {

@@ -114,6 +114,35 @@ body {
   }
 }
 
+.mode-toggle {
+  align-items: center;
+  background: $grey;
+  border-radius: 25px;
+  display: flex;
+  height: 1em;
+  justify-content: center;
+  position: relative;
+  width: 8em;
+
+  .icon {
+    cursor: pointer;
+    margin: 0 0.6em;
+    z-index: 2;
+  }
+
+  .slider {
+    background: $white-ter;
+    border-radius: 50%;
+    box-shadow: 0 0 5px $grey;
+    height: 1.8em;
+    left: 0;
+    position: absolute;
+    transition: all ease 0.5s;
+    width: 1.8em;
+    z-index: 1;
+  }
+}
+
 .model-block {
   border: 1px solid $grey;
   box-shadow: 0 0 5px $grey;
