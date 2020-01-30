@@ -60,7 +60,7 @@ export default {
     },
 
     ...mapState({
-      edit: state => state.page.edit,
+      edit: state => (state.editor ? state.editor.edit : false),
     }),
   },
 

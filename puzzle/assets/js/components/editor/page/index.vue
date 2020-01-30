@@ -92,12 +92,13 @@
     <notifications
       group="errors"
       position="bottom right"
-      :classes="['vue-notification', 'error']"
+      classes="vue-notification error"
     />
   </Editor>
 </template>
 
 <script>
+import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 import Block from 'components/block'
 import { BlockEditorMixin } from 'components/mixins'
@@ -192,7 +193,7 @@ export default {
     },
 
     ...mapState({
-      edit: state => state.page.edit,
+      edit: state => state.editor.edit,
     }),
   },
 
@@ -290,10 +291,12 @@ export default {
   },
 
   beforeDestroy() {
+    this.$store.unregisterModule('editor')
     this.$store.unregisterModule('page')
   },
 
   created() {
+    this.$store.registerModule('editor', EditorStore)
     this.$store.registerModule('page', PageStore)
   },
 
@@ -303,7 +306,6 @@ export default {
         window.location = '/puzzle/admin/pages'
       })
     }
-    this.$store.commit('page/setEdit', true)
   },
 }
 </script>
