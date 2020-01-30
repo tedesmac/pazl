@@ -87,6 +87,10 @@
 
     <modal name="block-settings" />
 
+    <modal name="image-select" @before-open="beforeImageGallery">
+      <ImageGallery @image="onImageSelected" />
+    </modal>
+
     <notifications group="messages" position="bottom right" />
 
     <notifications
@@ -107,6 +111,12 @@ import { genId } from 'utils'
 import { mapState } from 'vuex'
 import Toggle from './toggle'
 
+const ImageGallery = () =>
+  import(
+    /* webpackChunkName: 'imageGallery' */
+    'components/misc/image-gallery'
+  )
+
 const defaultBlocks = [
   { type: 'container' },
   { type: 'image' },
@@ -119,12 +129,13 @@ const defaultBlocks = [
 export default {
   mixins: [BlockEditorMixin],
 
-  components: { Block, Toggle },
+  components: { Block, ImageGallery, Toggle },
 
   data() {
     return {
       activeTab: 'Blocks',
       defaultBlocks,
+      imageSelectedCallbak: null,
     }
   },
 
@@ -198,12 +209,24 @@ export default {
   },
 
   methods: {
+    beforeImageGallery(event) {
+      this.imageSelectedCallbak = event.params.callback
+    },
+
     onClone(block) {
       return {
         ...block,
         id: genId(),
         parent: 'root',
       }
+    },
+
+    onImageSelected(image) {
+      if (this.imageSelectedCallbak) {
+        this.imageSelectedCallbak(image)
+      }
+
+      this.$modal.hide('image-select')
     },
 
     onModeChange(mode) {
