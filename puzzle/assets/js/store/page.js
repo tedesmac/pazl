@@ -6,7 +6,6 @@ export default {
   state: () => ({
     blocks: [],
     description: '',
-    edit: false,
     image: '',
     name: '',
     slug: '',
@@ -89,10 +88,6 @@ export default {
 
     setDescription(state, description) {
       state.description = description
-    },
-
-    setEdit(state, edit) {
-      state.edit = edit
     },
 
     setImage(state, image) {
