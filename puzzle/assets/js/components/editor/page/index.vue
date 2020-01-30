@@ -1,7 +1,7 @@
 <template>
   <Editor>
     <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave">
-      <Toggle />
+      <Toggle @mode="onModeChange" />
     </Topbar>
 
     <Workspace>
@@ -85,7 +85,15 @@
       </div>
     </Sidebar>
 
-    <Error :message="errorMessage" :show="error" @close="error = false" />
+    <modal name="block-settings" />
+
+    <notifications group="messages" position="bottom right" />
+
+    <notifications
+      group="errors"
+      position="bottom right"
+      :classes="['vue-notification', 'error']"
+    />
   </Editor>
 </template>
 
@@ -197,6 +205,10 @@ export default {
       }
     },
 
+    onModeChange(mode) {
+      console.log(mode)
+    },
+
     onSave() {
       this.saving = true
 
@@ -232,11 +244,17 @@ export default {
           this.saving = false
           console.log('[saved] =>', newData)
           this.$router.push({ path: `/puzzle/editor/page?id=${newData.id}` })
+          this.$notify({
+            group: 'messages',
+            text: 'Page saved',
+          })
         })
         .catch(() => {
           this.saving = false
-          this.error = true
-          this.errorMessage = 'Unable to save, please try again later'
+          this.$notify({
+            group: 'errors',
+            text: 'Unable to save, please try again later',
+          })
         })
     },
 
@@ -246,11 +264,17 @@ export default {
         .then(newData => {
           this.saving = false
           console.log('[saved] =>', newData)
+          this.$notify({
+            group: 'messages',
+            text: 'Page saved',
+          })
         })
         .catch(() => {
           this.saving = false
-          this.error = true
-          this.errorMessage = 'Unable to save, please try again later'
+          this.$notify({
+            group: 'errors',
+            text: 'Unable to save, please try again later',
+          })
         })
     },
 
