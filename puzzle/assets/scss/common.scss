@@ -1,0 +1,19 @@
+.image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  height: 10em;
+  width: 10em;
+}
+
+.image-container {
+  padding: 1em;
+}
+
+.image-list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
