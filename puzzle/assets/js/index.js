@@ -11,7 +11,27 @@ import(
   /* webpackChunkName: 'modal' */
   'vue-js-modal'
 ).then(_ => {
-  Vue.use(_.default)
+  Vue.use(_.default, {
+    componentName: 'modal',
+  })
+})
+
+import(
+  /* webpackChunkName: 'popover' */
+  'vue-js-popover'
+).then(_ => {
+  Vue.use(_.default, {
+    componentName: 'popover',
+  })
+})
+
+import(
+  /* webpackChunkName: 'notification' */
+  'vue-notification'
+).then(_ => {
+  Vue.use(_.default, {
+    componentName: 'notifications',
+  })
 })
 
 Vue.prototype.$api = Api
