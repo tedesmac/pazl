@@ -48,6 +48,10 @@ body {
   min-height: 100%;
 }
 
+.CodeMirror-scroll {
+  padding-bottom: 0.5em !important;
+}
+
 .collapsible {
   border: 1px solid $grey;
   display: flex;
