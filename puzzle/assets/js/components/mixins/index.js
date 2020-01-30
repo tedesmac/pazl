@@ -1,7 +1,6 @@
 import Collapsible from 'components/editor/collapsible'
 import Entry from 'components/admin/entry'
 import Editor from 'components/editor'
-import Error from 'components/editor/error'
 import Sidebar from 'components/editor/sidebar'
 import Topbar from 'components/editor/topbar'
 import Workspace from 'components/editor/workspace'
@@ -154,7 +153,6 @@ export const BlockEditorMixin = {
     Collapsible,
     Draggable,
     Editor,
-    Error,
     Sidebar,
     Topbar,
     Workspace,
@@ -163,8 +161,6 @@ export const BlockEditorMixin = {
   data() {
     return {
       blocks: [],
-      error: false,
-      errorMessage: '',
       eventListener: false,
       mouseX: 0,
       saving: false,
