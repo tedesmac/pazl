@@ -36,7 +36,7 @@ p {
 }
 
 .__puzzle_block {
-  flex-grow: 1;
+  max-width: 100%;
 }
 
 .__puzzle_horizontal {
@@ -44,7 +44,12 @@ p {
   flex-wrap: wrap;
 }
 
+.__puzzle_image {
+  max-width: 100%;
+}
+
 .__puzzle_page {
+  align-items: center;
   display: flex;
   flex-direction: column;
   max-width: 100%;
