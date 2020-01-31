@@ -85,9 +85,20 @@
       </div>
     </Sidebar>
 
-    <modal name="block-settings" />
+    <modal
+      height="auto"
+      name="block-settings"
+      width="80%"
+      :scrollable="true"
+    ></modal>
 
-    <modal name="image-select" @before-open="beforeImageGallery">
+    <modal
+      height="auto"
+      name="image-select"
+      width="80%"
+      :scrollable="true"
+      @before-open="beforeImageGallery"
+    >
       <ImageGallery @image="onImageSelected" />
     </modal>
 
@@ -111,6 +122,11 @@ import { genId } from 'utils'
 import { mapState } from 'vuex'
 import Toggle from './toggle'
 
+const BlockSetting = () =>
+  import(
+    /* webpackChunkName: 'setting' */
+    'components/setting'
+  )
 const ImageGallery = () =>
   import(
     /* webpackChunkName: 'imageGallery' */
@@ -129,7 +145,7 @@ const defaultBlocks = [
 export default {
   mixins: [BlockEditorMixin],
 
-  components: { Block, ImageGallery, Toggle },
+  components: { Block, BlockSetting, ImageGallery, Toggle },
 
   data() {
     return {
@@ -230,7 +246,11 @@ export default {
     },
 
     onModeChange(mode) {
-      console.log(mode)
+      if (mode === 'edit') {
+        this.$store.commit('editor/setEdit', true)
+      } else {
+        this.$store.commit('editor/setEdit', false)
+      }
     },
 
     onSave() {
