@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import Block from 'components/block'
-import { BlockMixin, BlockContainerMixin } from 'components/mixins'
+import { direction } from '@/constants'
+import Block from '@/components/block'
+import { BlockMixin, BlockContainerMixin } from '@/components/mixins'
 import Draggable from 'vuedraggable'
+import { mapstate } from 'vuex'
 
 export default {
   mixins: [BlockMixin, BlockContainerMixin],
-
-  components: { Block },
 
   computed: {
     blocks: {
@@ -56,22 +56,18 @@ export default {
     classes() {
       return {
         'container-block': this.edit,
-        __puzzle_horizontal: this.direction === 'horizontal',
-        __puzzle_vertical: this.direction === 'vertical',
+        __puzzle_horizontal: this.direction === direction.horizontal,
+        __puzzle_vertical: this.direction === direction.vertical,
       }
     },
 
     direction() {
-      return this.options.direction
+      return this.data.direction
     },
-  },
 
-  beforeMount() {
-    if (!this.options.direction) {
-      this.options = {
-        direction: 'horizontal',
-      }
-    }
+    ...mapState({
+      edit: state => (state.editor ? state.editor.edit : false),
+    }),
   },
 }
 </script>

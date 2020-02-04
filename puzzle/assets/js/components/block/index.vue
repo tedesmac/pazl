@@ -1,14 +1,8 @@
 <template>
-  <component
-    :class="['__puzzle_block', { block: edit }]"
-    :block="this.id"
-    :is="selectedComponent"
-  />
+  <component class="__puzzle_block" :block="this.id" :is="component" />
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 const containerBlock = () =>
   import(
     /* webpackChunkName: 'containerBlock' */
@@ -50,18 +44,14 @@ export default {
     stringBlock,
   },
 
-  data() {
-    return { selectedComponent: `${this.type}Block` }
-  },
-
   computed: {
+    component() {
+      return `${this.type}Block`
+    },
+
     id() {
       return this.$attrs.block
     },
-
-    ...mapState({
-      edit: state => (state.editor ? state.editor.edit : false),
-    }),
   },
 
   props: {

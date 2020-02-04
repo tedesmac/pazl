@@ -1,9 +1,5 @@
 <template>
-  <div v-if="edit">
-    <input type="text" v-model="data" />
-  </div>
-
-  <p v-else>{{ data }}</p>
+  <p>{{ content }}</p>
 </template>
 
 <script>
@@ -11,5 +7,11 @@ import { BlockMixin } from 'components/mixins'
 
 export default {
   mixins: [BlockMixin],
+
+  computed: {
+    content() {
+      return this.data.content
+    },
+  },
 }
 </script>

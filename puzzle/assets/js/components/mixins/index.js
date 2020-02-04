@@ -1,9 +1,10 @@
-import Collapsible from 'components/editor/collapsible'
-import Entry from 'components/admin/entry'
-import Editor from 'components/editor'
-import Sidebar from 'components/editor/sidebar'
-import Topbar from 'components/editor/topbar'
-import Workspace from 'components/editor/workspace'
+import Block from '@/components/block'
+import Collapsible from '@/components/editor/collapsible'
+import Entry from '@/components/admin/entry'
+import Editor from '@/components/editor'
+import Sidebar from '@/components/editor/sidebar'
+import Topbar from '@/components/editor/topbar'
+import Workspace from '@/components/editor/workspace'
 import Draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
@@ -13,73 +14,22 @@ export const AdminListingMixin = {
 
 export const BlockMixin = {
   computed: {
-    blockIndex() {
-      return this.$store.state.page.blocks.findIndex(b => b.id === this.id)
-    },
-
-    data: {
-      get() {
-        return this.$store.state.page.blocks[this.blockIndex].data
-      },
-
-      set(value) {
-        this.$store.commit('page/setBlock', {
-          id: this.id,
-          data: value,
-        })
-      },
+    data() {
+      return this.$store.state.page.blocks[this.id].data
     },
 
     id() {
       return this.$attrs.block
     },
 
-    options: {
-      get() {
-        return this.$store.state.page.blocks[this.blockIndex].options
-      },
-
-      set(value) {
-        this.$store.commit('page/setBlock', {
-          id: this.id,
-          options: value,
-        })
-      },
+    style() {
+      return this.$store.state.page.blocks[this.id].style
     },
-
-    style: {
-      get() {
-        return this.$store.state.page.blocks[this.blockIndex].style
-      },
-
-      set(value) {
-        this.$store.commit('page/setBlock', {
-          id: this.id,
-          style: value,
-        })
-      },
-    },
-
-    ...mapState({
-      edit: state => (state.editor ? state.editor.edit : false),
-    }),
-  },
-
-  beforeMount() {
-    if (this.data === undefined) {
-      this.data = null
-    }
-    if (this.options === undefined) {
-      this.options = {}
-    }
-    if (this.style === undefined) {
-      this.style = {}
-    }
   },
 }
 
 export const BlockContainerMixin = {
-  components: { Draggable },
+  components: { Block, Draggable },
 
   data() {
     return {
