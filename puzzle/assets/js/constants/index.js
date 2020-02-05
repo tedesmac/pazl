@@ -1,6 +1,5 @@
 const common = {
   collection: 'collection',
-  embed: 'embed',
   image: 'image',
   markdown: 'markdown',
   string: 'string',
@@ -36,6 +35,7 @@ export const settingTypes = {
   ...modelTypes,
   code: 'code',
   color: 'color',
+  embed: 'embed',
   multinumber: 'multinumber',
   option: 'option',
 }
