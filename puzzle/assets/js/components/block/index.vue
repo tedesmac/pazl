@@ -18,11 +18,6 @@ const imageBlock = () =>
     /* webpackChunkName: 'imageBlock' */
     'components/block/image'
   )
-const linkBlock = () =>
-  import(
-    /* webpackChunkName: 'linkBlock' */
-    'components/block/link'
-  )
 const markdownBlock = () =>
   import(
     /* webpackChunkName: 'markdownBlock' */
@@ -39,7 +34,6 @@ export default {
     containerBlock,
     htmlBlock,
     imageBlock,
-    linkBlock,
     markdownBlock,
     stringBlock,
   },

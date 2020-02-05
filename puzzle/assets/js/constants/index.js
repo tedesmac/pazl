@@ -5,7 +5,6 @@ const common = {
   embed: 'embed',
   file: 'file',
   image: 'image',
-  link: 'link',
   markdown: 'markdown',
   number: 'number',
   string: 'string',
@@ -13,7 +12,7 @@ const common = {
   text: 'text',
 }
 
-export const block = {
+export const blockTypes = {
   ...common,
   container: 'container',
   html: 'html',
@@ -35,6 +34,7 @@ export const mode = {
 
 export const settingTypes = {
   ...common,
+  code: 'code',
   color: 'color',
   multinumber: 'multinumber',
   option: 'option',

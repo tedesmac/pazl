@@ -11,14 +11,25 @@
         :class="{ 'block-container': edit, __puzzle_page: !edit }"
         @end="onEnd"
       >
-        <Block
+        <div
           v-for="(block, index) in pageBlocks"
-          parent="root"
-          :block="block.id"
-          :index="index"
+          class="{ block: edit }"
           :key="block.id"
-          :type="block.type"
-        />
+        >
+          <Block
+            parent="root"
+            :block="block.id"
+            :index="index"
+            :type="block.type"
+          />
+
+          <FontAwesomeIcon
+            v-if="edit"
+            class="edit-icon"
+            :icon="faEdit"
+            @click="onEditBlock(block.id, block.type)"
+          />
+        </div>
       </Draggable>
     </Workspace>
 
@@ -113,12 +124,15 @@
 </template>
 
 <script>
+import Block from '@/components/block'
+import { BlockEditorMixin } from '@/components/mixins'
+import { blockTypes } from '@/constants'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
-import Block from 'components/block'
-import { BlockEditorMixin } from 'components/mixins'
+import { genId } from '@/utils'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Slug from 'slug'
-import { genId } from 'utils'
 import { mapState } from 'vuex'
 import Toggle from './toggle'
 
@@ -133,19 +147,16 @@ const ImageGallery = () =>
     'components/misc/image-gallery'
   )
 
-const defaultBlocks = [
-  { type: 'container' },
-  { type: 'image' },
-  { type: 'html' },
-  { type: 'link' },
-  { type: 'markdown' },
-  { type: 'string' },
-]
+const defaultBlocks = Object.keys(blockTypes)
+  .sort()
+  .map(key => ({
+    type: key,
+  }))
 
 export default {
   mixins: [BlockEditorMixin],
 
-  components: { Block, BlockSetting, ImageGallery, Toggle },
+  components: { Block, BlockSetting, FontAwesomeIcon, ImageGallery, Toggle },
 
   data() {
     return {
@@ -222,11 +233,17 @@ export default {
     ...mapState({
       edit: state => state.editor.edit,
     }),
+
+    faEdit: () => faEdit,
   },
 
   methods: {
     beforeImageGallery(event) {
       this.imageSelectedCallbak = event.params.callback
+    },
+
+    onEditBlock(id, type) {
+      console.log('edit', id, type)
     },
 
     onClone(block) {
