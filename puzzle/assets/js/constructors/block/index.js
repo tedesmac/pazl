@@ -1,5 +1,6 @@
 import { direction, settingTypes as T } from '@/constants'
 import settings, { isSetting } from '@/constructors/setting'
+import { deepMerge, genId } from '@/utils'
 
 const directions = Object.keys(direction)
 
@@ -42,7 +43,7 @@ const defaultBlock = {
 
 const block = source => deepMerge(defaultBlock, source)
 
-const blockSettings = {
+const blockSettingsConstructor = {
   collection: () =>
     block({
       data: settings.collection(),
@@ -94,37 +95,17 @@ const blockSettings = {
     }),
 }
 
-export const settingsToBlock = object => {
-  const keys = Object.keys(object)
-  return keys.reduce((acc, key) => {
-    const current = object[key]
-    const { type } = current
-    if (isSetting(type)) {
-      acc[key] = current.value
-    } else if (
-      typeof object[key] === 'object' &&
-      Object.keys(current).length > 0
-    ) {
-      acc[key] = settingsToBlock(current)
-    } else {
-      acc[key] = current
-    }
-    return acc
-  }, {})
-}
-
-const hydrateSettings = (block, settings) => {
-  const keys = Object.keys(settings)
-  return keys.reduce((acc, key) => {
-    const { type } = block[key]
-    if (isSetting(type)) {
+const hydrateSettings = (block, settings) =>
+  Object.keys(settings).reduce((acc, key) => {
+    const { settingType } = settings[key]
+    if (isSetting(settingType)) {
       acc[key] = {
         ...settings[key],
         value: block[key],
       }
     } else if (
       typeof block[key] === 'object' &&
-      Object.keys(object).length > 0
+      Object.keys(block[key]).length > 0
     ) {
       acc[key] = hydrateSettings(block[key], settings[key])
     } else {
@@ -132,12 +113,33 @@ const hydrateSettings = (block, settings) => {
     }
     return acc
   }, {})
-}
 
 export const mergeBlockToSettings = block =>
-  hydrateSettings(block, blockSettings[block.type]())
+  hydrateSettings(block, blockSettingsConstructor[block.type]())
 
-export const initBlock = type => ({
-  ...settingsToBlock(blockSettings[type]()),
-  style: {},
+const settingsToBlock = object =>
+  Object.keys(object).reduce((acc, key) => {
+    const current = object[key]
+    const { settingType } = current
+    if (isSetting(settingType)) {
+      acc[key] = current.value
+    } else if (
+      typeof object[key] === 'object' &&
+      Object.keys(current).length > 0
+    ) {
+      if (key === 'style') {
+        acc[key] = {}
+      } else {
+        acc[key] = settingsToBlock(current)
+      }
+    } else {
+      acc[key] = current
+    }
+    return acc
+  }, {})
+
+export default type => ({
+  ...settingsToBlock(blockSettingsConstructor[type]()),
+  id: genId(),
+  type,
 })

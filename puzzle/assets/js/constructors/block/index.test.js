@@ -1,9 +1,10 @@
 import { direction as D, blockTypes as T } from '@/constants'
-import { deepMerge, initBlock, settingsToBlock } from './index'
+import initBlock, { mergeBlockToSettings } from './index'
 
 describe('[initBlock]', () => {
   test('container', () => {
     const block = initBlock(T.container)
+    console.log(block)
     expect(block.data).toBe(D.horizontal)
   })
 
@@ -38,5 +39,23 @@ describe('[initBlock]', () => {
   test('table', () => {
     const block = initBlock(T.table)
     expect(block.data).toMatchObject([])
+  })
+})
+
+describe('[mergeBlockToSettings]', () => {
+  test('image', () => {
+    let block = initBlock(T.image)
+    block.data.alt = 'alt'
+    block.data.src = 'url'
+    const blockSettings = mergeBlockToSettings(block)
+    expect(blockSettings.data.alt.value).toBe(block.data.alt)
+    expect(blockSettings.data.src.value).toBe(block.data.src)
+  })
+
+  test('markdown', () => {
+    let block = initBlock(T.markdown)
+    block.data = '# Test'
+    const blockSettings = mergeBlockToSettings(block)
+    expect(blockSettings.data.value).toBe(block.data)
   })
 })
