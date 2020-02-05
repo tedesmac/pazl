@@ -1,22 +1,16 @@
 const common = {
-  audio: 'audio',
   collection: 'collection',
-  date: 'date',
   embed: 'embed',
-  file: 'file',
   image: 'image',
   markdown: 'markdown',
-  number: 'number',
   string: 'string',
   table: 'table',
-  text: 'text',
 }
 
 export const blockTypes = {
   ...common,
   container: 'container',
   html: 'html',
-  script: 'script',
   spacer: 'spacer',
 }
 
@@ -32,8 +26,14 @@ export const mode = {
   tablet: 'tablet_view',
 }
 
-export const settingTypes = {
+export const modelTypes = {
   ...common,
+  date: 'date',
+  number: 'number',
+}
+
+export const settingTypes = {
+  ...modelTypes,
   code: 'code',
   color: 'color',
   multinumber: 'multinumber',
