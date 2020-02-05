@@ -1,9 +1,11 @@
 import { settingTypes as T } from '@/constants'
 
-const settingFactory = (type, args = {}) => {
-  const keys = Object.keys(T)
+const settingKeys = Object.keys(T)
 
-  if (!keys.includes(type)) {
+export const isSetting = setting => settingKeys.includes(setting)
+
+const settingFactory = (type, args = {}) => {
+  if (!isSetting) {
     throw 'setting must be one of constants.settingTypes'
   }
 
@@ -14,31 +16,27 @@ const settingFactory = (type, args = {}) => {
 }
 
 export default {
-  audio: () => settingFactory(T.audio, { src: '' }),
+  code: () => settingFactory(T.code, { value: '' }),
 
   collection: () =>
     settingFactory(T.collection, {
-      type: 'entry',
+      value: 'entry',
       options: ['entry', 'image'],
     }),
 
-  color: (color = '#000') => settingFactory(T.color, { color }),
+  color: (value = '#000') => settingFactory(T.color, { value }),
 
-  date: () => settingFactory(T.date, { date: '' }),
+  date: (value = new Date().toISOString()) => settingFactory(T.date, { value }),
 
-  embed: () => settingFactory(T.embed, { url: '' }),
+  embed: () => settingFactory(T.embed, { value: '' }),
 
-  file: () => settingFactory(T.file, { src: '' }),
+  image: () => settingFactory(T.image, { value: '' }),
 
-  image: () => settingFactory(T.image, { src: '' }),
-
-  link: (text = '', url = '', isButton = false) =>
-    settingFactory(T.link, { isButton, text, url }),
-
-  markdown: () => settingFactory(T.markdown, { content: '' }),
+  markdown: () => settingFactory(T.markdown, { value: '' }),
 
   multinumber: (value = 0, children = [], units = [], parse = null) =>
     settingFactory(T.multinumber, {
+      global: true,
       value,
       children,
       units,
@@ -48,12 +46,9 @@ export default {
   number: (value = 0, units = [], parse = null) =>
     settingFactory(T.number, { value, units, parse }),
 
-  option: (units = [], default_ = '') =>
-    settingFactory(T.option, { units, default: default_ }),
+  option: (units = []) => settingFactory(T.option, { value: units[0], units }),
 
-  string: () => settingFactory(T.string, { content: '' }),
+  string: () => settingFactory(T.string, { value: '' }),
 
-  table: () => settingFactory(T.table, { values: [] }),
-
-  text: () => settingFactory(T.text, { content: '' }),
+  table: () => settingFactory(T.table, { value: [] }),
 }
