@@ -11,7 +11,7 @@ const settingFactory = (type, args = {}) => {
 
   return {
     ...args,
-    type,
+    settingType: type,
   }
 }
 
