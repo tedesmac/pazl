@@ -10,6 +10,38 @@ const file_re = new RegExp(
 )
 const image_re = /^image\/(gif|jpeg|png|svg\+xml|webp)$/i
 
+export const deepMerge = (base, source) => {
+  const baseKeys = Object.keys(base)
+  const sourceKeys = Object.keys(source)
+  const commonKeys = sourceKeys.filter(k => baseKeys.includes(k))
+  const uniqueBaseKeys = baseKeys.filter(k => !commonKeys.includes(k))
+  const uniqueSourceKeys = sourceKeys.filter(k => !commonKeys.includes(k))
+
+  let merged = {}
+
+  commonKeys.forEach(k => {
+    if (
+      typeof base[k] === 'object' &&
+      typeof source[k] === 'object' &&
+      !Array.isArray(base[k])
+    ) {
+      merged[k] = deepMerge(base[k], source[k])
+    } else {
+      merged[k] = source[k]
+    }
+  })
+
+  uniqueBaseKeys.forEach(k => {
+    merged[k] = base[k]
+  })
+
+  uniqueSourceKeys.forEach(k => {
+    merged[k] = source[k]
+  })
+
+  return merged
+}
+
 export const genId = (
   length = 8,
   charMap = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'

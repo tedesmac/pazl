@@ -1,5 +1,5 @@
-import { direction } from '@/constants'
-import settings from '@/constructors/setting'
+import { direction, settingTypes as T } from '@/constants'
+import settings, { isSetting } from '@/constructors/setting'
 
 const directions = Object.keys(direction)
 
@@ -18,7 +18,7 @@ const numberedUnitEval = (val, unit) => {
 const defaultStyle = {
   background: settings.color('#fff'),
   color: settings.color(),
-  height: settings.multinumber(0, ['em', '%', 'px']),
+  height: settings.number(0, ['em', '%', 'px']),
   flexGrow: settings.number(),
   margin: settings.multinumber(
     'auto',
@@ -26,7 +26,7 @@ const defaultStyle = {
     ['em', '%', 'px'],
     numberedUnitEval
   ),
-  padding: settings.number(
+  padding: settings.multinumber(
     'auto',
     ['bottom', 'left', 'right', 'top'],
     ['auto', 'em', '%', 'px'],
@@ -40,66 +40,104 @@ const defaultBlock = {
   style: defaultStyle,
 }
 
-export const deepMerge = (base, source) => {
-  const baseKeys = Object.keys(base)
-  const sourceKeys = Object.keys(source)
-  const commonKeys = sourceKeys.filter(k => baseKeys.includes(k))
-  const uniqueBaseKeys = baseKeys.filter(k => !commonKeys.includes(k))
-  const uniqueSourceKeys = sourceKeys.filter(k => !commonKeys.includes(k))
-
-  let merged = {}
-
-  commonKeys.forEach(k => {
-    if (Array.isArray(base[k]) && Array.isArray(source[k])) {
-      merged[k] = [...base[k], ...source[k]]
-    } else if (typeof base[k] === 'object' && typeof source[k] === 'object') {
-      merged[k] = deepMerge(base[k], source[k])
-    } else {
-      merged[k] = source[k]
-    }
-  })
-
-  uniqueBaseKeys.forEach(k => {
-    merged[k] = base[k]
-  })
-
-  uniqueSourceKeys.forEach(k => {
-    merged[k] = source[k]
-  })
-
-  return merged
-}
-
 const block = source => deepMerge(defaultBlock, source)
 
-const container = () =>
-  block({
-    data: {
-      direction: settings.option(directions, direction.horizontal),
-    },
-  })
+const blockSettings = {
+  collection: () =>
+    block({
+      data: settings.collection(),
+    }),
 
-const image = () =>
-  block({
-    data: {
-      alt: settings.string(),
-      src: settings.string(),
-    },
-  })
+  container: () =>
+    block({
+      data: settings.option(directions, direction.horizontal),
+      style: {
+        flexWrap: settings.option(['wrap', 'no-wrap'], 'wrap'),
+      },
+    }),
 
-const markdown = () =>
-  block({
-    data: {
-      content: settings.markdown(),
-    },
+  html: () =>
+    block({
+      data: settings.code(),
+    }),
+
+  image: () =>
+    block({
+      data: {
+        alt: settings.string(),
+        src: settings.image(),
+      },
+    }),
+
+  markdown: () =>
+    block({
+      data: settings.markdown(),
+      style: {
+        fontSize: settings.number(1, ['em', 'px']),
+      },
+    }),
+
+  spacer: () => ({
     style: {
-      fontSize: settings.number(1, ['em', 'px']),
+      flexGrow: settings.number(),
     },
-  })
+  }),
 
-const string = () =>
-  block({
-    data: {
-      content: setting.string(),
-    },
-  })
+  string: () =>
+    block({
+      data: settings.string(),
+    }),
+
+  table: () =>
+    block({
+      data: settings.table(),
+    }),
+}
+
+export const settingsToBlock = object => {
+  const keys = Object.keys(object)
+  return keys.reduce((acc, key) => {
+    const current = object[key]
+    const { type } = current
+    if (isSetting(type)) {
+      acc[key] = current.value
+    } else if (
+      typeof object[key] === 'object' &&
+      Object.keys(current).length > 0
+    ) {
+      acc[key] = settingsToBlock(current)
+    } else {
+      acc[key] = current
+    }
+    return acc
+  }, {})
+}
+
+const hydrateSettings = (block, settings) => {
+  const keys = Object.keys(settings)
+  return keys.reduce((acc, key) => {
+    const { type } = block[key]
+    if (isSetting(type)) {
+      acc[key] = {
+        ...settings[key],
+        value: block[key],
+      }
+    } else if (
+      typeof block[key] === 'object' &&
+      Object.keys(object).length > 0
+    ) {
+      acc[key] = hydrateSettings(block[key], settings[key])
+    } else {
+      acc[key] = settings[key]
+    }
+    return acc
+  }, {})
+}
+
+export const mergeBlockToSettings = block =>
+  hydrateSettings(block, blockSettings[block.type]())
+
+export const initBlock = type => ({
+  ...settingsToBlock(blockSettings[type]()),
+  style: {},
+})

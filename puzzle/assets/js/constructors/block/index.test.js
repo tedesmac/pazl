@@ -1,43 +1,42 @@
-import { deepMerge } from './index'
+import { direction as D, blockTypes as T } from '@/constants'
+import { deepMerge, initBlock, settingsToBlock } from './index'
 
-describe('[deepMerge]', () => {
-  const base = { a: 'a' }
-  const source = { b: 'b' }
-
-  test('Empty', () => {
-    const res = deepMerge({}, {})
-    expect(res).toMatchObject({})
+describe('[initBlock]', () => {
+  test('container', () => {
+    const block = initBlock(T.container)
+    expect(block.data).toBe(D.horizontal)
   })
 
-  test('Empty base', () => {
-    const res = deepMerge({}, source)
-    expect(res).toMatchObject(source)
+  test('html', () => {
+    const block = initBlock(T.html)
+    expect(block.data).toBe('')
   })
 
-  test('Empty source', () => {
-    const res = deepMerge(base, {})
-    expect(res).toMatchObject(base)
+  test('image', () => {
+    const block = initBlock(T.image)
+    expect(block.data).toMatchObject({
+      alt: '',
+      src: '',
+    })
   })
 
-  test('Simple merge', () => {
-    const res = deepMerge(base, source)
-    const expected = { a: 'a', b: 'b' }
-    expect(res).toMatchObject(expected)
+  test('markdown', () => {
+    const block = initBlock(T.markdown)
+    expect(block.data).toBe('')
   })
 
-  test('Deep merge', () => {
-    const base = { a: { inner: 'a' } }
-    const source = { a: { other: 'b' } }
-    const res = deepMerge(base, source)
-    const expected = { a: { inner: 'a', other: 'b' } }
-    expect(res).toMatchObject(expected)
+  test('spacer', () => {
+    const block = initBlock(T.spacer)
+    expect(block.data).toBe(undefined)
   })
 
-  test('Array', () => {
-    const base = { a: ['a'] }
-    const source = { a: ['b'] }
-    const res = deepMerge(base, source)
-    const expected = { a: ['a', 'b'] }
-    expect(res).toMatchObject(expected)
+  test('string', () => {
+    const block = initBlock(T.string)
+    expect(block.data).toBe('')
+  })
+
+  test('table', () => {
+    const block = initBlock(T.table)
+    expect(block.data).toMatchObject([])
   })
 })
