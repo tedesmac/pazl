@@ -5,6 +5,8 @@ import Editor from '@/components/editor'
 import Sidebar from '@/components/editor/sidebar'
 import Topbar from '@/components/editor/topbar'
 import Workspace from '@/components/editor/workspace'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import Draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
@@ -32,7 +34,7 @@ export const BlockMixin = {
 }
 
 export const BlockContainerMixin = {
-  components: { Block, Draggable },
+  components: { Block, Draggable, FontAwesomeIcon },
 
   data() {
     return {
@@ -41,9 +43,21 @@ export const BlockContainerMixin = {
     }
   },
 
+  computed: {
+    ...mapState({
+      edit: state => (state.editor ? state.editor.edit : false),
+    }),
+
+    faEdit: () => faEdit,
+  },
+
   methods: {
     onDragOver(event) {
       this.mouseX = event.clientX
+    },
+
+    onEditBlock(id, type) {
+      console.log('edit', id, type)
     },
 
     onEnd(event) {
