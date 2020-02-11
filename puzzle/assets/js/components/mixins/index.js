@@ -177,3 +177,21 @@ export const BlockEditorMixin = {
     this.eventListener = true
   },
 }
+
+export const SettingMixin = {
+  props: {
+    root: {
+      type: String,
+      required: true,
+    },
+
+    setting: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  computed: mapState({
+    blockId: state => state.editor.currentBlockId,
+  }),
+}
