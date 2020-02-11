@@ -13,17 +13,20 @@ export const AdminListingMixin = {
 }
 
 export const BlockMixin = {
+  props: {
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+
   computed: {
     data() {
-      return this.$store.state.page.blocks[this.id].data
-    },
-
-    id() {
-      return this.$attrs.block
+      return this.block.data
     },
 
     style() {
-      return this.$store.state.page.blocks[this.id].style
+      return this.block.style
     },
   },
 }
