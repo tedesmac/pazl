@@ -4,6 +4,7 @@
 
 <script>
 import colorSetting from './color'
+import imageSetting from './image'
 import numberSetting from './number'
 import optionSetting from './option'
 import stringSetting from './string'
@@ -11,6 +12,7 @@ import stringSetting from './string'
 export default {
   components: {
     colorSetting,
+    imageSetting,
     numberSetting,
     optionSetting,
     stringSetting,
