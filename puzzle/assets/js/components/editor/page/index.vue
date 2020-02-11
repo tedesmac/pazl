@@ -125,7 +125,6 @@
 
 <script>
 import Block from '@/components/block'
-import BlockSettings from '@/components/editor/blockSettings'
 import { BlockEditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory, { mergeBlockToSettings } from '@/factories/block'
@@ -138,6 +137,11 @@ import Slug from 'slug'
 import { mapState } from 'vuex'
 import Toggle from './toggle'
 
+const BlockSettings = () =>
+  import(
+    /* webpackChunkName: 'pageBlockSettings' */
+    '@/components/editor/blockSettings'
+  )
 const ImageGallery = () =>
   import(
     /* webpackChunkName: 'imageGallery' */
