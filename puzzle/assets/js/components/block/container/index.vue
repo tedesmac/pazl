@@ -7,14 +7,22 @@
     :style="style"
     @end="onEnd"
   >
-    <Block
+    <div
       v-for="(block, index) in blocks"
       :block="block.id"
-      :index="index"
+      :class="{ block: edit }"
       :key="block.id"
-      :parent="id"
-      :type="block.type"
-    />
+    >
+      <div class="type">{{ block.type }}</div>
+
+      <Block :block="block.id" :index="index" :parent="id" :type="block.type" />
+
+      <FontAwesomeIcon
+        class="edit-icon"
+        :icon="faEdit"
+        @click="onEditBlock(block.id, block.type)"
+      />
+    </div>
   </Draggable>
 
   <div v-else :class="classes" :style="style">
@@ -31,10 +39,7 @@
 
 <script>
 import { direction } from '@/constants'
-import Block from '@/components/block'
 import { BlockMixin, BlockContainerMixin } from '@/components/mixins'
-import Draggable from 'vuedraggable'
-import { mapstate } from 'vuex'
 
 export default {
   mixins: [BlockMixin, BlockContainerMixin],
@@ -65,9 +70,9 @@ export default {
       return this.data.direction
     },
 
-    ...mapState({
-      edit: state => (state.editor ? state.editor.edit : false),
-    }),
+    id() {
+      return this.block.id
+    },
   },
 }
 </script>
