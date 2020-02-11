@@ -1,5 +1,5 @@
 import { direction, settingTypes as T } from '@/constants'
-import settings, { isSetting } from '@/constructors/setting'
+import settings, { isSetting } from '@/factories/setting'
 import { deepMerge, genId } from '@/utils'
 
 const directions = Object.keys(direction)
