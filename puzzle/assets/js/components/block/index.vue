@@ -1,5 +1,5 @@
 <template>
-  <component class="__puzzle_block" :block="this.id" :is="component" />
+  <component class="__puzzle_block" :block="block" :is="component" />
 </template>
 
 <script>
@@ -41,6 +41,12 @@ export default {
   computed: {
     component() {
       return `${this.type}Block`
+    },
+
+    block() {
+      const { blocks } = this.$store.state.page
+      const index = blocks.findIndex(b => b.id === this.id)
+      return blocks[index]
     },
 
     id() {
