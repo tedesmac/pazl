@@ -1,5 +1,5 @@
 <template>
-  <component :is="Component" />
+  <div>Setting {{ setting.settingType }}</div>
 </template>
 
 <script>
@@ -17,25 +17,20 @@ export default {
   },
 
   props: {
-    id: {
+    root: {
       type: String,
       required: true,
     },
 
-    isStyle: {
-      type: Boolean,
-      default: false,
-    },
-
-    type: {
-      type: String,
+    setting: {
+      type: Object,
       required: true,
     },
   },
 
   computed: {
     component() {
-      return `${this.type}Setting`
+      return `${this.setting.settingType}Setting`
     },
   },
 }
