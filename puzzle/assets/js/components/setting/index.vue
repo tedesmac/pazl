@@ -1,5 +1,5 @@
 <template>
-  <div>Setting {{ setting.settingType }}</div>
+  <component :is="component" :root="root" :setting="setting" />
 </template>
 
 <script>
