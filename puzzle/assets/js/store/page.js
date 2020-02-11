@@ -109,10 +109,12 @@ export default {
     updateBlocks(state, payload) {
       const { blocks, parent } = payload
       const notParent = state.blocks.filter(b => b.parent !== parent)
-      state.blocks = [
+      const newBlocks = [
         ...notParent,
         ...blocks.map((b, i) => ({ ...b, index: i })),
       ]
+      const ids = newBlocks.reduce((acc, b) => [...acc, b.id], ['root'])
+      state.blocks = newBlocks.filter(b => ids.includes(b.parent))
     },
   },
 }
