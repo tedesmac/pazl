@@ -13,9 +13,12 @@
       >
         <div
           v-for="(block, index) in pageBlocks"
-          class="{ block: edit }"
+          :block="block.id"
+          :class="{ block: edit }"
           :key="block.id"
         >
+          <div v-if="edit" class="type">{{ block.type }}</div>
+
           <Block
             parent="root"
             :block="block.id"
@@ -27,7 +30,7 @@
             v-if="edit"
             class="edit-icon"
             :icon="faEdit"
-            @click="onEditBlock(block.id, block.type)"
+            @click="onEditBlock(block)"
           />
         </div>
       </Draggable>
@@ -96,12 +99,9 @@
       </div>
     </Sidebar>
 
-    <modal
-      height="auto"
-      name="block-settings"
-      width="80%"
-      :scrollable="true"
-    ></modal>
+    <modal height="auto" name="block-settings" width="80%" :scrollable="true">
+      <BlockSettings />
+    </modal>
 
     <modal
       height="auto"
@@ -125,8 +125,10 @@
 
 <script>
 import Block from '@/components/block'
+import BlockSettings from '@/components/editor/blockSettings'
 import { BlockEditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
+import blockFactory, { mergeBlockToSettings } from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 import { genId } from '@/utils'
@@ -136,11 +138,6 @@ import Slug from 'slug'
 import { mapState } from 'vuex'
 import Toggle from './toggle'
 
-const BlockSetting = () =>
-  import(
-    /* webpackChunkName: 'setting' */
-    'components/setting'
-  )
 const ImageGallery = () =>
   import(
     /* webpackChunkName: 'imageGallery' */
@@ -156,7 +153,7 @@ const defaultBlocks = Object.keys(blockTypes)
 export default {
   mixins: [BlockEditorMixin],
 
-  components: { Block, BlockSetting, FontAwesomeIcon, ImageGallery, Toggle },
+  components: { Block, BlockSettings, FontAwesomeIcon, ImageGallery, Toggle },
 
   data() {
     return {
@@ -242,16 +239,14 @@ export default {
       this.imageSelectedCallbak = event.params.callback
     },
 
-    onEditBlock(id, type) {
-      console.log('edit', id, type)
+    onEditBlock(block) {
+      const settings = mergeBlockToSettings(block)
+      this.$store.commit('editor/setBlockSettings', { id: block.id, settings })
+      this.$modal.show('block-settings')
     },
 
     onClone(block) {
-      return {
-        ...block,
-        id: genId(),
-        parent: 'root',
-      }
+      return blockFactory(block.type)
     },
 
     onImageSelected(image) {
