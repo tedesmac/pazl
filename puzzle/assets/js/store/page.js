@@ -86,6 +86,14 @@ export default {
       state.blocks = blocks
     },
 
+    setBlockSetting(state, payload) {
+      const { id, name, root, value } = payload
+      const index = state.blocks.findIndex(b => b.id === id)
+      let block = state.blocks[index]
+      block[root][name] = value
+      state.blocks = [...state.blocks.filter(b => b.id !== id), block]
+    },
+
     setDescription(state, description) {
       state.description = description
     },
