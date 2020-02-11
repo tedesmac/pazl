@@ -46,7 +46,8 @@ export default {
   number: (value = 0, units = [], parse = null) =>
     settingFactory(T.number, { value, units, parse }),
 
-  option: (units = []) => settingFactory(T.option, { value: units[0], units }),
+  option: (options = []) =>
+    settingFactory(T.option, { value: options[0], options }),
 
   string: () => settingFactory(T.string, { value: '' }),
 
