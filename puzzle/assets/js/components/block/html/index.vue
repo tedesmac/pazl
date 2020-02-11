@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-html="data">
     html
   </div>
 </template>
@@ -9,11 +9,5 @@ import { BlockMixin } from '@/components/mixins'
 
 export default {
   mixins: [BlockMixin],
-
-  computed: {
-    content() {
-      return this.data.content
-    },
-  },
 }
 </script>
