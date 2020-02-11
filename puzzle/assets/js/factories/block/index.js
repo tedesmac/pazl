@@ -51,7 +51,9 @@ const blockSettingsConstructor = {
 
   container: () =>
     block({
-      data: settings.option(directions, direction.horizontal),
+      data: {
+        direction: settings.option(directions, direction.horizontal),
+      },
       style: {
         flexWrap: settings.option(['wrap', 'no-wrap'], 'wrap'),
       },
@@ -59,7 +61,9 @@ const blockSettingsConstructor = {
 
   html: () =>
     block({
-      data: settings.code(),
+      data: {
+        content: settings.code(),
+      },
     }),
 
   image: () =>
@@ -72,7 +76,9 @@ const blockSettingsConstructor = {
 
   markdown: () =>
     block({
-      data: settings.markdown(),
+      data: {
+        content: settings.markdown(),
+      },
       style: {
         fontSize: settings.number(1, ['em', 'px']),
       },
@@ -86,12 +92,16 @@ const blockSettingsConstructor = {
 
   string: () =>
     block({
-      data: settings.string(),
+      data: {
+        content: settings.string(),
+      },
     }),
 
   table: () =>
     block({
-      data: settings.table(),
+      data: {
+        content: settings.table(),
+      },
     }),
 }
 
