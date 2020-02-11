@@ -28,16 +28,25 @@ body {
   position: relative;
 
   .edit-icon {
-    background: $white;
+    background: $grey;
     border-radius: 5px;
     cursor: pointer;
-    height: 2em;
-    left: 50%;
-    padding: 0.5em;
+    height: 0.8em;
+    padding: 0.2em 0.2em;
     position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 2em;
+    right: 3px;
+    top: 3px;
+    width: 0.8em;
+  }
+  .type {
+    background: $grey;
+    border-radius: 10px;
+    font-size: 0.6em;
+    left: 3px;
+    padding: 0.2em 0.5em;
+    position: absolute;
+    top: 3px;
+    z-index: 1;
   }
 }
 
@@ -225,20 +234,6 @@ body {
     height: 100%;
     width: 1px;
   }
-
-  .tab {
-    background: $light-grey;
-    border-bottom: 1px solid $grey;
-    cursor: pointer;
-    flex-grow: 1;
-    padding-bottom: 0.2em;
-    text-align: center;
-  }
-
-  .tab-list {
-    display: flex;
-    flex-wrap: nowrap;
-  }
 }
 
 .spinner {
@@ -246,6 +241,26 @@ body {
   animation-iteration-count: infinite;
   animation-name: rotate;
   animation-timing-function: linear;
+}
+
+.tab {
+  background: $light-grey;
+  border-bottom: 1px solid $grey;
+  cursor: pointer;
+  flex-grow: 1;
+  padding-bottom: 0.2em;
+  text-align: center;
+}
+
+.tab-active {
+  @extend .tab;
+  background: $white-ter;
+  border-bottom: none;
+}
+
+.tab-list {
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .topbar {
@@ -305,6 +320,7 @@ body {
 // Blocks
 
 .container-block {
-  min-height: 5em;
-  min-width: 5em;
+  border: 1px dashed $grey;
+  min-height: 8em;
+  min-width: 8em;
 }
