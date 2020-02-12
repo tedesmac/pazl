@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+const entry_route_re = /^\/[^/]+\/\d+\/[^/]+\/?$/
+
 // Admin Components
 
 const Admin = () =>
@@ -209,6 +211,9 @@ const routes = [
     component: Page,
     path: '*',
     name: 'page',
+    props: route => ({
+      isEntry: entry_route_re.test(route.path),
+    }),
   },
 ]
 
