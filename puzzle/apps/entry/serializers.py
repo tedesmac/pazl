@@ -6,4 +6,12 @@ class EntrySerializer(BaseSerializer):
 
     class Meta:
         model = Entry
-        fields = ['id', 'data', 'description', 'name', 'parent', 'slug']
+        fields = [
+            'id',
+            'data',
+            'description',
+            'name',
+            'parent',
+            'published',
+            'slug'
+        ]
