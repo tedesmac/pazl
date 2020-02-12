@@ -22,6 +22,7 @@ class BaseModel(models.Model):
 
 class BasePageModel(BaseModel):
     description = models.CharField(max_length=200, blank=True, null=True)
+    published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100, blank=True, null=True)
 
     class Meta:
