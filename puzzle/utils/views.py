@@ -38,7 +38,7 @@ class DetailAPIView(BaseAPIView):
         instance.delete()
         return JsonResponse({})
 
-    def get(self, request):
+    def get(self, request, id):
         try:
             instance = self.model.objects.get(id=id)
         except self.model.DoesNotExist:
