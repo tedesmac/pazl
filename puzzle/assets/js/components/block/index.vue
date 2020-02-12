@@ -1,5 +1,10 @@
 <template>
-  <component class="__puzzle_block" :block="block" :is="component" />
+  <component
+    class="__puzzle_block"
+    :block="block"
+    :is="component"
+    :style="style"
+  />
 </template>
 
 <script>
@@ -38,22 +43,6 @@ export default {
     stringBlock,
   },
 
-  computed: {
-    component() {
-      return `${this.type}Block`
-    },
-
-    block() {
-      const { blocks } = this.$store.state.page
-      const index = blocks.findIndex(b => b.id === this.id)
-      return blocks[index]
-    },
-
-    id() {
-      return this.$attrs.block
-    },
-  },
-
   props: {
     index: {
       type: Number,
@@ -68,6 +57,26 @@ export default {
     type: {
       type: String,
       required: true,
+    },
+  },
+
+  computed: {
+    component() {
+      return `${this.type}Block`
+    },
+
+    block() {
+      const { blocks } = this.$store.state.page
+      const index = blocks.findIndex(b => b.id === this.id)
+      return blocks[index]
+    },
+
+    id() {
+      return this.$attrs.block
+    },
+
+    style() {
+      return this.block.style
     },
   },
 

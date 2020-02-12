@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div v-if="activeTab === 'Block'">
+    <div v-if="activeTab === 'Block'" class="setting-list">
       <Setting
         v-for="setting in dataSettings"
         root="data"
@@ -27,7 +27,7 @@
       />
     </div>
 
-    <div v-else>
+    <div v-else class="setting-list">
       <Setting
         v-for="setting in styleSettings"
         root="style"
@@ -73,7 +73,16 @@ export default {
 
     styleSettings: state => {
       const { style } = state.editor.blockSettings
-      return Object.keys(style).reduce((acc, k) => [...acc, style[k]], [])
+      return Object.keys(style).reduce(
+        (acc, k) => [
+          ...acc,
+          {
+            ...style[k],
+            _name: k,
+          },
+        ],
+        []
+      )
     },
   }),
 }
