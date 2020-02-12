@@ -1,16 +1,17 @@
 <template>
-  <div>{{ content }}</div>
+  <div v-html="html" />
 </template>
 
 <script>
-import { BlockMixin } from 'components/mixins'
+import { BlockMixin } from '@/components/mixins'
+import MD from 'markdown-it'
 
 export default {
   mixins: [BlockMixin],
 
   computed: {
-    content() {
-      return this.data.content
+    html() {
+      return MD.render(this.data.content)
     },
   },
 }
