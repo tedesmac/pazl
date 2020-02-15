@@ -23,7 +23,7 @@ class BaseModel(models.Model):
 
 class BasePageModel(BaseModel):
     description = models.CharField(max_length=200, blank=True)
-    path = models.CharField(max_length=2000, blank=True)
+    path = models.CharField(max_length=2000, blank=True, unique=True)
     published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100, blank=True)
 
@@ -35,11 +35,11 @@ class BasePageModel(BaseModel):
         if not self.slug:
             slug = slugify(self.name.lower())
         else:
-            slug = slugify(self.slug.lower())
+            slug = self.slug
         return slug
 
     def save(self, *args, **kwargs):
-        self.path = self.build_path()
         if not self.slug:
             self.slug = slugify(self.name.lower())
+        self.path = self.build_path()
         super().save(*args, **kwargs)
