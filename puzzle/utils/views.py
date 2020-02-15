@@ -21,6 +21,14 @@ class BaseAPIView(View):
         self.model = meta.model
         self.serializer = meta.serializer
 
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = {'request': self.request}
+        return self.serializer(*args, **kwargs)
+
+    def setup(self, request, *args, **kwargs):
+        self.request = request
+        super().setup(request, *args, **kwargs)
+
 
 class DetailAPIView(BaseAPIView):
 
@@ -49,7 +57,7 @@ class DetailAPIView(BaseAPIView):
                 status=404
             )
 
-        serializer = self.serializer(instance)
+        serializer = self.get_serializer(instance)
         return JsonResponse(serializer.data)
 
     @method_decorator(private)
@@ -65,7 +73,7 @@ class DetailAPIView(BaseAPIView):
             )
 
         data = JSONParser().parse(request)
-        serializer = self.serializer(instance, data=data)
+        serializer = self.get_serializer(instance, data=data)
 
         if serializer.is_valid():
             serializer.save()
@@ -78,14 +86,14 @@ class ListAPIView(BaseAPIView):
 
     def get(self, request):
         instances = self.model.objects.all()
-        serializer = self.serializer(instances, many=True)
+        serializer = self.get_serializer(instances, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     @method_decorator(private)
     def post(self, request):
         data = JSONParser().parse(request)
         data['data'] = json.dumps(data.get('data', {}))
-        serializer = self.serializer(data=data)
+        serializer = self.get_serializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
