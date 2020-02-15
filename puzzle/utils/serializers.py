@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class BaseSerializer(serializers.ModelSerializer):
     data = serializers.JSONField(
-        required=True,
+        required=False,
         source='data_as_json',
     )
 
