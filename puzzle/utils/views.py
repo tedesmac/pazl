@@ -76,8 +76,13 @@ class DetailAPIView(BaseAPIView):
         serializer = self.get_serializer(instance, data=data)
 
         if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
+            try:
+                serializer.save()
+                return JsonResponse(serializer.data)
+            except:
+                return JsonResponse({
+                    'path': 'Path must be unique'
+                }, status=400)
 
         return JsonResponse(serializer.errors, status=400)
 
@@ -95,6 +100,14 @@ class ListAPIView(BaseAPIView):
         data['data'] = json.dumps(data.get('data', {}))
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
+            try:
+                serializer.save()
+                return JsonResponse(serializer.data)
+            except:
+                return JsonResponse(
+                    {
+                        "path": "Path in not unique"
+                    },
+                    status=400
+                )
         return JsonResponse(serializer.errors, status=400)
