@@ -22,6 +22,10 @@
   @extend .container;
 }
 
+.is-red {
+  background: $red;
+}
+
 .is-two-thirds {
   width: 60%;
 }
