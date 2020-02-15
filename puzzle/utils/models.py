@@ -17,6 +17,7 @@ class BaseModel(models.Model):
     def save(self, *args, **kwargs):
         if type(self.data) is dict:
             pass
+        self.name = self.name.lower()
         super().save(*args, **kwargs)
 
 
