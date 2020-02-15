@@ -4,8 +4,8 @@ import json
 
 
 class BaseModel(models.Model):
-    data = models.TextField(default='{}', blank=True, null=True)
-    name = models.CharField(max_length=50, blank=False, null=False)
+    data = models.TextField(default='{}')
+    name = models.CharField(max_length=50, blank=True)
 
     class Meta:
         abstract = True
