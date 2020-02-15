@@ -40,4 +40,6 @@ class BasePageModel(BaseModel):
 
     def save(self, *args, **kwargs):
         self.path = self.build_path()
+        if not self.slug:
+            self.slug = slugify(self.name.lower())
         super().save(*args, **kwargs)
