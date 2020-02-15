@@ -22,13 +22,21 @@ class BaseModel(models.Model):
 
 class BasePageModel(BaseModel):
     description = models.CharField(max_length=200, blank=True, null=True)
+    path = models.CharField(max_length=2000, blank=True, null=True)
     published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100, blank=True, null=True)
 
     class Meta:
         abstract = True
 
-    def save(self, *args, **kwargs):
+    def build_path(self):
+        slug = ''
         if not self.slug:
-            self.slug = slugify(self.name)
+            slug = slugify(self.name.lower())
+        else:
+            slug = slugify(self.slug.lower())
+        return slug
+
+    def save(self, *args, **kwargs):
+        self.path = self.build_path()
         super().save(*args, **kwargs)
