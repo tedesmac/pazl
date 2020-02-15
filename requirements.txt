@@ -3,3 +3,4 @@ django-webpack-loader==0.6.0
 djangorestframework==3.11.0
 Pillow==7.0.0
 PyJWT==1.7.1
+pytest-django==3.8.0
