@@ -9,6 +9,7 @@ class ModelDetailAPI(DetailAPIView):
         model = Model
         serializer = ModelSerializer
 
+
 class ModelListAPI(ListAPIView):
 
     class Meta:

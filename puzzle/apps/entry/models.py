@@ -18,3 +18,8 @@ class Entry(BasePageModel):
 
     class Meta:
         db_table = 'puzzle_entry'
+
+    def build_path(self):
+        slug = super().build_path()
+        model = self.model.name.lower()
+        return '/{}/{}/{}/'.format(model, self.id, slug)
