@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar :backUrl="`/puzzle/admin/entries/${modelId}`" />
+    <Topbar :backUrl="`/puzzle/admin/entries/${modelId}`" @save="onSave" />
 
     <Workspace class="entry-workspace">
       <div
@@ -26,8 +26,7 @@
         </div>
 
         <div class="field">
-          <label>Image</label>
-          <input type="file" />
+          <ImagePicker v-model="image" />
         </div>
 
         <div class="field">
@@ -43,15 +42,29 @@
       </Collapsible>
     </Sidebar>
 
-    <modal height="auto" name="image-select" width="80%" :scrollable="true">
+    <modal
+      height="auto"
+      name="image-select"
+      width="80%"
+      :scrollable="true"
+      @before-open="beforeImageGallery"
+    >
       <ImageGallery @image="onImageSelected" />
     </modal>
+
+    <notifications group="messages" position="bottom right" />
+
+    <notifications
+      group="errors"
+      position="bottom right"
+      classes="vue-notification error"
+    />
   </Editor>
 </template>
 
 <script>
-import BlockStore from '@/store/page'
 import Block from '@/components/block'
+import ImagePicker from '@/components/editor/image-picker'
 import { EditorMixin } from '@/components/mixins'
 import Setting from '@/components/setting'
 import EditorStore from '@/store/editor'
@@ -66,7 +79,7 @@ const ImageGallery = () =>
 export default {
   mixins: [EditorMixin],
 
-  components: { Block, ImageGallery, Setting },
+  components: { Block, ImageGallery, ImagePicker, Setting },
 
   data() {
     return {
@@ -132,8 +145,37 @@ export default {
       this.imageSelectedCallbak = event.params.callback
     },
 
-    onImageSelected(id) {
+    onImageSelected(image) {
+      if (this.imageSelectedCallbak) {
+        this.imageSelectedCallbak(image)
+      }
+
       this.$modal.hide('image-select')
+    },
+
+    onSave() {
+      this.$store
+        .dispatch('page/saveEntry', {
+          id: this.id,
+          model: this.modelId,
+        })
+        .then(data => {
+          if (data.id !== this.id) {
+            this.$router.push({
+              path: `/puzzle/editor/entry?id=${data.id}&model=${this.modelId}`,
+            })
+            this.$notify({
+              group: 'messages',
+              text: 'Entry saved',
+            })
+          }
+        })
+        .catch(() => {
+          this.$notify({
+            group: 'errors',
+            text: 'Unable to save, please try again later',
+          })
+        })
     },
 
     redirectToAdmin() {
