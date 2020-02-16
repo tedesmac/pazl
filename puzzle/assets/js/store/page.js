@@ -7,12 +7,29 @@ export default {
     blocks: [],
     description: '',
     image: '',
+    isEntry: false,
     name: '',
     slug: '',
     style: {},
   }),
 
   actions: {
+    fetchEntry(context, id) {
+      Api.entries
+        .get({ id })
+        .then(data => {
+          context.commit('setBlocks', data.data.blocks)
+          context.commit('setDescription', data.description)
+          context.commit('setImage', data.image)
+          context.commit('setName', data.name)
+          context.commit('setSlug', data.slug)
+        })
+        .catch(error => {
+          console.error('[pageStore.fetchEntry] =>', error)
+          return Promise.reject(error.response.data)
+        })
+    },
+
     fetchPageById(context, id) {
       Api.pages
         .get({ id })
@@ -25,7 +42,7 @@ export default {
           context.commit('setStyle', data.data.style)
         })
         .catch(error => {
-          console.log('[pageStore.fetchPageById] =>', error)
+          console.error('[pageStore.fetchPageById] =>', error)
           // return Promise.reject(error.response.data)
         })
     },
@@ -43,7 +60,20 @@ export default {
           context.commit('setStyle', data.data.style)
         })
         .catch(error => {
-          console.log('[pageStore.fetchPageById] =>', error)
+          console.error('[pageStore.fetchPageById] =>', error)
+          return Promise.reject(error.response.data)
+        })
+    },
+
+    setupEntry(context, id) {
+      Api.models
+        .get({ id })
+        .then(data => {
+          context.commit('setBlocks', data.data.blocks)
+          context.commit('setIsEntry', true)
+        })
+        .catch(error => {
+          console.error('[pageStore.setupEntry] =>', error)
           return Promise.reject(error.response.data)
         })
     },
@@ -98,8 +128,20 @@ export default {
       state.description = description
     },
 
+    setEntryBlock(state, payload) {
+      const { name, value } = payload
+      const index = state.blocks.findIndex(b => b.name === name)
+      let block = state.blocks[index]
+      block.value = value
+      state.blocks = state.blocks.map(b => (b.name === name ? block : b))
+    },
+
     setImage(state, image) {
       state.image = image
+    },
+
+    setIsEntry(state, value) {
+      state.isEntry = value
     },
 
     setName(state, name) {
