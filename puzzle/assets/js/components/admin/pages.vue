@@ -20,7 +20,14 @@
         :index="index"
         :key="`tree_page_${page.id}`"
         :name="page.name"
-      />
+        @delete="onDeletePage(page.id)"
+      >
+        <template #actions>
+          <button>Set Parent</button>
+          <button v-if="page.published" class="is-yellow">Unpublish</button>
+          <button v-else class="is-yellow">Publish</button>
+        </template>
+      </Entry>
     </div>
 
     <div class="section"></div>
@@ -59,7 +66,6 @@ export default {
 
   computed: {
     homePage() {
-      const state = this.$store.state
       const id = this.site.home_page
       if (id) {
         return this.pages.reduce((acc, page) => {
@@ -78,6 +84,10 @@ export default {
   },
 
   methods: {
+    onDeletePage(id) {
+      console.log('delete', id)
+    },
+
     onNew() {
       window.location = '/puzzle/editor/page/'
     },

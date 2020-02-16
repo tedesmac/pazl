@@ -9,7 +9,7 @@
     </div>
 
     <div v-show="buttons">
-      <button class="is-yellow">
+      <button class="is-yellow" v-popover:entry>
         <FontAwesomeIcon :icon="faAngleDown" />
       </button>
 
@@ -17,6 +17,13 @@
         <FontAwesomeIcon :icon="faEdit" />
       </button>
     </div>
+
+    <popover name="entry" :width="110">
+      <div class="is-vertical">
+        <slot name="actions" />
+        <button class="is-red" @click="$emit('delete')">Delete</button>
+      </div>
+    </popover>
   </div>
 </template>
 
