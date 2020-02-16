@@ -24,6 +24,7 @@
         root="data"
         :key="setting._name"
         :setting="setting"
+        :type="setting.settingType"
       />
     </div>
 
@@ -33,6 +34,7 @@
         root="style"
         :key="setting._name"
         :setting="setting"
+        :type="setting.settingType"
       />
     </div>
   </div>
