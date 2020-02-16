@@ -36,11 +36,16 @@ export default {
       type: Object,
       required: true,
     },
+
+    type: {
+      type: String,
+      required: true,
+    },
   },
 
   computed: {
     component() {
-      return `${this.setting.settingType}Setting`
+      return `${this.type}Setting`
     },
   },
 }
