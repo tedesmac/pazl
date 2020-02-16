@@ -16,10 +16,10 @@
     <div class="section is-vertical">
       <Entry
         v-for="(page, index) in pages"
-        :editUrl="`/puzzle/editor/page?id=${page.id}`"
         :index="index"
         :key="`tree_page_${page.id}`"
         :name="page.name"
+        @edit="onEdit(page.id)"
         @delete="onDeletePage(page.id)"
       >
         <template #actions>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { AdminListingMixin } from 'components/mixins'
+import { AdminListingMixin } from '@/components/mixins'
 import Draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
@@ -86,6 +86,10 @@ export default {
   methods: {
     onDeletePage(id) {
       console.log('delete', id)
+    },
+
+    onEdit(id) {
+      window.location = `/puzzle/editor/page?id=${id}`
     },
 
     onNew() {

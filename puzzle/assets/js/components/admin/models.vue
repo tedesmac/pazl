@@ -11,9 +11,9 @@
     <div class="section is-vertical">
       <Entry
         v-for="model in models"
-        :editUrl="`/puzzle/editor/model?id=${model.id}`"
         :key="`model_${model.id}`"
         :name="model.name"
+        @edit="onEdit(model.id)"
       />
     </div>
   </div>
@@ -31,6 +31,10 @@ export default {
   }),
 
   methods: {
+    onEdit(id) {
+      window.location = `/puzzle/editor/model?id=${id}`
+    },
+
     onNewModel() {
       window.location = '/puzzle/editor/model/'
     },

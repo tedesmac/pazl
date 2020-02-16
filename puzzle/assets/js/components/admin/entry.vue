@@ -13,7 +13,7 @@
         <FontAwesomeIcon :icon="faAngleDown" />
       </button>
 
-      <button class="is-cyan" @click="onEdit">
+      <button class="is-cyan" @click="$emit('edit')">
         <FontAwesomeIcon :icon="faEdit" />
       </button>
     </div>
@@ -38,11 +38,6 @@ export default {
     buttons: {
       type: Boolean,
       default: true,
-    },
-
-    editUrl: {
-      type: String,
-      default: '',
     },
 
     index: {
@@ -76,12 +71,6 @@ export default {
     onClick() {
       if (this.selectable) {
         this.$emit('selected')
-      }
-    },
-
-    onEdit() {
-      if (this.editUrl) {
-        window.location = this.editUrl
       }
     },
   },
