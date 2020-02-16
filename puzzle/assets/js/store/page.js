@@ -65,6 +65,46 @@ export default {
         })
     },
 
+    saveEntry(context, payload) {
+      const { id, model } = payload
+      const { blocks, description, image, name, slug } = context.state
+
+      const data = {
+        data: { blocks },
+        description,
+        image,
+        model,
+        name,
+        slug,
+      }
+
+      if (id) {
+        return Api.entries
+          .put({ ...data, id })
+          .then(data => {
+            context.commit('setSlug', data.slug)
+            return data
+          })
+          .catch(error => {
+            console.error('[pageStore.saveEntry.put] =>', error)
+            return Promise.reject(error)
+          })
+      } else {
+        return Api.entries
+          .post(data)
+          .then(data => {
+            context.commit('setSlug', data.slug)
+            return data
+          })
+          .catch(error => {
+            console.error('[pageStore.saveEntry.post] =>', error)
+            return Promise.reject(error)
+          })
+      }
+    },
+
+    savePage(context, id) {},
+
     setupEntry(context, id) {
       Api.models
         .get({ id })
@@ -74,7 +114,7 @@ export default {
         })
         .catch(error => {
           console.error('[pageStore.setupEntry] =>', error)
-          return Promise.reject(error.response.data)
+          return Promise.reject(error)
         })
     },
   },
@@ -132,7 +172,7 @@ export default {
       const { name, value } = payload
       const index = state.blocks.findIndex(b => b.name === name)
       let block = state.blocks[index]
-      block.value = value
+      block = { ...block, value }
       state.blocks = state.blocks.map(b => (b.name === name ? block : b))
     },
 
