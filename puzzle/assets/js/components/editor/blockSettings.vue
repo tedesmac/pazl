@@ -22,7 +22,7 @@
       <Setting
         v-for="setting in dataSettings"
         root="data"
-        :key="setting._name"
+        :key="setting.name"
         :setting="setting"
         :type="setting.settingType"
       />
@@ -32,7 +32,7 @@
       <Setting
         v-for="setting in styleSettings"
         root="style"
-        :key="setting._name"
+        :key="setting.name"
         :setting="setting"
         :type="setting.settingType"
       />
@@ -66,7 +66,7 @@ export default {
           ...acc,
           {
             ...data[k],
-            _name: k,
+            name: k,
           },
         ],
         []
@@ -80,7 +80,7 @@ export default {
           ...acc,
           {
             ...style[k],
-            _name: k,
+            name: k,
           },
         ],
         []
