@@ -193,7 +193,7 @@ export const SettingMixin = {
 
   computed: {
     name() {
-      return this.setting._name
+      return this.setting.name
     },
 
     value: {
@@ -202,17 +202,26 @@ export const SettingMixin = {
       },
 
       set(value) {
-        this.$store.commit('page/setBlockSetting', {
-          id: this.blockId,
-          name: this.name,
-          root: this.root,
-          value,
-        })
+        if (this.isEntry) {
+          this.$store.commit('page/setEntryBlock', {
+            name: this.name,
+            value,
+          })
+        } else {
+          this.$store.commit('page/setBlockSetting', {
+            id: this.blockId,
+            name: this.name,
+            root: this.root,
+            value,
+          })
+        }
       },
     },
 
     ...mapState({
       blockId: state => state.editor.currentBlockId,
+
+      isEntry: state => state.page.isEntry,
     }),
   },
 }
