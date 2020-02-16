@@ -10,8 +10,8 @@ class EntrySerializer(BaseSerializer):
             'id',
             'data',
             'description',
+            'model',
             'name',
-            'parent',
             'published',
             'slug'
         ]
