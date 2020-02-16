@@ -1,18 +1,15 @@
 <template>
   <div>
     <label>{{ name }}</label>
-    <Compact v-model="parsedValue" />
+    <input type="color" v-model="value" />
   </div>
 </template>
 
 <script>
 import { SettingMixin } from '@/components/mixins'
-import { Compact } from 'vue-color'
 
 export default {
   mixins: [SettingMixin],
-
-  components: { Compact },
 
   computed: {
     parsedValue: {
@@ -21,7 +18,7 @@ export default {
       },
 
       set(value) {
-        this.value = value.hex
+        this.value = value
       },
     },
   },
