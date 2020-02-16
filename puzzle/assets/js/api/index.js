@@ -11,8 +11,12 @@ const calls = {
     return Axios.delete(`${url}${id}/`, params)
       .then(response => response.data)
       .catch(error => {
-        console.error(`[api.put.${url}] =>`, error)
-        return Promise.reject(error)
+        console.error(`[api.delete.${url}] =>`, error)
+        try {
+          return Promise.reject(error.response.data)
+        } catch {
+          return Promise.reject(error)
+        }
       })
   },
 
@@ -26,7 +30,11 @@ const calls = {
       .then(response => response.data)
       .catch(error => {
         console.error(`[api.get.${url}] =>`, error)
-        return Promise.reject(error)
+        try {
+          return Promise.reject(error.response.data)
+        } catch {
+          return Promise.reject(error)
+        }
       })
   },
 
@@ -34,8 +42,12 @@ const calls = {
     Axios.post(url, data)
       .then(response => response.data)
       .catch(error => {
-        console.error(`[api.get.${url}] =>`, error)
-        return Promise.reject(error)
+        console.error(`[api.post.${url}] =>`, error)
+        try {
+          return Promise.reject(error.response.data)
+        } catch {
+          return Promise.reject(error)
+        }
       }),
 
   put: (url, data) => {
@@ -44,7 +56,11 @@ const calls = {
       .then(response => response.data)
       .catch(error => {
         console.error(`[api.put.${url}] =>`, error)
-        return Promise.reject(error)
+        try {
+          return Promise.reject(error.response.data)
+        } catch {
+          return Promise.reject(error)
+        }
       })
   },
 }
