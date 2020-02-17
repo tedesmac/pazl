@@ -49,19 +49,22 @@ export default {
 
     fetchPageByPath(context, path) {
       Api.pages
-        .get({ path })
-        .then(response => {
-          const { data } = response
-          context.commit('setBlocks', data.data.blocks)
-          context.commit('setDescription', data.description)
-          context.commit('setImage', data.image)
-          context.commit('setName', data.name)
-          context.commit('setSlug', data.slug)
-          context.commit('setStyle', data.data.style)
+        .get({ path, published: 1 })
+        .then(pages => {
+          const data = pages[0]
+          if (data !== undefined) {
+            context.commit('setBlocks', data.data.blocks)
+            context.commit('setDescription', data.description)
+            context.commit('setImage', data.image)
+            context.commit('setName', data.name)
+            context.commit('setSlug', data.slug)
+            context.commit('setStyle', data.data.style)
+          }
+          return data
         })
         .catch(error => {
           console.error('[pageStore.fetchPageById] =>', error)
-          return Promise.reject(error.response.data)
+          return Promise.reject(error)
         })
     },
 
