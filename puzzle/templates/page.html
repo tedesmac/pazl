@@ -2,6 +2,13 @@
 
 {% load render_bundle from webpack_loader %}
 
+{% block og_description %}{{ description }}{% endblock %}
+{% block og_image %}{{ image }}{% endblock%}
+{% block og_site_name %}{{ site_name }}{% endblock %}
+{% block og_title %}{{ title }}{% endblock %}
+{% block og_url %}{{ url }}{% endblock %}
+{% block title %}{{ title }} | {{ site_name }}{% endblock %}
+
 {% block extra_css %}
   {% render_bundle 'page' 'css' 'CSS' %}
 {% endblock extra_css %}
