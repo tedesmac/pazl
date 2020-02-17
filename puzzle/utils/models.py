@@ -23,6 +23,7 @@ class BaseModel(models.Model):
 
 class BasePageModel(BaseModel):
     description = models.CharField(max_length=200, blank=True)
+    image = models.CharField(max_length=2000, blank=True)
     path = models.CharField(max_length=2000, blank=True, unique=True)
     published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100, blank=True)
