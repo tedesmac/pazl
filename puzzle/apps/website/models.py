@@ -38,4 +38,5 @@ class Website(models.Model):
 def update_home(sender, **kwargs):
     site = kwargs['instance']
     if site.home_page:
-        site.home_page.save()
+        if site.home_page.path != '':
+            site.home_page.save()
