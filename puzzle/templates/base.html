@@ -1,5 +1,5 @@
 {% spaceless %} {% load static %}
-<!DOCUMENT html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -101,6 +101,29 @@
       name="msapplication-config"
       content="{% static '/img/favicon/browserconfig.xml' %}"
     />
+
+    {# Open Graph #}
+    <meta
+      property="og:description"
+      content="{% block og_description %}{% endblock %}"
+      />
+    <meta
+      property="og:image"
+      content="{% block og_image %}{% static '/img/favicon/favicon-180.png' %}{% endblock %}"
+      />
+    <meta
+      property="og:site_name"
+      content="{% block og_site_name %}Puzzle Site{% endblock %}"
+      />
+    <meta
+      property="og:title"
+      content="{% block og_title %}Puzzle Page{% endblock %}"
+      />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="{% block og_url %}{% endblock %}"
+      />
 
     <title>
       {% block title %} Puzzle {% endblock title %}
