@@ -10,6 +10,7 @@ class EntrySerializer(BaseSerializer):
             'id',
             'data',
             'description',
+            'image',
             'model',
             'name',
             'published',

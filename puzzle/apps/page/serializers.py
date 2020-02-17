@@ -9,8 +9,11 @@ class PageSerializer(BaseSerializer):
             'id',
             'data',
             'description',
+            'image',
             'name',
+            'path',
             'parent',
             'published',
             'slug'
         ]
+        read_only_fields = ['path']
