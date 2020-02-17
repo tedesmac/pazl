@@ -1,5 +1,6 @@
 from puzzle.apps.page.models import Page
 from puzzle.apps.website.models import Website
+from puzzle.apps.website.signals import *
 import pytest
 
 
@@ -32,3 +33,10 @@ def test_home_page_path():
     page = Page.objects.create(name='test')
     site = Website.objects.create(home_page=page)
     assert page.path == ''
+
+
+@pytest.mark.django_db
+def test_auto_home_page():
+    page = Page.objects.create(name='test')
+    site = Website.objects.create()
+    assert page == site.home_page
