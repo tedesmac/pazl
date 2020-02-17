@@ -18,6 +18,7 @@ class Page(BasePageModel):
         home_page = Website.get_home_page()
         if home_page:
             if home_page.id == self.id:
+                self.parent = None
                 self.slug = ''
                 return self.slug
         slug = super().build_path()
