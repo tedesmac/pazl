@@ -3,7 +3,11 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 import json
 from puzzle.utils.decorators import private
+import re
 from rest_framework.parsers import JSONParser
+
+
+re_number = re.compile(r'^\d+(\.\d*)?$')
 
 
 class BaseAPIView(View):
@@ -90,7 +94,21 @@ class DetailAPIView(BaseAPIView):
 class ListAPIView(BaseAPIView):
 
     def get(self, request):
-        instances = self.model.objects.all()
+        query = {}
+        fields = self.serializer.Meta.fields
+
+        for f in fields:
+            if f == 'data':
+                continue
+            if f in request.GET:
+                value = request.GET[f]
+                if isinstance(value, list) and len(value) == 1:
+                    value = value[0]
+                if re_number.match(value):
+                    value = int(value)
+                query[f] = value
+
+        instances = self.model.objects.all().filter(**query)
         serializer = self.get_serializer(instances, many=True)
         return JsonResponse(serializer.data, safe=False)
 
