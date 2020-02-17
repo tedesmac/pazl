@@ -34,6 +34,5 @@ urlpatterns = [
     }),
     path('puzzle/login/', admin_views.Login.as_view(), name='login'),
     path('puzzle/logout/', admin_views.Logout.as_view(), name='logout'),
-    path('', page_views.home, name='home'),
-    re_path('^(?P<path>.*)/$', page_views.page, name='page'),
+    re_path('^(?P<path>.*)?/?$', page_views.page, name='page'),
 ]
