@@ -32,15 +32,12 @@ class BasePageModel(BaseModel):
         abstract = True
 
     def build_path(self):
-        slug = ''
-        if not self.slug:
-            slug = slugify(self.name.lower())
-        else:
-            slug = self.slug
-        return slug
-
-    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name.lower())
+        else:
+            self.slug = self.slug.lower()
+        return self.slug
+
+    def save(self, *args, **kwargs):
         self.path = self.build_path()
         super().save(*args, **kwargs)
