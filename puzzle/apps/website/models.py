@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Website(models.Model):
@@ -18,6 +16,14 @@ class Website(models.Model):
         db_table = 'puzzle_website'
 
     @staticmethod
+    def get():
+        try:
+            website = Website.objects.get(id=1)
+        except:
+            website = Website.objects.create()
+        return website
+
+    @staticmethod
     def get_home_page():
         try:
             website = Website.objects.get(id=1)
@@ -32,11 +38,3 @@ class Website(models.Model):
             return website.name
         except:
             return ''
-
-
-@receiver(post_save, sender=Website)
-def update_home(sender, **kwargs):
-    site = kwargs['instance']
-    if site.home_page:
-        if site.home_page.path != '':
-            site.home_page.save()
