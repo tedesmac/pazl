@@ -80,14 +80,14 @@ const me = () => 'Not yet implemented'
 const site = {
   get: () =>
     Axios.get('site/')
-      .then(_ => _)
+      .then(response => response.data)
       .catch(error => {
         console.error('[api.site.get] =>', error)
         return Promise.reject(error)
       }),
   put: (data = {}) =>
     Axios.put('site/', data)
-      .then(_ => _)
+      .then(response => response.data)
       .catch(error => {
         console.error('[api.site.put] =>', error)
         return Promise.reject(error)
