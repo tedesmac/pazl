@@ -18,6 +18,10 @@
   background: $cyan;
 }
 
+.is-full {
+  width: 100%;
+}
+
 .is-horizontal {
   @extend .container;
 }
