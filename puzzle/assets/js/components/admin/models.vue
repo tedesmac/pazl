@@ -13,6 +13,7 @@
         v-for="model in models"
         :key="`model_${model.id}`"
         :name="model.name"
+        @delete="onDelete(model.id)"
         @edit="onEdit(model.id)"
       />
     </div>
@@ -31,6 +32,20 @@ export default {
   }),
 
   methods: {
+    onDelete(id) {
+      this.$api.models
+        .delete({ id })
+        .then(() => {
+          this.$store.dispatch('admin/fetchModels')
+        })
+        .catch(() => {
+          this.$notify({
+            group: 'errors',
+            text: 'Unable to delete model',
+          })
+        })
+    },
+
     onEdit(id) {
       window.location = `/puzzle/editor/model?id=${id}`
     },
