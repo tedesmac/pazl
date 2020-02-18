@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-const entry_route_re = /^\/[^/]+\/\d+\/[^/]+\/?$/
+const entry_route_re = /^\/[^/]+\/(\d+)\/[^/]+\/?$/
 
 // Admin Components
 
@@ -211,9 +211,16 @@ const routes = [
     component: Page,
     path: '*',
     name: 'page',
-    props: route => ({
-      isEntry: entry_route_re.test(route.path),
-    }),
+    props: route => {
+      let entryId = 0
+      const match = route.path.match(entry_route_re)
+      if (match) {
+        entryId = Number(match[1])
+      }
+      return {
+        entryId,
+      }
+    },
   },
 ]
 
