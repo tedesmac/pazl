@@ -30,11 +30,12 @@ export default {
     fetchModels(context) {
       Api.models
         .get()
-        .then(response => {
-          context.commit('setModels', response)
+        .then(models => {
+          context.commit('setModels', models)
         })
         .catch(error => {
           console.error('[admin.store.fetchModels] =>', error)
+          return Promise.reject(error)
         })
     },
 
