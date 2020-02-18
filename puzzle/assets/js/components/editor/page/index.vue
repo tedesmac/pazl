@@ -88,8 +88,7 @@
           </div>
 
           <div class="field">
-            <label>Image</label>
-            <input type="file" value="submit" />
+            <ImagePicker v-model="image" />
           </div>
         </Collapsible>
 
@@ -125,6 +124,7 @@
 
 <script>
 import Block from '@/components/block'
+import ImagePicker from '@/components/editor/image-picker'
 import { BlockEditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory, { mergeBlockToSettings } from '@/factories/block'
@@ -157,7 +157,14 @@ const defaultBlocks = Object.keys(blockTypes)
 export default {
   mixins: [BlockEditorMixin],
 
-  components: { Block, BlockSettings, FontAwesomeIcon, ImageGallery, Toggle },
+  components: {
+    Block,
+    BlockSettings,
+    FontAwesomeIcon,
+    ImageGallery,
+    ImagePicker,
+    Toggle,
+  },
 
   data() {
     return {
