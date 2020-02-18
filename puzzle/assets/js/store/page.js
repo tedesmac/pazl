@@ -8,7 +8,7 @@ export default {
     description: '',
     error: false,
     image: '',
-    isEntry: false,
+    modelBlock: null, // for entry
     name: '',
     slug: '',
     style: {},
@@ -19,6 +19,7 @@ export default {
       Api.entries
         .get({ id })
         .then(data => {
+          context.dispatch('fetchModelBlock', data.model)
           context.commit('setBlocks', data.data.blocks)
           context.commit('setDescription', data.description)
           context.commit('setImage', data.image)
@@ -27,7 +28,24 @@ export default {
         })
         .catch(error => {
           console.error('[pageStore.fetchEntry] =>', error)
+          context.commit('setError', true)
           return Promise.reject(error.response.data)
+        })
+    },
+
+    fetchModelBlock(context, id) {
+      Api.models
+        .get({ id })
+        .then(model => {
+          if (model.block) {
+            Api.blocks.get({ id: model.block }).then(block => {
+              context.commit('setModelBlock', block)
+            })
+          }
+        })
+        .catch(error => {
+          console.error('[pageStore.fetchModelBlock] =>', error)
+          return Promise.reject(error)
         })
     },
 
@@ -194,6 +212,10 @@ export default {
 
     setIsEntry(state, value) {
       state.isEntry = value
+    },
+
+    setModelBlock(state, block) {
+      state.modelBlock = block
     },
 
     setName(state, name) {

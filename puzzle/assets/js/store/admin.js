@@ -41,8 +41,8 @@ export default {
     fetchSite(context) {
       Api.site
         .get()
-        .then(response => {
-          context.commit('setSite', response.data)
+        .then(data => {
+          context.commit('setSite', data)
         })
         .catch(error => {
           console.error('[admin.store.fetchSite] =>', error)
