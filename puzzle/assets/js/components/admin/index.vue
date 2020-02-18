@@ -4,6 +4,12 @@
     <div class="content">
       <router-view />
     </div>
+
+    <notifications
+      group="errors"
+      position="top right"
+      classes="vue-notification error"
+    />
   </div>
 </template>
 
