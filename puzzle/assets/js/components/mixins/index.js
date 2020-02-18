@@ -20,6 +20,11 @@ export const BlockMixin = {
       type: Object,
       required: true,
     },
+
+    isEntry: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {

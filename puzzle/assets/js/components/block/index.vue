@@ -3,6 +3,7 @@
     class="__puzzle_block"
     :block="block"
     :is="component"
+    :isEntry="isEntry"
     :style="style"
   />
 </template>
@@ -49,6 +50,11 @@ export default {
       required: true,
     },
 
+    isEntry: {
+      type: Boolean,
+      default: false,
+    },
+
     parent: {
       type: String,
       required: true,
@@ -67,8 +73,17 @@ export default {
 
     block() {
       const { blocks } = this.$store.state.page
-      const index = blocks.findIndex(b => b.id === this.id)
+      let index = 0
+      if (this.isEntry) {
+        index = blocks.findIndex(b => b.name === this.id)
+      } else {
+        index = blocks.findIndex(b => b.id === this.id)
+      }
       return blocks[index]
+    },
+
+    edit() {
+      return this.$store.editor ? this.$store.editor.edit : false
     },
 
     id() {
@@ -81,11 +96,13 @@ export default {
   },
 
   created() {
-    this.$store.commit('page/setBlock', {
-      id: this.id,
-      index: this.index,
-      parent: this.parent,
-    })
+    if (this.edit && !this.isEntry) {
+      this.$store.commit('page/setBlock', {
+        id: this.id,
+        index: this.index,
+        parent: this.parent,
+      })
+    }
   },
 }
 </script>
