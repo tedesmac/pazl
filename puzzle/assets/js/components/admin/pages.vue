@@ -24,8 +24,12 @@
       >
         <template #actions>
           <button>Set Parent</button>
-          <button v-if="page.published" class="is-yellow">Unpublish</button>
-          <button v-else class="is-yellow">Publish</button>
+          <button
+            class="is-yellow"
+            @click="onPublish(page.id, !page.published)"
+          >
+            {{ page.published ? 'Unpublish' : 'Publish' }}
+          </button>
         </template>
       </Entry>
     </div>
@@ -111,6 +115,12 @@ export default {
         .catch(error => {
           // alert(error)
         })
+    },
+
+    onPublish(id, published) {
+      this.$api.pages.put({ id, published }).then(page => {
+        this.pages = this.pages.map(p => (p.id === page.id ? page : p))
+      })
     },
   },
 
