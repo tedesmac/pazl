@@ -5,6 +5,7 @@ export default {
     blockSettings: { data: {}, style: {} },
     currentBlockId: '',
     edit: true,
+    saving: false,
   }),
 
   mutations: {
@@ -15,6 +16,10 @@ export default {
 
     setEdit(state, value) {
       state.edit = value
+    },
+
+    setSaving(state, value) {
+      state.saving = value
     },
   },
 }
