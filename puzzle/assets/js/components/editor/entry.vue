@@ -185,7 +185,7 @@ export default {
 
   beforeDestroy() {
     this.$store.unregisterModule('editor')
-    this.$store.registerModule('page')
+    this.$store.unregisterModule('page')
   },
 
   created() {
