@@ -21,6 +21,7 @@ class Page(BasePageModel):
                 self.parent = None
                 self.slug = ''
                 return self.slug
+
         slug = super().build_path()
         if self.parent:
             slug = '{}{}/'.format(self.parent.build_path(), slug)

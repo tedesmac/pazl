@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 
 class ModelSerializer(BaseSerializer):
-    block = serializers.IntegerField(allow_null=True)
+    block = serializers.IntegerField(allow_null=True, required=False)
 
     class Meta:
         model = Model
