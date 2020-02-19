@@ -132,7 +132,6 @@ export const BlockEditorMixin = {
 
   data() {
     return {
-      blocks: [],
       eventListener: false,
       mouseX: 0,
       saving: false,
