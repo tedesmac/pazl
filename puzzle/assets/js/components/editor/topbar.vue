@@ -31,6 +31,10 @@ export default {
   components: { FontAwesomeIcon },
 
   computed: {
+    saving() {
+      return this.$store.state.editor.saving
+    },
+
     faAngleLeft: () => faAngleLeft,
     faSave: () => faSave,
     faSpinner: () => faSpinner,
@@ -40,11 +44,6 @@ export default {
     backUrl: {
       type: String,
       default: '/puzzle/admin/',
-    },
-
-    saving: {
-      type: Boolean,
-      default: false,
     },
   },
 
