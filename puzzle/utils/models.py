@@ -4,21 +4,19 @@ import json
 
 
 class BaseModel(models.Model):
-    data = models.TextField(default='{}')
+    _data = models.TextField(default='{}')
     name = models.CharField(max_length=50, blank=True)
 
     class Meta:
         abstract = True
 
     @property
-    def data_as_json(self):
-        return json.loads(self.data)
+    def data(self):
+        return json.loads(self._data)
 
-    def save(self, *args, **kwargs):
-        if type(self.data) is dict:
-            pass
-        self.name = self.name.lower()
-        super().save(*args, **kwargs)
+    @data.setter
+    def data(self, value):
+        self._data = json.dumps(value)
 
 
 class BasePageModel(BaseModel):
