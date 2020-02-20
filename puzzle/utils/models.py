@@ -12,7 +12,7 @@ class BaseModel(models.Model):
 
     @property
     def data(self):
-        return json.loads(self._data)
+        return json.loads(json.loads(self._data))
 
     @data.setter
     def data(self, value):
