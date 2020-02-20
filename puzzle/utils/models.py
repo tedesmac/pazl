@@ -16,7 +16,7 @@ class BaseModel(models.Model):
 
     @data.setter
     def data(self, value):
-        self._data = json.dumps(value)
+        self._data = json.dumps(value, separators=(',', ':'), sort_keys=True)
 
 
 class BasePageModel(BaseModel):
