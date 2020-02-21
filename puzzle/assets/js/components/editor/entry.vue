@@ -4,12 +4,12 @@
 
     <Workspace class="entry-workspace">
       <div
-        v-for="(block, index) in blocks"
+        v-for="(setting, index) in settings"
         class="entry-block"
-        :key="block.name"
+        :key="setting.name"
       >
-        <label>{{ block.name }}</label>
-        <Setting root="root" :setting="block" :type="block.type" />
+        <label>{{ setting.name }} - {{ setting.type }}</label>
+        <Setting root="data" :setting="setting" :type="setting.type" />
       </div>
     </Workspace>
 
@@ -67,6 +67,7 @@ import Block from '@/components/block'
 import ImagePicker from '@/components/editor/image-picker'
 import { EditorMixin } from '@/components/mixins'
 import Setting from '@/components/setting'
+import { mergeBlockToSettings } from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 
@@ -95,10 +96,6 @@ export default {
   },
 
   computed: {
-    blocks() {
-      return this.$store.state.page.blocks
-    },
-
     description: {
       get() {
         return this.$store.state.page.description
@@ -127,6 +124,13 @@ export default {
       set(value) {
         this.$store.commit('page/setName', value)
       },
+    },
+
+    settings() {
+      return this.$store.state.page.blocks.map(b => {
+        const setting = mergeBlockToSettings(b)
+        return { ...setting, id: b.id, name: b.name, type: b.type }
+      })
     },
 
     slug: {
