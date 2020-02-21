@@ -8,7 +8,6 @@ export default {
     description: '',
     error: false,
     image: '',
-    isEntry: false,
     modelBlock: null, // for entry
     name: '',
     slug: '',
