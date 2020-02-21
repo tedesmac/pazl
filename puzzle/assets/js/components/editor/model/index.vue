@@ -133,7 +133,7 @@ export default {
     },
 
     onClone(data) {
-      const { id, style, ...block } = blockFactory(data.type)
+      const { style, ...block } = blockFactory(data.type)
       return {
         ...block,
         name: '',
