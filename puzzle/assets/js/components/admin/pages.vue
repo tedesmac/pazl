@@ -88,8 +88,23 @@ export default {
   },
 
   methods: {
+    fetchPages() {
+      this.$api.pages.get().then(pages => {
+        this.pages = pages
+      })
+    },
+
     onDeletePage(id) {
-      console.log('delete', id)
+      this.$api.pages
+        .delete({ id })
+        .then(this.fetchPages)
+        .catch(error => {
+          console.error(error)
+          this.$notify({
+            group: 'errors',
+            text: 'Unable to delete page, please try again later',
+          })
+        })
     },
 
     onEdit(id) {
@@ -125,9 +140,7 @@ export default {
   },
 
   mounted() {
-    this.$api.pages.get().then(pages => {
-      this.pages = pages
-    })
+    this.fetchPages()
   },
 }
 </script>
