@@ -12,11 +12,16 @@ class BaseModel(models.Model):
 
     @property
     def data(self):
-        return json.loads(json.loads(self._data))
+        if type(self._data) == str:
+            return json.loads(self._data)
+        return self._data
 
     @data.setter
     def data(self, value):
-        self._data = json.dumps(value, separators=(',', ':'), sort_keys=True)
+        data = value
+        if type(value) == dict:
+            data = json.dumps(value, separators=(',', ':'), sort_keys=True)
+        self._data = data
 
 
 class BasePageModel(BaseModel):
