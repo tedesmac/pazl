@@ -70,6 +70,7 @@ import Setting from '@/components/setting'
 import { mergeBlockToSettings } from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
+import { mapState } from 'vuex'
 
 const ImageGallery = () =>
   import(
@@ -126,13 +127,6 @@ export default {
       },
     },
 
-    settings() {
-      return this.$store.state.page.blocks.map(b => {
-        const setting = mergeBlockToSettings(b)
-        return { ...setting, id: b.id, name: b.name, type: b.type }
-      })
-    },
-
     slug: {
       get() {
         return this.$store.state.page.slug
@@ -142,6 +136,18 @@ export default {
         this.$store.commit('page/setSlug', value)
       },
     },
+
+    ...mapState({
+      settings: state => {
+        if (state.page.blocks) {
+          return state.page.blocks.map(b => {
+            const setting = mergeBlockToSettings(b)
+            return { ...setting, id: b.id, name: b.name, type: b.type }
+          })
+        }
+        return []
+      },
+    }),
   },
 
   methods: {

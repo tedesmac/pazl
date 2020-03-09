@@ -108,14 +108,22 @@ export const EditorMixin = {
   },
 
   data() {
-    return {
-      saving: false,
-    }
+    validators: []
   },
 
   props: {
     id: {
       type: Number,
+    },
+  },
+
+  methods: {
+    addValidator(validator) {
+      if (typeof validator === 'function') {
+        this.validators = [...this.validators, validator]
+      } else {
+        console.error('[EditorMixin] => validator must be a function')
+      }
     },
   },
 }
