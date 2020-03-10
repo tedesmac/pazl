@@ -1,3 +1,4 @@
+import json
 from puzzle.apps.page.models import Page
 from puzzle.apps.page.serializers import PageSerializer
 from puzzle.apps.page.views import PageDetailAPI, PageListAPI
@@ -15,6 +16,7 @@ def test_page_data_property():
     assert page.data == {}
     page.data = { 'test': 'test' }
     assert page._data == '{"test":"test"}'
+    assert isinstance(page.data, dict)
 
 
 @pytest.mark.django_db
@@ -132,6 +134,27 @@ def test_detail_get_object_does_not_exist(setup, rf):
 
 
 @pytest.mark.django_db
+def test_detail_put_data_property(setup, rf):
+    detail_view = setup['detail']
+    data = {
+        'blocks': [],
+        'style': {}
+    }
+    request = rf.put(
+        'puzzle/api/pages/1/',
+        {
+            'data': data
+        },
+        'application/json'
+    )
+    request.is_authenticated = True
+    response = detail_view(request, 1)
+    content = json.loads(response.content.decode('utf-8'))
+    print(content)
+    assert content['data'] == data
+
+
+@pytest.mark.django_db
 def test_detail_put_logged(setup, rf):
     detail_view = setup['detail']
     request = rf.put(
@@ -210,6 +233,27 @@ def test_list_get_not_logged(setup, rf):
     request.is_authenticated = False
     response = list_view(request)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_list_post_data_property(setup, rf):
+    data = {
+        'blocks': [],
+        'style': {},
+    }
+    list_view = setup['list']
+    request = rf.post(
+        'puzzle/api/pages/',
+        {
+            'name': 'test',
+            'data': data
+        },
+        'application/json'
+    )
+    request.is_authenticated = True
+    response = list_view(request)
+    content = json.loads(response.content.decode('utf-8'))
+    assert content['data'] == data
 
 
 @pytest.mark.django_db

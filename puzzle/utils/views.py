@@ -115,7 +115,6 @@ class ListAPIView(BaseAPIView):
     @method_decorator(private)
     def post(self, request):
         data = JSONParser().parse(request)
-        data['data'] = json.dumps(data.get('data', {}))
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
             try:
