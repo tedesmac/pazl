@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar backUrl="/puzzle/admin/pages" :saving="saving" @save="onSave">
+    <Topbar backUrl="/puzzle/admin/pages" @save="onSave">
       <Toggle @mode="onModeChange" />
     </Topbar>
 
@@ -277,72 +277,29 @@ export default {
     },
 
     onSave() {
-      this.saving = true
-
-      let data = {
-        data: {
-          blocks: this.blocks,
-        },
-        name: this.name,
-      }
-
-      if (this.description) {
-        data['description'] = this.description
-      }
-
-      if (this.slug) {
-        data['slug'] = this.slug
-      } else {
-        data['slug'] = Slug(this.name.toLowerCase())
-      }
-
-      if (this.id === 0) {
-        this.post(data)
-      } else {
-        data['id'] = this.id
-        this.put(data)
-      }
-    },
-
-    post(data) {
-      this.$api.pages
-        .post(data)
-        .then(newData => {
-          this.saving = false
-          console.log('[saved] =>', newData)
-          this.$router.push({ path: `/puzzle/editor/page?id=${newData.id}` })
+      this.$store.commit('editor/setSaving', true)
+      this.$store
+        .dispatch('page/savePage', this.id)
+        .then(data => {
+          if (data.id !== this.id) {
+            this.$router.push({
+              path: `/puzzle/editor/page?id=${data.id}`,
+            })
+          }
           this.$notify({
             group: 'messages',
             text: 'Page saved',
           })
+          this.$store.commit('editor/setSaving', false)
         })
-        .catch(() => {
-          this.saving = false
+        .catch(error => {
+          console.error('[Page Editor] =>', error)
           this.$notify({
             group: 'errors',
-            text: 'Unable to save, please try again later',
+            text: 'Unable to save page, please try again later',
           })
         })
-    },
-
-    put(data) {
-      this.$api.pages
-        .post(data)
-        .then(newData => {
-          this.saving = false
-          console.log('[saved] =>', newData)
-          this.$notify({
-            group: 'messages',
-            text: 'Page saved',
-          })
-        })
-        .catch(() => {
-          this.saving = false
-          this.$notify({
-            group: 'errors',
-            text: 'Unable to save, please try again later',
-          })
-        })
+      this.$store.commit('editor/setSaving', false)
     },
 
     removeBlock(id) {

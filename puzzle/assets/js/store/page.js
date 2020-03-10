@@ -1,4 +1,5 @@
-import Api from 'api'
+import Api from '@/api'
+import Slug from 'slug'
 
 export default {
   namespaced: true,
@@ -129,7 +130,40 @@ export default {
       }
     },
 
-    savePage(context, id) {},
+    savePage(context, id) {
+      const { state } = context
+      const data = {
+        data: {
+          blocks: state.blocks,
+          style: state.style,
+        },
+        description: state.description,
+        imager: state.image,
+        name: state.name,
+        slug: state.slug ? state.slug : Slug(state.name.toLowerCase()),
+      }
+      if (id) {
+        return Api.pages
+          .put({ ...data, id })
+          .then(data => {
+            return data
+          })
+          .catch(error => {
+            console.error('[pageStore.savePage].put =>', error)
+            return Promise.reject(error)
+          })
+      } else {
+        return Api.pages
+          .post(data)
+          .then(data => {
+            return data
+          })
+          .catch(error => {
+            console.error('[pageStore.savePage].put =>', error)
+            return Promise.reject(error)
+          })
+      }
+    },
 
     setupEntry(context, id) {
       Api.models
