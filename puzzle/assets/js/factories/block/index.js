@@ -113,11 +113,11 @@ const hydrateSettings = (block, settings) =>
         ...settings[key],
         id: block.id,
         name: key,
-        value: block[key],
+        value: block[key] ? block[key] : settings[key].value,
       }
     } else if (
-      typeof block[key] === 'object' &&
-      Object.keys(block[key]).length > 0
+      typeof settings[key] === 'object' &&
+      Object.keys(settings[key]).length > 0
     ) {
       acc[key] = hydrateSettings(
         {
