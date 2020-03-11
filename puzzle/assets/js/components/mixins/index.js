@@ -205,10 +205,7 @@ export const SettingMixin = {
 
   computed: {
     id() {
-      if (this.setting.id) {
-        return this.setting.id
-      }
-      return this.blockId
+      return this.setting.id
     },
 
     name() {
@@ -229,9 +226,5 @@ export const SettingMixin = {
         })
       },
     },
-
-    ...mapState({
-      blockId: state => state.editor.currentBlockId,
-    }),
   },
 }
