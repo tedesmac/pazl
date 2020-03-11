@@ -20,7 +20,7 @@
       <FontAwesomeIcon
         class="edit-icon"
         :icon="faEdit"
-        @click="onEditBlock(block.id, block.type)"
+        @click="onEditBlock(block)"
       />
     </div>
   </Draggable>

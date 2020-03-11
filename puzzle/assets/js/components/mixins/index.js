@@ -5,6 +5,7 @@ import Editor from '@/components/editor'
 import Sidebar from '@/components/editor/sidebar'
 import Topbar from '@/components/editor/topbar'
 import Workspace from '@/components/editor/workspace'
+import { mergeBlockToSettings } from '@/factories/block'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import Draggable from 'vuedraggable'
@@ -61,8 +62,10 @@ export const BlockContainerMixin = {
       this.mouseX = event.clientX
     },
 
-    onEditBlock(id, type) {
-      console.log('edit', id, type)
+    onEditBlock(block) {
+      const settings = mergeBlockToSettings(block)
+      this.$store.commit('editor/setBlockSettings', settings)
+      this.$modal.show('block-settings')
     },
 
     onEnd(event) {
