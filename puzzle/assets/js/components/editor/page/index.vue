@@ -252,7 +252,7 @@ export default {
 
     onEditBlock(block) {
       const settings = mergeBlockToSettings(block)
-      this.$store.commit('editor/setBlockSettings', { id: block.id, settings })
+      this.$store.commit('editor/setBlockSettings', settings)
       this.$modal.show('block-settings')
     },
 
