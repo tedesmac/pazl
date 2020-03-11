@@ -111,13 +111,21 @@ const hydrateSettings = (block, settings) =>
     if (isSetting(settingType)) {
       acc[key] = {
         ...settings[key],
+        id: block.id,
+        name: key,
         value: block[key],
       }
     } else if (
       typeof block[key] === 'object' &&
       Object.keys(block[key]).length > 0
     ) {
-      acc[key] = hydrateSettings(block[key], settings[key])
+      acc[key] = hydrateSettings(
+        {
+          ...block[key],
+          id: block.id,
+        },
+        settings[key]
+      )
     } else {
       acc[key] = settings[key]
     }
