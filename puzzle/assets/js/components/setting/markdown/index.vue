@@ -1,5 +1,5 @@
 <template>
-  <MDE :id="blockId" v-model="value" />
+  <MDE :id="id" v-model="value" />
 </template>
 
 <script>
