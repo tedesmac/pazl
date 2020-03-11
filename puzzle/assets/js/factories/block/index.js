@@ -44,11 +44,15 @@ const defaultBlock = {
 const block = source => deepMerge(defaultBlock, source)
 
 const blockSettingsConstructor = {
+  carousel: () =>
+    block({
+      data: {},
+    }),
+
   collection: () =>
     block({
       data: settings.collection(),
     }),
-
   container: () =>
     block({
       data: {
@@ -57,6 +61,11 @@ const blockSettingsConstructor = {
       style: {
         flexWrap: settings.option(['wrap', 'no-wrap'], 'wrap'),
       },
+    }),
+
+  feed: () =>
+    block({
+      data: {},
     }),
 
   html: () =>

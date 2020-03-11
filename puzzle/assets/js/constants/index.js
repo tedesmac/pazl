@@ -8,7 +8,8 @@ const common = {
 
 export const blockTypes = {
   ...common,
-  container: 'container',
+  carousel: 'carousel',
+  feed: 'feed',
   html: 'html',
   spacer: 'spacer',
 }

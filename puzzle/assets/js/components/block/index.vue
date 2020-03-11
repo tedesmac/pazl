@@ -9,39 +9,69 @@
 </template>
 
 <script>
+const carouselBlock = () =>
+  import(
+    /* webpackChunkName: 'carouselBlock' */
+    '@/components/block/carousel'
+  )
+const collectionBlock = () =>
+  import(
+    /* webpackChunkName: 'collectionBlock' */
+    '@/components/block/collection'
+  )
 const containerBlock = () =>
   import(
     /* webpackChunkName: 'containerBlock' */
-    'components/block/container'
+    '@/components/block/container'
+  )
+const feedBlock = () =>
+  import(
+    /* webpackChunkName: 'feedBlock' */
+    '@/components/block/feed'
   )
 const htmlBlock = () =>
   import(
     /* webpackChunkName: 'htmlBlock' */
-    'components/block/html'
+    '@/components/block/html'
   )
 const imageBlock = () =>
   import(
     /* webpackChunkName: 'imageBlock' */
-    'components/block/image'
+    '@/components/block/image'
   )
 const markdownBlock = () =>
   import(
     /* webpackChunkName: 'markdownBlock' */
-    'components/block/markdown'
+    '@/components/block/markdown'
+  )
+const spacerBlock = () =>
+  import(
+    /* webpackChunkName: 'spacerBlock' */
+    '@/components/block/spacer'
   )
 const stringBlock = () =>
   import(
     /* webpackChunkName: 'stringBlock' */
-    'components/block/string'
+    '@/components/block/string'
+  )
+const tableBlock = () =>
+  import(
+    /* webpackChunkName: 'tableBlock' */
+    '@/components/block/table'
   )
 
 export default {
   components: {
+    carouselBlock,
+    collectionBlock,
     containerBlock,
+    feedBlock,
     htmlBlock,
     imageBlock,
     markdownBlock,
+    spacerBlock,
     stringBlock,
+    tableBlock,
   },
 
   props: {
