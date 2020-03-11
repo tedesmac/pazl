@@ -18,6 +18,13 @@ export default {
     value: String,
   },
 
+  beforeDestroy() {
+    console.log('beforeDestroy')
+    this.mde.toTextArea()
+    this.mde = null
+    console.log(this.id, 'destroyed')
+  },
+
   mounted() {
     this.mde = new EasyMDE({
       element: document.getElementById(`mde_${this.id}`),
