@@ -4,12 +4,18 @@
 
     <Workspace class="entry-workspace">
       <div
-        v-for="(setting, index) in settings"
+        v-for="(block, index) in blocks"
         class="entry-block"
-        :key="setting.name"
+        :key="block.name"
       >
-        <label>{{ setting.name }} - {{ setting.type }}</label>
-        <Setting root="data" :setting="setting" :type="setting.type" />
+        <label>{{ block.name }} - {{ block.type }}</label>
+        <Setting
+          v-for="key in Object.keys(block.settings)"
+          root="data"
+          :key="`setting_${key}`"
+          :setting="block.settings[key]"
+          :type="block.settings[key].settingType"
+        />
       </div>
     </Workspace>
 
@@ -138,11 +144,14 @@ export default {
     },
 
     ...mapState({
-      settings: state => {
+      blocks: state => {
         if (state.page.blocks) {
           return state.page.blocks.map(b => {
-            const setting = mergeBlockToSettings(b)
-            return { ...setting, id: b.id, name: b.name, type: b.type }
+            const { data } = mergeBlockToSettings(b)
+            return {
+              ...b,
+              settings: data,
+            }
           })
         }
         return []
