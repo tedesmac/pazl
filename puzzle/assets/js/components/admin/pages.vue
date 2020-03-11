@@ -19,6 +19,7 @@
         :index="index"
         :key="`tree_page_${page.id}`"
         :name="page.name"
+        :published="page.published"
         @edit="onEdit(page.id)"
         @delete="onDeletePage(page.id)"
       >

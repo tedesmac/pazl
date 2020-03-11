@@ -5,7 +5,10 @@
     @click="onClick"
   >
     <div>
-      <p>{{ name }}</p>
+      <p>
+        {{ name }}
+        <FontAwesomeIcon v-if="published != null" :icon="publishedIcon" />
+      </p>
     </div>
 
     <div v-show="buttons">
@@ -29,7 +32,7 @@
 
 <script>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faAngleDown, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faEdit, faEye } from '@fortawesome/free-solid-svg-icons'
 
 export default {
   components: { FontAwesomeIcon },
@@ -50,6 +53,10 @@ export default {
       required: true,
     },
 
+    published: {
+      default: null,
+    },
+
     selectable: {
       type: Boolean,
       default: false,
@@ -57,6 +64,14 @@ export default {
   },
 
   computed: {
+    publishedIcon() {
+      if (this.published) {
+        return faEye
+      } else if (this.published === false) {
+        return faEdit
+      }
+    },
+
     style() {
       return {
         cursor: this.selectable ? 'pointer' : 'auto',

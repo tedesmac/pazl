@@ -12,6 +12,7 @@
         :index="index"
         :key="`entry_${entry.id}`"
         :name="entry.name"
+        :published="entry.published"
         @delete="onDelete(entry.id)"
         @edit="onEdit(entry.id)"
       >
