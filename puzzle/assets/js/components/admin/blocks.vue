@@ -11,7 +11,7 @@
     >
       <div class="is-full is-horizontal space-between">
         <h2>{{ model.name }} Blocks</h2>
-        <button class="is-cyan">New</button>
+        <button class="is-cyan" @click="onNewBlock(model.id)">New</button>
       </div>
 
       <div></div>
@@ -20,7 +20,7 @@
     <div class="section is-vertical">
       <div class="is-full is-horizontal space-between">
         <h2>Non Model Blocks</h2>
-        <button class="is-cyan">New</button>
+        <button class="is-cyan" @click="onNewBlock()">New</button>
       </div>
 
       <div></div>
@@ -41,6 +41,13 @@ export default {
   computed: mapState({
     models: state => state.admin.models,
   }),
+
+  methods: {
+    onNewBlock(id = 0) {
+      const querystring = id ? `?model=${id}` : ''
+      window.location = `/puzzle/editor/block${querystring}`
+    },
+  },
 
   created() {
     this.$api.blocks.get().then(data => {

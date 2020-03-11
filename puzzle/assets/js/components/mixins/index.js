@@ -5,7 +5,9 @@ import Editor from '@/components/editor'
 import Sidebar from '@/components/editor/sidebar'
 import Topbar from '@/components/editor/topbar'
 import Workspace from '@/components/editor/workspace'
-import { mergeBlockToSettings } from '@/factories/block'
+import blockFactory, { mergeBlockToSettings } from '@/factories/block'
+import EditorStore from '@/store/editor'
+import PageStore from '@/store/page'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import Draggable from 'vuedraggable'
@@ -58,6 +60,10 @@ export const BlockContainerMixin = {
   },
 
   methods: {
+    onClone(block) {
+      return blockFactory(block.type)
+    },
+
     onDragOver(event) {
       this.mouseX = event.clientX
     },
@@ -111,7 +117,9 @@ export const EditorMixin = {
   },
 
   data() {
-    validators: []
+    return {
+      validators: [],
+    }
   },
 
   props: {
@@ -128,6 +136,16 @@ export const EditorMixin = {
         console.error('[EditorMixin] => validator must be a function')
       }
     },
+  },
+
+  beforeDestroy() {
+    this.$store.unregisterModule('editor')
+    this.$store.unregisterModule('page')
+  },
+
+  created() {
+    this.$store.registerModule('editor', EditorStore)
+    this.$store.registerModule('page', PageStore)
   },
 }
 
