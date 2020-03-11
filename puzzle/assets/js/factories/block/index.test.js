@@ -4,13 +4,12 @@ import initBlock, { mergeBlockToSettings } from './index'
 describe('[initBlock]', () => {
   test('container', () => {
     const block = initBlock(T.container)
-    console.log(block)
-    expect(block.data).toBe(D.horizontal)
+    expect(block.data.direction).toBe(D.horizontal)
   })
 
   test('html', () => {
     const block = initBlock(T.html)
-    expect(block.data).toBe('')
+    expect(block.data.content).toBe('')
   })
 
   test('image', () => {
@@ -23,7 +22,7 @@ describe('[initBlock]', () => {
 
   test('markdown', () => {
     const block = initBlock(T.markdown)
-    expect(block.data).toBe('')
+    expect(block.data.content).toBe('')
   })
 
   test('spacer', () => {
@@ -33,12 +32,12 @@ describe('[initBlock]', () => {
 
   test('string', () => {
     const block = initBlock(T.string)
-    expect(block.data).toBe('')
+    expect(block.data.content).toBe('')
   })
 
   test('table', () => {
     const block = initBlock(T.table)
-    expect(block.data).toMatchObject([])
+    expect(block.data.content).toMatchObject([])
   })
 })
 
@@ -54,8 +53,8 @@ describe('[mergeBlockToSettings]', () => {
 
   test('markdown', () => {
     let block = initBlock(T.markdown)
-    block.data = '# Test'
+    block.data.content = '# Test'
     const blockSettings = mergeBlockToSettings(block)
-    expect(blockSettings.data.value).toBe(block.data)
+    expect(blockSettings.data.content.value).toBe(block.data.content)
   })
 })
