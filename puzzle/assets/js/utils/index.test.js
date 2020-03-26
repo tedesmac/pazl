@@ -1,4 +1,167 @@
-import { deepMerge, isAudio, isFile, isImage } from './index'
+import { buildMenu, deepMerge, isAudio, isFile, isImage } from './index'
+
+describe('[utils.buildMenu]', () => {
+  test('0 pages', () => {
+    const menu = buildMenu([], null)
+    expect(menu).toEqual({})
+  })
+
+  test('1 page no root', () => {
+    const pages = [
+      {
+        id: 1,
+        name: 'home',
+        path: '',
+        parent: null,
+      },
+    ]
+    const menu = buildMenu(pages, null)
+    expect(menu).toEqual({})
+  })
+
+  test('Only root', () => {
+    const pages = [
+      {
+        id: 1,
+        name: 'home',
+        path: '',
+        parent: null,
+      },
+    ]
+    const menu = buildMenu(pages, 1)
+    expect(menu).toEqual({
+      name: 'home',
+      path: '',
+      children: [],
+    })
+  })
+
+  test('Root and 1 page without parent', () => {
+    const pages = [
+      {
+        id: 1,
+        name: 'home',
+        path: '',
+        parent: null,
+      },
+      {
+        id: 2,
+        name: 'page',
+        path: '/page',
+        parent: null,
+      },
+    ]
+    const menu = buildMenu(pages, 1)
+    expect(menu).toEqual({
+      name: 'home',
+      path: '',
+      children: [],
+    })
+  })
+
+  test('Root and 1 children', () => {
+    const pages = [
+      {
+        id: 1,
+        name: 'home',
+        path: '',
+        parent: null,
+      },
+      {
+        id: 2,
+        name: 'page',
+        path: '/page',
+        parent: 1,
+      },
+    ]
+    const menu = buildMenu(pages, 1)
+    expect(menu).toEqual({
+      name: 'home',
+      path: '',
+      children: [
+        {
+          name: 'page',
+          path: '/page',
+          children: [],
+        },
+      ],
+    })
+  })
+
+  test('Complex menu', () => {
+    const pages = [
+      {
+        id: 1,
+        name: 'home',
+        path: '',
+        parent: null,
+      },
+      {
+        id: 2,
+        name: 'about',
+        path: '/about',
+        parent: 1,
+      },
+      {
+        id: 3,
+        name: 'contact',
+        path: '/contact',
+        parent: 1,
+      },
+      {
+        id: 4,
+        name: 'blog',
+        path: '/blog',
+        parent: 1,
+      },
+      {
+        id: 5,
+        name: 'Entry 1',
+        path: '/blog/entry-1',
+        parent: 4,
+      },
+      {
+        id: 6,
+        name: 'Entry 2',
+        path: '/blog/entry-2',
+        parent: 4,
+      },
+    ]
+    const menu = buildMenu(pages, 1)
+    expect(menu).toEqual({
+      name: 'home',
+      path: '',
+      children: [
+        {
+          name: 'about',
+          path: '/about',
+          children: [],
+        },
+        {
+          name: 'contact',
+          path: '/contact',
+          children: [],
+        },
+        {
+          name: 'blog',
+          path: '/blog',
+          children: [
+            {
+              name: 'Entry 1',
+              path: '/blog/entry-1',
+              children: [],
+            },
+            {
+              name: 'Entry 2',
+              path: '/blog/entry-2',
+              children: [],
+            },
+          ],
+        },
+      ],
+    })
+  })
+})
 
 describe('[utils.deepMerge]', () => {
   const base = { a: 'a' }

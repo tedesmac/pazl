@@ -10,6 +10,23 @@ const file_re = new RegExp(
 )
 const image_re = /^image\/(gif|jpeg|png|svg\+xml|webp)$/i
 
+export const buildMenu = (pages, rootId) => {
+  const root = pages.reduce((acc, page) => {
+    if (page.id === rootId) return page
+    return acc
+  }, null)
+  if (root == null) {
+    return {}
+  }
+  const nonRoot = pages.filter(page => page.id !== rootId)
+  const children = pages.filter(page => page.parent === rootId)
+  return {
+    name: root.name,
+    path: root.path,
+    children: children.map(page => buildMenu(nonRoot, page.id)),
+  }
+}
+
 export const deepMerge = (base, source) => {
   const baseKeys = Object.keys(base)
   const sourceKeys = Object.keys(source)
