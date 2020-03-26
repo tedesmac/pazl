@@ -75,7 +75,19 @@ const apiFactory = (url, methods = ['delete', 'get', 'post', 'put']) => {
   return api
 }
 
-const me = () => 'Not yet implemented'
+const me = {
+  get: () =>
+    Axios.get('me/')
+      .then(response => response.data)
+      .catch(error => {
+        console.error('[api.me.get] =>', error)
+        try {
+          return Promise.reject(error.response.data)
+        } catch {
+          return Promise.reject(error)
+        }
+      }),
+}
 
 const site = {
   get: () =>
