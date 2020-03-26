@@ -12,7 +12,7 @@
     </div>
 
     <div v-show="buttons">
-      <button class="is-yellow" v-popover:entry>
+      <button class="is-yellow" v-popover="{ name: popOverName }">
         <FontAwesomeIcon :icon="faAngleDown" />
       </button>
 
@@ -21,7 +21,7 @@
       </button>
     </div>
 
-    <popover name="entry" :width="110">
+    <popover :name="popOverName" :width="110">
       <div class="is-vertical">
         <slot name="actions" />
         <button class="is-red" @click="$emit('delete')">Delete</button>
@@ -64,6 +64,10 @@ export default {
   },
 
   computed: {
+    popOverName() {
+      return `${this.name}_${this.index}`
+    },
+
     publishedIcon() {
       if (this.published) {
         return faEye
