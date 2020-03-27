@@ -9,7 +9,11 @@ export default () =>
   new Vuex.Store({
     state: () => ({
       pages: [],
-      site: {},
+      site: {
+        description: '',
+        home_page: 0,
+        name: '',
+      },
       user: null,
     }),
 
@@ -49,7 +53,13 @@ export default () =>
     },
 
     getters: {
+      home_page: state => state.site.home_page,
+
       menu: state => buildMenu(state.pages, state.site.home_page),
+
+      siteDescription: state => state.site.description,
+
+      siteName: state => state.site.name,
     },
 
     mutations: {
