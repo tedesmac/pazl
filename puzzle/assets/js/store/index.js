@@ -59,7 +59,23 @@ export default () =>
 
       siteDescription: state => state.site.description,
 
+      siteLogo: state => state.site.logo,
+
       siteName: state => state.site.name,
+
+      userId: state => {
+        if (state.user == null) {
+          return 0
+        }
+        return state.user.id
+      },
+
+      username: state => {
+        if (state.user == null) {
+          return ''
+        }
+        return state.user.username
+      },
     },
 
     mutations: {
