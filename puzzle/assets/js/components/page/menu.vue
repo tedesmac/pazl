@@ -2,10 +2,28 @@
   <nav class="__puzzle_menu">
     <div>Home</div>
 
-    <div>Links</div>
+    <div>
+      <a v-for="page in pages" :href="page.path" :key="page.path">
+        {{ page.name }}
+      </a>
+    </div>
   </nav>
 </template>
 
 <script>
-// TODO: Use site store site.pageTree
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    pages() {
+      const { children } = this.menu
+      if (children) {
+        return children
+      }
+      return []
+    },
+
+    ...mapGetters(['menu']),
+  },
+}
 </script>
