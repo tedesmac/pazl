@@ -2,7 +2,7 @@
   <NotFound v-if="error" />
 
   <div v-else class="__puzzle_page">
-    <Menu :pages="menu" />
+    <Menu />
 
     <div v-if="entryId && modelBlock">Model Block</div>
 
@@ -33,7 +33,7 @@
 import Block from '@/components/block'
 import PageStore from '@/store/page'
 import Menu from './menu'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 const NotFound = () => import('@/components/404')
 
@@ -53,23 +53,7 @@ export default {
     error: state => state.page.error,
 
     modelBlock: state => state.page.modelBlock,
-
-    ...mapGetters(['menu']),
   }),
-
-  methods: {
-    fetchPages() {
-      this.$store.dispatch('fetchPages')
-    },
-
-    fetchSite() {
-      this.$store.dispatch('fetchSite')
-    },
-
-    fetchUser() {
-      this.$store.dispatch('fetchUser')
-    },
-  },
 
   beforeDestroy() {
     this.$store.unregisterModule('page')
@@ -85,9 +69,6 @@ export default {
       const path = window.location.pathname.substring(1)
       this.$store.dispatch('page/fetchPageByPath', path)
     }
-    this.fetchPages()
-    this.fetchSite()
-    this.fetchUser()
   },
 }
 </script>
