@@ -110,6 +110,8 @@ class ListAPIView(BaseAPIView):
 
         instances = self.model.objects.all().filter(**query)
         serializer = self.get_serializer(instances, many=True)
+        for d in serializer.data:
+            del d['data']
         return JsonResponse(serializer.data, safe=False)
 
     @method_decorator(private)
