@@ -1,12 +1,16 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__head">
-      <div class="logo" />
+      <div class="logo" :style="logoStyle" />
       <div class="info">
-        <a href="/"><b>Site name</b></a>
-        <router-link class="user" :to="{ name: 'settingsProfile' }"
-          >Username</router-link
-        >
+        <a href="/">
+          <b>
+            {{ siteName }}
+          </b>
+        </a>
+        <router-link class="user" :to="{ name: 'settingsProfile' }">
+          {{ username }}
+        </router-link>
       </div>
     </div>
 
@@ -43,11 +47,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
-  computed: mapState({
-    models: state => state.admin.models,
-  }),
+  computed: {
+    logoStyle() {
+      return {
+        backgroundImage: `url("${this.siteLogo}")`,
+      }
+    },
+
+    ...mapGetters(['siteLogo', 'siteName', 'username']),
+
+    ...mapState({
+      models: state => state.admin.models,
+    }),
+  },
 }
 </script>

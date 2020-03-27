@@ -2,11 +2,17 @@
   <div>
     <div class="section is-horizontal">
       <div class="form is-a-third is-vertical subsection">
-        <div class="logo-big" />
+        <div class="logo-big" :style="logoStyle" />
 
         <div class="field">
           <div class="justify-center">
-            <button class="is-cyan">Pick</button>
+            <button class="is-cyan" @click="onPickLogo">Pick</button>
+            <input
+              ref="file"
+              style="display: none"
+              type="file"
+              @change="onLogoSelected"
+            />
           </div>
         </div>
       </div>
@@ -33,32 +39,73 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       description: '',
+      logo: '',
       name: '',
     }
   },
 
+  computed: {
+    logoStyle() {
+      return {
+        backgroundImage: `url("${this.logo}")`,
+      }
+    },
+
+    ...mapGetters(['siteDescription', 'siteLogo', 'siteName']),
+  },
+
   methods: {
+    onLogoSelected() {
+      const file = this.$refs.file.files[0]
+      if (file) {
+        console.log(file)
+        // upload logo
+      }
+    },
+
+    onPickLogo() {
+      this.$refs.file.click()
+    },
+
     onSave() {
-      this.$api.site.put({
-        description: this.description,
-        name: this.name,
-      })
+      this.$api.site
+        .put({
+          description: this.description,
+          name: this.name,
+        })
+        .then(site => {
+          this.$store.commit('setSite', site)
+        })
+        .catch(error => {
+          console.error('[Site Settings] =>', error)
+        })
+    },
+  },
+
+  watch: {
+    siteDescription(value) {
+      this.description = value
+    },
+
+    siteLogo(value) {
+      this.logo = value
+    },
+
+    siteName(value) {
+      this.name = value
     },
   },
 
   mounted() {
-    this.$api.site
-      .get()
-      .then(response => {
-        const data = response.data
-        this.description = data.description
-        this.name = data.name
-      })
-      .catch(error => {})
+    this.description = this.siteDescription
+    this.logo = this.siteLogo
+    this.name = this.siteName
   },
 }
 </script>
