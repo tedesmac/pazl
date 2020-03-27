@@ -1,4 +1,3 @@
-from django import forms
 from django.conf import settings
 from django.core.files.images import ImageFile
 from django.http import JsonResponse
@@ -11,6 +10,7 @@ from pathlib import Path
 from puzzle.apps.file.models import Image
 from puzzle.apps.file.serializers import ImageSerializer
 from puzzle.utils.decorators import private
+from puzzle.utils.forms import FileForm, ImageForm
 from rest_framework.parsers import MultiPartParser
 from uuid import uuid4
 
@@ -41,22 +41,24 @@ def handle_image(f):
     return image
 
 
-class FileForm(forms.Form):
-    file = forms.FileField()
-
-
-class ImageForm(forms.Form):
-    file = forms.ImageField()
-
-
 class ImageDetailAPI:
-    pass
+
+    @method_decorator(private)
+    def delete(self, request, id):
+        pass
+
+    def get(self, request, id):
+        pass
+
+    @method_decorator(private)
+    def put(self, request, id):
+        pass
 
 
 class ImageListAPI(View):
 
     def get(self, request):
-        instance = Image.objects.all()
+        instance = Image.objects.all().order_by('-id')
         serializer = ImageSerializer(instance, many=True)
         return JsonResponse(serializer.data, safe=False)
 
