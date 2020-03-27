@@ -51,8 +51,11 @@
 }
 
 .logo-big {
-  background: $black-ter;
-  border-radius: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 1px solid $black-ter;
+  border-radius: 15px;
   height: 15em;
   width: 15em;
 }
@@ -94,7 +97,10 @@
   }
 
   .logo {
-    border: 2px solid $white-ter;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    //border: 2px solid $white-ter;
     border-radius: 10px;
     height: 4em;
     width: 4em;
