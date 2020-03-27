@@ -36,13 +36,9 @@ class ImageListAPI(View):
     def post(self, request):
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            file = request.FILES['file']
-            filename = file.name
-            image_file = handle_image(
-                request.FILES['file'],
-                str(uuid4()),
-                'img'
-            )
+            f = request.FILES['file']
+            filename = f.name
+            image_file = handle_image(f, str(uuid4()), 'img')
             image = Image.objects.create(image=image_file, name=filename)
             serializer = ImageSerializer(image)
             return JsonResponse(serializer.data)
