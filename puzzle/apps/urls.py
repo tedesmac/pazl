@@ -24,6 +24,8 @@ api_urlpatterns = [
     path('pages/<int:id>/', page_views.PageDetailAPI.as_view()),
     path('site/', site_views.SiteAPI.as_view()),
     path('token/', admin_views.Token.as_view()),
+    path('users/', user_views.UserListAPI.as_view()),
+    path('users/<int:pk>/', user_views.UserDetailAPI.as_view()),
 ]
 
 urlpatterns = [
