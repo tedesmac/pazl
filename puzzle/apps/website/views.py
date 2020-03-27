@@ -4,12 +4,13 @@ from django.views.generic import View
 from puzzle.apps.website.models import Website
 from puzzle.apps.website.serializers import WebsiteSerializer
 from puzzle.utils.decorators import private
+from puzzle.utils.filesystem import handle_image
+from puzzle.utils.forms import ImageForm
 from rest_framework.parsers import JSONParser
 
 
 class SiteAPI(View):
 
-    @method_decorator(private)
     def get(self, req):
         website, _ = Website.objects.get_or_create(id=1)
         serializer = WebsiteSerializer(website)
@@ -24,3 +25,24 @@ class SiteAPI(View):
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
+
+
+class SiteLogoAPI(View):
+
+    def get(self, request):
+        website, _ = Website.objects.get_or_create(id=1)
+        logo = website.logo_url
+        return JsonResponse({'logo': logo})
+
+    @method_decorator(private)
+    def put(self, request):
+        form = ImageForm(request.PUT, request.FILES)
+        if form.is_valid():
+            f = request.FILES['file']
+            image_file = handle_image(f, 'logo', 'site')
+            website, _ = Website.objects.get_or_create(id=1)
+            website.logo = image_file
+            website.save()
+            serializer = WebsiteSerializer(website)
+            return JsonResponse(serializer.data)
+        return JsonResponse({}, status=400)

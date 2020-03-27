@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+from os import path
 
 
 class Website(models.Model):
@@ -14,6 +16,15 @@ class Website(models.Model):
 
     class Meta:
         db_table = 'puzzle_website'
+
+    @property
+    def logo_url(self):
+        if self.logo:
+            _, tail = path.split(self.logo.name)
+            return '{}site/{}/'.format(settings.MEDIA_URL, tail)
+        return '{}img/favicon/favicon-310.png/'.format(
+            settings.STATIC_URL
+        )
 
     @staticmethod
     def get():
