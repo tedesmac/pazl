@@ -21,6 +21,8 @@
       </button>
     </div>
 
+    <slot name="buttons" />
+
     <popover :name="popOverName" :width="110">
       <div class="is-vertical">
         <slot name="actions" />
