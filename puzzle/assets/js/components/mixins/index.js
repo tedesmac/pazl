@@ -11,7 +11,7 @@ import PageStore from '@/store/page'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import Draggable from 'vuedraggable'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export const AdminListingMixin = {
   components: { Entry },
@@ -208,6 +208,18 @@ export const BlockEditorMixin = {
   mounted() {
     document.addEventListener('dragover', this.onDragOver)
     this.eventListener = true
+  },
+}
+
+export const LogoMixin = {
+  computed: {
+    logoStyle() {
+      return {
+        backgroundImage: `url("${this.siteLogo}")`,
+      }
+    },
+
+    ...mapGetters(['siteLogo']),
   },
 }
 

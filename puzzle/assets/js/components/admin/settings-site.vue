@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { isLogo } from '@/utils'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -64,8 +65,10 @@ export default {
     onLogoSelected() {
       const file = this.$refs.file.files[0]
       if (file) {
-        console.log(file)
-        // upload logo
+        const { type } = file
+        if (isLogo(type)) {
+          this.upload(file)
+        }
       }
     },
 
@@ -84,6 +87,21 @@ export default {
         })
         .catch(error => {
           console.error('[Site Settings] =>', error)
+        })
+    },
+
+    upload(file) {
+      const data = new FormData()
+      data.append('file', file)
+      this.$api.site.logo
+        .post(data, {
+          'Content-Type': 'multipart/form-data',
+        })
+        .then(data => {
+          this.$store.commit('setSiteLogo', data.logo)
+        })
+        .catch(error => {
+          console.error('[siteSettings.upload] =>', error)
         })
     },
   },

@@ -12,6 +12,7 @@ export default () =>
       site: {
         description: '',
         home_page: 0,
+        logo: '',
         name: '',
       },
       user: null,
@@ -79,6 +80,13 @@ export default () =>
     },
 
     mutations: {
+      setSiteLogo(state, logo) {
+        state.site = {
+          ...state.site,
+          logo,
+        }
+      },
+
       setPages(state, pages) {
         state.pages = pages
       },

@@ -1,3 +1,5 @@
+import Api from '@/api'
+
 const audio_re = /^audio\/(acc|(x-)?m(idi|peg)|o(gg|pus)|w(av|eba))$/i
 const file_re = new RegExp(
   '^application/(epub+zip|g?zip|msword|(pd|rt)f|vnd.' +
@@ -9,6 +11,7 @@ const file_re = new RegExp(
   'i'
 )
 const image_re = /^image\/(gif|jpeg|png|svg\+xml|webp)$/i
+const logo_re = /^image\/(png|svg\+xml)$/i
 
 export const buildMenu = (pages, rootId) => {
   const root = pages.reduce((acc, page) => {
@@ -76,6 +79,8 @@ export const isAudio = mime => audio_re.test(mime)
 export const isFile = mime => file_re.test(mime)
 
 export const isImage = mime => image_re.test(mime)
+
+export const isLogo = mime => logo_re.test(mime)
 
 export const routes = {
   admin: '/puzzle/admin/',
