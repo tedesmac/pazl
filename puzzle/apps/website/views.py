@@ -35,14 +35,16 @@ class SiteLogoAPI(View):
         return JsonResponse({'logo': logo})
 
     @method_decorator(private)
-    def put(self, request):
-        form = ImageForm(request.PUT, request.FILES)
+    def post(self, request):
+        form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             f = request.FILES['file']
             image_file = handle_image(f, 'logo', 'site')
             website, _ = Website.objects.get_or_create(id=1)
             website.logo = image_file
             website.save()
-            serializer = WebsiteSerializer(website)
-            return JsonResponse(serializer.data)
+            logo = website.logo_url
+            return JsonResponse({
+                'logo': logo
+            })
         return JsonResponse({}, status=400)
