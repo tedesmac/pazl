@@ -70,24 +70,23 @@ export default {
     fetchPageByPath(context, path) {
       Api.pages
         .get({ path, published: 1 })
-        .then(
-          pages =>
-            new Promise((resolve, reject) => {
-              const data = pages[0]
-              if (data !== undefined) {
-                context.commit('setBlocks', data.data.blocks)
-                context.commit('setDescription', data.description)
-                context.commit('setImage', data.image)
-                context.commit('setName', data.name)
-                context.commit('setSlug', data.slug)
-                context.commit('setStyle', data.data.style)
-              } else {
-                context.commit('setError', true)
-              }
+        .then(pages => {
+          const { id } = pages[0]
+          if (id != null) {
+            Api.pages.get({ id }).then(data => {
+              context.commit('setBlocks', data.data.blocks)
+              context.commit('setDescription', data.description)
+              context.commit('setImage', data.image)
+              context.commit('setName', data.name)
+              context.commit('setSlug', data.slug)
+              context.commit('setStyle', data.data.style)
             })
-        )
+          } else {
+            context.commit('setError', true)
+          }
+        })
         .catch(error => {
-          console.error('[pageStore.fetchPageById] =>', error)
+          console.error('[pageStore.fetchPageByPath] =>', error)
           return Promise.reject(error)
         })
     },
