@@ -104,6 +104,30 @@ const site = {
         console.error('[api.site.put] =>', error)
         return Promise.reject(error)
       }),
+  logo: {
+    get: () =>
+      Axios.get('site/logo/')
+        .then(response => response.data)
+        .catch(error => {
+          console.error('[api.site.logo.get]', error)
+          try {
+            return Promise.reject(error.response.data)
+          } catch {
+            return Promise.reject(error)
+          }
+        }),
+    post: (data = {}) =>
+      Axios.post('site/logo/', data)
+        .then(response => response.data)
+        .catch(error => {
+          console.error('[api.site.logo.put]', error)
+          try {
+            return Promise.reject(error.response.data)
+          } catch {
+            return Promise.reject(error)
+          }
+        }),
+  },
 }
 
 /**
