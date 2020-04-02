@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 import json
+from simple_history.models import HistoricalRecords
 
 
 class BaseModel(models.Model):
@@ -30,6 +31,7 @@ class BasePageModel(BaseModel):
     path = models.CharField(max_length=2000, blank=True, unique=True)
     published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100, blank=True)
+    history = HistoricalRecords(excluded_fields=['published'], inherit=True)
 
     class Meta:
         abstract = True

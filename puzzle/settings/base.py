@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # Third party apps
     'rest_framework',
+    'simple_history',
     'webpack_loader',
 
     # puzzle apps
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
     'puzzle.utils.middleware.PuzzleMiddleware',
 ]
 
