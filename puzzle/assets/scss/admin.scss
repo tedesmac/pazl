@@ -53,7 +53,7 @@
 .logo-big {
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   border: 1px solid $black-ter;
   border-radius: 15px;
   height: 15em;
@@ -99,7 +99,7 @@
   .logo {
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     //border: 2px solid $white-ter;
     border-radius: 10px;
     height: 4em;
