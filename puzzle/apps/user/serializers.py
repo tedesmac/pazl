@@ -3,7 +3,11 @@ from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
+    perms = serializers.JSONField(
+        read_only=True,
+        source='role_permissions'
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['id', 'perms', 'role', 'username']
