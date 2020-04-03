@@ -2,6 +2,8 @@
   <NotFound v-if="error" />
 
   <div v-else class="__puzzle_page">
+    <EditMenu v-if="user != null" />
+
     <Menu />
 
     <div v-if="entryId && modelBlock">Model Block</div>
@@ -32,13 +34,14 @@
 <script>
 import Block from '@/components/block'
 import PageStore from '@/store/page'
-import Menu from './menu'
 import { mapState } from 'vuex'
+import EditMenu from './edit-menu'
+import Menu from './menu'
 
 const NotFound = () => import('@/components/404')
 
 export default {
-  components: { Block, Menu, NotFound },
+  components: { Block, EditMenu, Menu, NotFound },
 
   props: {
     entryId: {
@@ -53,6 +56,8 @@ export default {
     error: state => state.page.error,
 
     modelBlock: state => state.page.modelBlock,
+
+    user: state => state.user,
   }),
 
   beforeDestroy() {
