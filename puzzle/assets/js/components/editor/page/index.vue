@@ -14,8 +14,9 @@
         <div
           v-for="(block, index) in pageBlocks"
           :block="block.id"
-          :class="{ block: edit }"
+          :class="{ block: edit, 'block-selected': block.id === selected }"
           :key="block.id"
+          @click.stop="onClickBlock(block)"
         >
           <div v-if="edit" class="type">{{ block.type }}</div>
 
@@ -25,13 +26,6 @@
             :index="index"
             :type="block.type"
           />
-
-          <FontAwesomeIcon
-            v-if="edit"
-            class="edit-icon"
-            :icon="faEdit"
-            @click="onEditBlock(block)"
-          />
         </div>
       </Draggable>
     </Workspace>
@@ -39,13 +33,20 @@
     <Sidebar>
       <div class="tab-list">
         <div
+          :class="['tab', { active: activeTab === 'Settings' }]"
+          @click="activeTab = 'Settings'"
+        >
+          Settings
+        </div>
+
+        <div class="separator" />
+
+        <div
           :class="['tab', { active: activeTab === 'Blocks' }]"
           @click="activeTab = 'Blocks'"
         >
           Blocks
         </div>
-
-        <div class="separator" />
 
         <div class="separator" />
 
@@ -56,6 +57,8 @@
           Page
         </div>
       </div>
+      <!-- Block Settings -->
+      <BlockSettings />
 
       <!-- Blocks -->
       <div v-if="activeTab === 'Blocks'">
@@ -98,10 +101,6 @@
       </div>
     </Sidebar>
 
-    <modal height="auto" name="block-settings" width="80%" :scrollable="true">
-      <BlockSettings />
-    </modal>
-
     <modal
       height="auto"
       name="image-select"
@@ -131,8 +130,6 @@ import blockFactory, { mergeBlockToSettings } from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 import { genId } from '@/utils'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Slug from 'slug'
 import { mapState } from 'vuex'
 import Toggle from './toggle'
@@ -160,7 +157,6 @@ export default {
   components: {
     Block,
     BlockSettings,
-    FontAwesomeIcon,
     ImageGallery,
     ImagePicker,
     Toggle,
@@ -240,9 +236,8 @@ export default {
 
     ...mapState({
       edit: state => state.editor.edit,
+      selected: state => state.editor.selected,
     }),
-
-    faEdit: () => faEdit,
   },
 
   methods: {
@@ -250,10 +245,13 @@ export default {
       this.imageSelectedCallbak = event.params.callback
     },
 
-    onEditBlock(block) {
-      const settings = mergeBlockToSettings(block)
-      this.$store.commit('editor/setBlockSettings', settings)
-      this.$modal.show('block-settings')
+    onClickBlock(block) {
+      if (this.edit) {
+        this.$store.commit('editor/setSelected', block.id)
+        const settings = mergeBlockToSettings(block)
+        this.$store.commit('editor/setBlockSettings', settings)
+        this.activeTab = 'Settings'
+      }
     },
 
     onClone(block) {

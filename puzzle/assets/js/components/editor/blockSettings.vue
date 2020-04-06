@@ -1,47 +1,32 @@
 <template>
   <div>
-    <div class="tab-list">
-      <div
-        :class="['tab', { 'tab-active': activeTab === 'Block' }]"
-        @click="activeTab = 'Block'"
-      >
-        Block
-      </div>
+    <Collapsible
+      v-for="key in Object.keys(dataSettings)"
+      :key="`data_setting_${key}`"
+      :string="key"
+    />
 
-      <div class="separator" />
+    <hr v-if="dataSettings.length" />
 
-      <div
-        :class="['tab', { 'tab-active': activeTab === 'Style' }]"
-        @click="activeTab = 'Style'"
-      >
-        Style
-      </div>
-    </div>
-
-    <div v-if="activeTab === 'Block'" class="setting-list">
+    <Collapsible
+      v-for="key in Object.keys(styleSettings)"
+      :key="`style_setting_category_${key}`"
+      :string="key"
+    >
       <Setting
-        v-for="setting in dataSettings"
-        root="data"
-        :key="setting.name"
-        :setting="setting"
-        :type="setting.settingType"
-      />
-    </div>
-
-    <div v-else class="setting-list">
-      <Setting
-        v-for="setting in styleSettings"
+        v-for="sk in Object.keys(styleSettings[key])"
         root="style"
-        :key="setting.name"
-        :setting="setting"
-        :type="setting.settingType"
+        :key="`style_setting_${key}_${sk}`"
+        :setting="styleSettings[key][sk]"
+        :type="styleSettings[key][sk].settingType"
       />
-    </div>
+    </Collapsible>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Collapsible from './collapsible'
 
 const Setting = () =>
   import(
@@ -50,7 +35,7 @@ const Setting = () =>
   )
 
 export default {
-  components: { Setting },
+  components: { Collapsible, Setting },
 
   data() {
     return {
@@ -61,30 +46,36 @@ export default {
   computed: mapState({
     dataSettings: state => {
       const { data } = state.editor.blockSettings
-      return Object.keys(data).reduce(
-        (acc, k) => [
-          ...acc,
-          {
-            ...data[k],
-            name: k,
-          },
-        ],
-        []
-      )
+      return Object.keys(data).reduce((acc, key) => {
+        const setting = data[key]
+        const { sidebarSetting } = setting
+        if (sidebarSetting) {
+          acc[key] = setting
+        }
+        return acc
+      }, {})
     },
 
     styleSettings: state => {
       const { style } = state.editor.blockSettings
-      return Object.keys(style).reduce(
-        (acc, k) => [
-          ...acc,
-          {
-            ...style[k],
-            name: k,
-          },
-        ],
-        []
-      )
+      return Object.keys(style).reduce((acc, key) => {
+        const setting = style[key]
+        const { settingCategory } = setting
+        if (settingCategory) {
+          if (settingCategory in acc) {
+            acc[settingCategory] = [...acc[settingCategory], setting]
+          } else {
+            acc[settingCategory] = [setting]
+          }
+        } else {
+          if ('Other' in acc) {
+            acc['Other'] = [...acc['Other'], setting]
+          } else {
+            acc['Other'] = [setting]
+          }
+        }
+        return acc
+      }, {})
     },
   }),
 }

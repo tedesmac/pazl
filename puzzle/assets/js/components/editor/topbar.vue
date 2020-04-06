@@ -43,7 +43,7 @@ export default {
   props: {
     backUrl: {
       type: String,
-      default: '/puzzle/admin/',
+      default: '/pazl/admin/',
     },
   },
 
