@@ -14,7 +14,7 @@ module.exports = [
       chunkFilename: '[name].bundle.js',
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'puzzle/assets/bundles/js'),
-      publicPath: '/puzzle/static/bundles/js/',
+      publicPath: '/pazl/static/bundles/js/',
     },
     resolve: {
       alias: {

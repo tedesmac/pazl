@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar backUrl="/puzzle/admin/models/" @save="onSave" />
+    <Topbar backUrl="/pazl/admin/models/" @save="onSave" />
 
     <Sidebar>
       <Draggable

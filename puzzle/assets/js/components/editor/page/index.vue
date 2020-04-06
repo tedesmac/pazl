@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar backUrl="/puzzle/admin/pages" @save="onSave">
+    <Topbar backUrl="/pazl/admin/pages" @save="onSave">
       <Toggle @mode="onModeChange" />
     </Topbar>
 

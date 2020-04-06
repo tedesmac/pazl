@@ -30,14 +30,15 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('puzzle/', admin_views.root),
-    re_path('^puzzle/admin/(.*)?$', admin_views.admin, name='admin'),
-    path('puzzle/api/', include(api_urlpatterns)),
-    re_path('^puzzle/editor/(.*)?$', editor_views.editor, name='editor'),
-    re_path(r'^puzzle/media/(?P<path>.*)$', serve, {
+    path('pazl/', admin_views.root),
+    re_path('^pazl/admin/(.*)?$', admin_views.admin, name='admin'),
+    path('pazl/api/', include(api_urlpatterns)),
+    re_path('^pazl/editor/(.*)?$', editor_views.editor, name='editor'),
+    re_path(r'^pazl/media/(?P<path>.*)$', serve, {
         'document_root': settings.MEDIA_ROOT,
     }),
-    path('puzzle/login/', admin_views.Login.as_view(), name='login'),
-    path('puzzle/logout/', admin_views.Logout.as_view(), name='logout'),
-    re_path('^(?P<path>.*)?/?$', page_views.page, name='page'),
+    path('pazl/login/', admin_views.Login.as_view(), name='login'),
+    path('pazl/logout/', admin_views.Logout.as_view(), name='logout'),
+    path('', page_views.home_page),
+    re_path('^(?P<path>.*)?/$', page_views.page, name='page'),
 ]

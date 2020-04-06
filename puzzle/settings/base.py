@@ -147,14 +147,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/puzzle/static/'
+STATIC_URL = '/pazl/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'assets'),
 ]
 
 # Media files
 
-MEDIA_URL = '/puzzle/media/'
+MEDIA_URL = '/pazl/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 

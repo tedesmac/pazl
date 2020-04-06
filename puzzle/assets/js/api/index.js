@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-Axios.defaults.baseURL = '/puzzle/api/'
+Axios.defaults.baseURL = '/pazl/api/'
 Axios.defaults.withCredentials = true
 
 const TOKEN_NAME = 'puzzle_token'

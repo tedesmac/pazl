@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar :backUrl="`/puzzle/admin/entries/${modelId}`" @save="onSave" />
+    <Topbar :backUrl="`/pazl/admin/entries/${modelId}`" @save="onSave" />
 
     <Workspace class="entry-workspace">
       <div

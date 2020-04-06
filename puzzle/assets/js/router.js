@@ -111,7 +111,7 @@ const routes = [
   // Admin
   {
     component: Admin,
-    path: '/puzzle/admin',
+    path: '/pazl/admin',
     name: 'admin',
     children: [
       {
@@ -167,7 +167,7 @@ const routes = [
   // Editor
   {
     component: BlockEditor,
-    path: '/puzzle/editor/block',
+    path: '/pazl/editor/block',
     props: route => ({
       id: Number(route.query.id) || 0,
       modelId: Number(route.query.model) || 0,
@@ -175,7 +175,7 @@ const routes = [
   },
   {
     component: EntryEditor,
-    path: '/puzzle/editor/entry',
+    path: '/pazl/editor/entry',
     props: route => ({
       id: Number(route.query.id) || 0,
       modelId: Number(route.query.model) || 0,
@@ -183,14 +183,14 @@ const routes = [
   },
   {
     component: ModelEditor,
-    path: '/puzzle/editor/model',
+    path: '/pazl/editor/model',
     props: route => ({
       id: Number(route.query.id) || 0,
     }),
   },
   {
     component: PageEditor,
-    path: '/puzzle/editor/page',
+    path: '/pazl/editor/page',
     props: route => ({
       id: Number(route.query.id) || 0,
     }),
@@ -198,13 +198,13 @@ const routes = [
   // Login
   {
     component: Login,
-    path: '/puzzle/login',
+    path: '/pazl/login',
     name: 'login',
   },
   // Other
   {
     component: NotFound,
-    path: '/puzzle/*',
+    path: '/pazl/*',
     name: 'notFound',
     props: {
       admin: true,

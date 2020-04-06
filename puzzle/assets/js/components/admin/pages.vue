@@ -24,7 +24,9 @@
         @delete="onDeletePage(page.id)"
       >
         <template #actions>
-          <button>Set Parent</button>
+          <button @click="onSetParent(page.id)">
+            Set Parent
+          </button>
           <button
             class="is-yellow"
             @click="onPublish(page.id, !page.published)"
@@ -47,7 +49,11 @@
           :name="page.name"
           :selectable="true"
           @selected="onPageSelected(page.id)"
-        />
+        >
+          <template #buttons>
+            <button @click.stop="console.log('expandTree')">-X</button>
+          </template>
+        </Entry>
       </div>
     </modal>
   </div>
@@ -109,11 +115,11 @@ export default {
     },
 
     onEdit(id) {
-      window.location = `/puzzle/editor/page?id=${id}`
+      window.location = `/pazl/editor/page?id=${id}`
     },
 
     onNew() {
-      window.location = '/puzzle/editor/page/'
+      window.location = '/pazl/editor/page/'
     },
 
     onOpenSelectPage() {
@@ -137,6 +143,10 @@ export default {
       this.$api.pages.put({ id, published }).then(page => {
         this.pages = this.pages.map(p => (p.id === page.id ? page : p))
       })
+    },
+
+    onSetParent(id) {
+      console.log('set parent', id)
     },
   },
 

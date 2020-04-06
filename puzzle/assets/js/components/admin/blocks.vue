@@ -45,7 +45,7 @@ export default {
   methods: {
     onNewBlock(id = 0) {
       const querystring = id ? `?model=${id}` : ''
-      window.location = `/puzzle/editor/block${querystring}`
+      window.location = `/pazl/editor/block${querystring}`
     },
   },
 

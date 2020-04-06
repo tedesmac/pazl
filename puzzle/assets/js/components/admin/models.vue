@@ -47,11 +47,11 @@ export default {
     },
 
     onEdit(id) {
-      window.location = `/puzzle/editor/model?id=${id}`
+      window.location = `/pazl/editor/model?id=${id}`
     },
 
     onNewModel() {
-      window.location = '/puzzle/editor/model/'
+      window.location = '/pazl/editor/model/'
     },
   },
 }
