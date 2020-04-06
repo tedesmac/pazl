@@ -17,23 +17,27 @@ const numberedUnitEval = (val, unit) => {
 }
 
 const defaultStyle = {
-  background: settings.color('#fff'),
-  color: settings.color(),
-  height: settings.number(0, ['em', '%', 'px']),
+  background: settings.color('#fff', { settingCategory: 'color' }),
+  color: settings.color('#000', { settingCategory: 'color' }),
+  height: settings.number(0, ['em', '%', 'px'], null, {
+    settingCategory: 'size',
+  }),
   flexGrow: settings.number(),
   margin: settings.multinumber(
     'auto',
     ['bottom', 'left', 'right', 'top'],
     ['em', '%', 'px'],
-    numberedUnitEval
+    numberedUnitEval,
+    { settingCategory: 'size' }
   ),
   padding: settings.multinumber(
     'auto',
     ['bottom', 'left', 'right', 'top'],
     ['auto', 'em', '%', 'px'],
-    numberedUnitEval
+    numberedUnitEval,
+    { settingCategory: 'size' }
   ),
-  width: settings.number(0, ['em', '%', 'px']),
+  width: settings.number(0, ['em', '%', 'px'], { settingCategory: 'size' }),
 }
 
 const defaultBlock = {

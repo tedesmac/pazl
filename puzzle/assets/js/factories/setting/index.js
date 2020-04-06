@@ -16,40 +16,50 @@ const settingFactory = (type, args = {}) => {
 }
 
 export default {
-  code: () => settingFactory(T.code, { value: '' }),
+  code: (args = {}) => settingFactory(T.code, { value: '', ...args }),
 
-  collection: () =>
+  collection: (args = {}) =>
     settingFactory(T.collection, {
       value: 'entry',
       options: ['entry', 'image'],
+      ...args,
     }),
 
-  color: (value = '#000') => settingFactory(T.color, { value }),
+  color: (value = '#000', args = {}) =>
+    settingFactory(T.color, { value, ...args }),
 
-  date: (value = new Date().toISOString()) => settingFactory(T.date, { value }),
+  date: (value = new Date().toISOString(), args = {}) =>
+    settingFactory(T.date, { value, ...args }),
 
-  embed: () => settingFactory(T.embed, { value: '' }),
+  embed: (args = {}) => settingFactory(T.embed, { value: '', ...args }),
 
-  image: () => settingFactory(T.image, { value: '' }),
+  image: (args = {}) => settingFactory(T.image, { value: '', ...args }),
 
-  markdown: () => settingFactory(T.markdown, { value: '' }),
+  markdown: (args = {}) => settingFactory(T.markdown, { value: '', ...args }),
 
-  multinumber: (value = 0, children = [], units = [], parse = null) =>
+  multinumber: (
+    value = 0,
+    children = [],
+    units = [],
+    parse = null,
+    args = {}
+  ) =>
     settingFactory(T.multinumber, {
       global: true,
       value,
       children,
       units,
       parse,
+      ...args,
     }),
 
-  number: (value = 0, units = [], parse = null) =>
-    settingFactory(T.number, { value, units, parse }),
+  number: (value = 0, units = [], parse = null, args = {}) =>
+    settingFactory(T.number, { value, units, parse, ...args }),
 
-  option: (options = []) =>
-    settingFactory(T.option, { value: options[0], options }),
+  option: (options = [], args = {}) =>
+    settingFactory(T.option, { value: options[0], options, ...args }),
 
-  string: () => settingFactory(T.string, { value: '' }),
+  string: (args = {}) => settingFactory(T.string, { value: '', ...args }),
 
-  table: () => settingFactory(T.table, { value: [] }),
+  table: (args = {}) => settingFactory(T.table, { value: [], ...args }),
 }
