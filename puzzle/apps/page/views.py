@@ -10,6 +10,10 @@ import re
 entry_re = re.compile(r'^[^/]+\/(\d+)\/[^/]+\/$')
 
 
+def home_page(request):
+    return page(request, '')
+
+
 def page(request, path):
     host = 'http://{}'.format(request.get_host())
     match = entry_re.match(path)
