@@ -112,10 +112,6 @@ export default {
       return blocks[index]
     },
 
-    edit() {
-      return this.$store.editor ? this.$store.editor.edit : false
-    },
-
     id() {
       return this.$attrs.block
     },
