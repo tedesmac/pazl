@@ -5,7 +5,12 @@ export default {
     blockSettings: { data: {}, style: {} },
     edit: true,
     saving: false,
+    selected: '',
   }),
+
+  getters: {
+    selected: state => state.selected,
+  },
 
   mutations: {
     setBlockSettings(state, settings) {
@@ -18,6 +23,10 @@ export default {
 
     setSaving(state, value) {
       state.saving = value
+    },
+
+    setSelected(state, selected) {
+      state.selected = selected
     },
   },
 }
