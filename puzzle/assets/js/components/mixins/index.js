@@ -277,5 +277,37 @@ export const SetterMixin = {
         this.$store.commit('page/setBlock', block)
       },
     },
+
+    blockData: {
+      get() {
+        return this.block.data
+      },
+
+      set(value) {
+        this.block = {
+          ...this.block,
+          data: {
+            ...this.block.data,
+            ...value,
+          },
+        }
+      },
+    },
+
+    style: {
+      get() {
+        return this.block.style
+      },
+
+      set(value) {
+        this.block = {
+          ...this.block,
+          style: {
+            ...this.block.style,
+            ...value,
+          },
+        }
+      },
+    },
   },
 }
