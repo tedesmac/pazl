@@ -256,6 +256,14 @@ body {
   border-radius: 5px;
   margin: 0.5em 0.2em;
   padding: 0.5em;
+
+  hr {
+    border: 1px solid $grey;
+  }
+
+  label {
+    font-size: 0.8rem;
+  }
 }
 
 .setting-list {
