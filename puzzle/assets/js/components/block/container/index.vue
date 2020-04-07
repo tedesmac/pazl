@@ -10,18 +10,13 @@
     <div
       v-for="(block, index) in blocks"
       :block="block.id"
-      :class="{ block: edit }"
+      :class="{ block: edit, 'block-selected': block.id === selected }"
       :key="block.id"
+      @click.stop="onClickBlock(block)"
     >
       <div class="type">{{ block.type }}</div>
 
       <Block :block="block.id" :index="index" :parent="id" :type="block.type" />
-
-      <FontAwesomeIcon
-        class="edit-icon"
-        :icon="faEdit"
-        @click="onEditBlock(block)"
-      />
     </div>
   </Draggable>
 
@@ -66,8 +61,17 @@ export default {
       }
     },
 
-    direction() {
-      return this.data.direction
+    direction: {
+      get() {
+        return this.data.direction
+      },
+
+      set(direction) {
+        this.data = {
+          ...this.data,
+          direction,
+        }
+      },
     },
 
     id() {
