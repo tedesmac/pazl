@@ -1,5 +1,5 @@
 <template>
-  <component class="setting" :block="block" :is="component" />
+  <component class="setting" :id="block" :is="component" />
 </template>
 
 <script>
