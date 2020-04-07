@@ -31,14 +31,32 @@ export const BlockMixin = {
   },
 
   computed: {
-    data() {
-      const { data = {} } = this.block
-      return data
+    data: {
+      get() {
+        const { data = {} } = this.block
+        return data
+      },
+
+      set(value) {
+        this.$store.commit('page/setBlock', {
+          ...this.block,
+          data: { ...this.block.data, ...value },
+        })
+      },
     },
 
-    style() {
-      const { style = {} } = this.block
-      return style
+    style: {
+      get() {
+        const { style = {} } = this.block
+        return style
+      },
+
+      set(value) {
+        this.$store.commit('page/setBlock', {
+          ...this.block,
+          style: { ...this.block.style, ...value },
+        })
+      },
     },
 
     ...mapState({
