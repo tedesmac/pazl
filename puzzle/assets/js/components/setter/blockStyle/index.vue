@@ -1,5 +1,5 @@
 <template>
   <div>
-    Not implemented
+    No implemented
   </div>
 </template>

@@ -2,19 +2,19 @@ export default {
   namespaced: true,
 
   state: () => ({
-    blockSettings: { data: {}, style: {} },
+    currentTab: '',
     edit: true,
     saving: false,
     selected: '',
   }),
 
-  getters: {
-    selected: state => state.selected,
-  },
-
   mutations: {
     setBlockSettings(state, settings) {
       state.blockSettings = settings
+    },
+
+    setCurrentTab(state, tab) {
+      state.currentTab = tab
     },
 
     setEdit(state, value) {

@@ -77,7 +77,6 @@
 
 <script>
 import { BlockEditorMixin } from '@/components/mixins'
-import Setting from '@/components/setting'
 import { modelTypes } from '@/constants'
 import blockFactory from '@/factories/block'
 import EditorStore from '@/store/editor'
@@ -87,8 +86,6 @@ const defaultBlocks = Object.keys(modelTypes).map(type => ({ type }))
 
 export default {
   mixins: [BlockEditorMixin],
-
-  components: { Setting },
 
   data() {
     return {

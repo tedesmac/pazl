@@ -1,176 +1,27 @@
-import { direction, settingTypes as T } from '@/constants'
-import settings, { isSetting } from '@/factories/setting'
-import { deepMerge, genId } from '@/utils'
+import { genId } from '@/utils'
 
-const directions = Object.keys(direction)
-
-const addFontSize = (obj = {}) => ({
-  fontSize: settings.number('1', ['em', 'px']),
-  ...obj,
-})
-
-const numberedUnitEval = (val, unit) => {
-  if (unit === 'auto') {
-    return unit
-  }
-  return `${val}${unit}`
-}
-
-const defaultStyle = {
-  background: settings.color('#fff', { settingCategory: 'color' }),
-  color: settings.color('#000', { settingCategory: 'color' }),
-  height: settings.number(0, ['em', '%', 'px'], null, {
-    settingCategory: 'size',
-  }),
-  flexGrow: settings.number(),
-  margin: settings.multinumber(
-    'auto',
-    ['bottom', 'left', 'right', 'top'],
-    ['em', '%', 'px'],
-    numberedUnitEval,
-    { settingCategory: 'size' }
-  ),
-  padding: settings.multinumber(
-    'auto',
-    ['bottom', 'left', 'right', 'top'],
-    ['auto', 'em', '%', 'px'],
-    numberedUnitEval,
-    { settingCategory: 'size' }
-  ),
-  width: settings.number(0, ['em', '%', 'px'], { settingCategory: 'size' }),
-}
-
-const defaultBlock = {
-  data: {},
-  style: defaultStyle,
-}
-
-const block = source => deepMerge(defaultBlock, source)
-
-const blockSettingsConstructor = {
-  carousel: () =>
-    block({
-      data: {},
-    }),
-
-  collection: () =>
-    block({
-      data: settings.collection(),
-    }),
-  container: () =>
-    block({
-      data: {
-        direction: settings.option(directions, direction.horizontal),
-      },
-      style: {
-        flexWrap: settings.option(['wrap', 'no-wrap'], 'wrap'),
-      },
-    }),
-
-  feed: () =>
-    block({
-      data: {},
-    }),
-
-  html: () =>
-    block({
-      data: {
-        content: settings.code(),
-      },
-    }),
-
-  image: () =>
-    block({
-      data: {
-        alt: settings.string(),
-        src: settings.image(),
-      },
-    }),
-
-  markdown: () =>
-    block({
-      data: {
-        content: settings.markdown(),
-      },
-      style: {
-        fontSize: settings.number(1, ['em', 'px']),
-      },
-    }),
-
-  spacer: () => ({
-    style: {
-      flexGrow: settings.number(),
-    },
-  }),
-
-  string: () =>
-    block({
-      data: {
-        content: settings.string(),
-      },
-    }),
-
-  table: () =>
-    block({
-      data: {
-        content: settings.table(),
-      },
-    }),
-}
-
-const hydrateSettings = (block, settings) =>
-  Object.keys(settings).reduce((acc, key) => {
-    const { settingType } = settings[key]
-    if (isSetting(settingType)) {
-      acc[key] = {
-        ...settings[key],
-        id: block.id,
-        name: key,
-        value: block[key] ? block[key] : settings[key].value,
-      }
-    } else if (
-      typeof settings[key] === 'object' &&
-      Object.keys(settings[key]).length > 0
-    ) {
-      acc[key] = hydrateSettings(
-        {
-          ...block[key],
-          id: block.id,
-        },
-        settings[key]
-      )
-    } else {
-      acc[key] = settings[key]
-    }
-    return acc
-  }, {})
-
-export const mergeBlockToSettings = block =>
-  hydrateSettings(block, blockSettingsConstructor[block.type]())
-
-const settingsToBlock = object =>
-  Object.keys(object).reduce((acc, key) => {
-    const current = object[key]
-    const { settingType } = current
-    if (isSetting(settingType)) {
-      acc[key] = current.value
-    } else if (
-      typeof object[key] === 'object' &&
-      Object.keys(current).length > 0
-    ) {
-      if (key === 'style') {
-        acc[key] = {}
-      } else {
-        acc[key] = settingsToBlock(current)
-      }
-    } else {
-      acc[key] = current
-    }
-    return acc
-  }, {})
-
-export default type => ({
-  ...settingsToBlock(blockSettingsConstructor[type]()),
+const block = (type, setters = []) => ({
   id: genId(),
+  data: {},
+  mobileStyle: {},
+  style: {},
+  setters,
   type,
 })
+
+const blockFactories = {
+  container: () => block('container', ['container']),
+
+  markdown: () => block('markdown', ['fontStyle']),
+
+  string: () => block('string', ['fontStyle']),
+
+  text: () => block('text', ['fontStyle']),
+}
+
+export default type => {
+  if (type in blockFactories) {
+    return blockFactories[type]()
+  }
+  return block(type)
+}

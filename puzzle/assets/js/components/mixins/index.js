@@ -32,12 +32,24 @@ export const BlockMixin = {
 
   computed: {
     data() {
-      return this.block.data
+      const { data = {} } = this.block
+      return data
     },
 
     style() {
-      return this.block.style
+      const { style = {} } = this.block
+      return style
     },
+
+    ...mapState({
+      edit: state => {
+        const { editor } = state
+        if (editor && editor.edit) {
+          return editor.edit
+        }
+        return false
+      },
+    }),
   },
 }
 
@@ -60,18 +72,19 @@ export const BlockContainerMixin = {
   },
 
   methods: {
+    onClickBlock(block) {
+      if (this.edit) {
+        this.$store.commit('editor/setSelected', block.id)
+        this.$store.commit('editor/setCurrentTab')
+      }
+    },
+
     onClone(block) {
       return blockFactory(block.type)
     },
 
     onDragOver(event) {
       this.mouseX = event.clientX
-    },
-
-    onEditBlock(block) {
-      const settings = mergeBlockToSettings(block)
-      this.$store.commit('editor/setBlockSettings', settings)
-      this.$modal.show('block-settings')
     },
 
     onEnd(event) {
@@ -225,39 +238,9 @@ export const LogoMixin = {
 
 export const SettingMixin = {
   props: {
-    root: {
+    block: {
       type: String,
       required: true,
-    },
-
-    setting: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  computed: {
-    id() {
-      return this.setting.id
-    },
-
-    name() {
-      return this.setting.name
-    },
-
-    value: {
-      get() {
-        return this.setting.value
-      },
-
-      set(value) {
-        this.$store.commit('page/setBlockSetting', {
-          id: this.id,
-          name: this.name,
-          root: this.root,
-          value,
-        })
-      },
     },
   },
 }

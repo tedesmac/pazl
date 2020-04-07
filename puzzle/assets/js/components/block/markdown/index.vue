@@ -13,7 +13,14 @@ export default {
 
   computed: {
     html() {
-      return md.render(this.data.content)
+      return md.render(this.markdown)
+    },
+
+    markdown() {
+      if (this.data.markdown) {
+        return this.data.markdown
+      }
+      return ''
     },
   },
 }

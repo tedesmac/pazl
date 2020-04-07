@@ -1,26 +1,13 @@
 <template>
   <div>
-    <Collapsible
-      v-for="key in Object.keys(dataSettings)"
-      :key="`data_setting_${key}`"
-      :string="key"
+    <Setter
+      v-for="setter in uniqueSetters"
+      :block="block"
+      :key="`block_setting_${setter}`"
+      :type="setter"
     />
 
-    <hr v-if="dataSettings.length" />
-
-    <Collapsible
-      v-for="key in Object.keys(styleSettings)"
-      :key="`style_setting_category_${key}`"
-      :string="key"
-    >
-      <Setting
-        v-for="sk in Object.keys(styleSettings[key])"
-        root="style"
-        :key="`style_setting_${key}_${sk}`"
-        :setting="styleSettings[key][sk]"
-        :type="styleSettings[key][sk].settingType"
-      />
-    </Collapsible>
+    <Setter type="blockStyle" :block="block" />
   </div>
 </template>
 
@@ -28,54 +15,30 @@
 import { mapState } from 'vuex'
 import Collapsible from './collapsible'
 
-const Setting = () =>
+const Setter = () =>
   import(
-    /* webpackChunkName: 'setting' */
-    '@/components/setting'
+    /* webpackChunkName: 'setter' */
+    '@/components/setter'
   )
 
 export default {
-  components: { Collapsible, Setting },
-
-  data() {
-    return {
-      activeTab: 'Block',
-    }
-  },
+  components: { Collapsible, Setter },
 
   computed: mapState({
-    dataSettings: state => {
-      const { data } = state.editor.blockSettings
-      return Object.keys(data).reduce((acc, key) => {
-        const setting = data[key]
-        const { sidebarSetting } = setting
-        if (sidebarSetting) {
-          acc[key] = setting
-        }
-        return acc
-      }, {})
-    },
+    block: state => state.editor.selected,
 
-    styleSettings: state => {
-      const { style } = state.editor.blockSettings
-      return Object.keys(style).reduce((acc, key) => {
-        const setting = style[key]
-        const { settingCategory } = setting
-        if (settingCategory) {
-          if (settingCategory in acc) {
-            acc[settingCategory] = [...acc[settingCategory], setting]
-          } else {
-            acc[settingCategory] = [setting]
-          }
-        } else {
-          if ('Other' in acc) {
-            acc['Other'] = [...acc['Other'], setting]
-          } else {
-            acc['Other'] = [setting]
-          }
+    uniqueSetters: state => {
+      const { selected } = state.editor
+      const block = state.page.blocks.reduce((acc, b) => {
+        if (b.id === selected) {
+          return b
         }
         return acc
-      }, {})
+      }, null)
+      if (block && block.setters) {
+        return block.setters
+      }
+      return []
     },
   }),
 }

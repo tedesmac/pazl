@@ -58,7 +58,7 @@
         </div>
       </div>
       <!-- Block Settings -->
-      <BlockSettings />
+      <BlockSettings v-if="activeTab === 'Settings'" />
 
       <!-- Blocks -->
       <div v-if="activeTab === 'Blocks'">
@@ -126,7 +126,7 @@ import Block from '@/components/block'
 import ImagePicker from '@/components/editor/image-picker'
 import { BlockEditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
-import blockFactory, { mergeBlockToSettings } from '@/factories/block'
+import blockFactory from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 import { genId } from '@/utils'
@@ -164,13 +164,22 @@ export default {
 
   data() {
     return {
-      activeTab: 'Blocks',
       defaultBlocks,
       imageSelectedCallbak: null,
     }
   },
 
   computed: {
+    activeTab: {
+      get() {
+        return this.$store.state.editor.currentTab
+      },
+
+      set(value) {
+        this.$store.commit('editor/setCurrentTab', value)
+      },
+    },
+
     pageBlocks: {
       get() {
         return this.$store.getters['page/getChildren']('root')
@@ -248,8 +257,6 @@ export default {
     onClickBlock(block) {
       if (this.edit) {
         this.$store.commit('editor/setSelected', block.id)
-        const settings = mergeBlockToSettings(block)
-        this.$store.commit('editor/setBlockSettings', settings)
         this.activeTab = 'Settings'
       }
     },
@@ -324,9 +331,10 @@ export default {
   beforeMount() {
     if (this.id > 0) {
       this.$store.dispatch('page/fetchPageById', this.id).catch(() => {
-        window.location = '/puzzle/admin/pages'
+        window.location = '/pazl/admin/pages'
       })
     }
+    this.activeTab = 'Blocks'
   },
 }
 </script>

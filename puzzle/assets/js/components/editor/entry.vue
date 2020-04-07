@@ -9,13 +9,6 @@
         :key="block.name"
       >
         <label>{{ block.name }} - {{ block.type }}</label>
-        <Setting
-          v-for="key in Object.keys(block.settings)"
-          root="data"
-          :key="`setting_${key}`"
-          :setting="block.settings[key]"
-          :type="block.settings[key].settingType"
-        />
       </div>
     </Workspace>
 
@@ -72,8 +65,6 @@
 import Block from '@/components/block'
 import ImagePicker from '@/components/editor/image-picker'
 import { EditorMixin } from '@/components/mixins'
-import Setting from '@/components/setting'
-import { mergeBlockToSettings } from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 import { mapState } from 'vuex'
@@ -87,7 +78,7 @@ const ImageGallery = () =>
 export default {
   mixins: [EditorMixin],
 
-  components: { Block, ImageGallery, ImagePicker, Setting },
+  components: { Block, ImageGallery, ImagePicker },
 
   data() {
     return {
@@ -146,13 +137,7 @@ export default {
     ...mapState({
       blocks: state => {
         if (state.page.blocks) {
-          return state.page.blocks.map(b => {
-            const { data } = mergeBlockToSettings(b)
-            return {
-              ...b,
-              settings: data,
-            }
-          })
+          return state.page.blocks
         }
         return []
       },

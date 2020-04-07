@@ -9,6 +9,7 @@ const common = {
 export const blockTypes = {
   ...common,
   carousel: 'carousel',
+  container: 'container',
   feed: 'feed',
   html: 'html',
   spacer: 'spacer',
