@@ -72,7 +72,7 @@ export const BlockMixin = {
 }
 
 export const BlockContainerMixin = {
-  components: { Block, Draggable, FontAwesomeIcon },
+  components: { Block, Draggable },
 
   data() {
     return {
@@ -84,16 +84,15 @@ export const BlockContainerMixin = {
   computed: {
     ...mapState({
       edit: state => (state.editor ? state.editor.edit : false),
+      selected: state => state.editor.selected,
     }),
-
-    faEdit: () => faEdit,
   },
 
   methods: {
     onClickBlock(block) {
       if (this.edit) {
         this.$store.commit('editor/setSelected', block.id)
-        this.$store.commit('editor/setCurrentTab')
+        this.$store.commit('editor/setCurrentTab', 'Settings')
       }
     },
 
@@ -254,11 +253,29 @@ export const LogoMixin = {
   },
 }
 
-export const SettingMixin = {
+export const SetterMixin = {
   props: {
-    block: {
+    id: {
       type: String,
       required: true,
+    },
+  },
+
+  computed: {
+    block: {
+      get() {
+        const block = this.$store.state.page.blocks.reduce((acc, b) => {
+          if (this.id === b.id) {
+            return b
+          }
+          return acc
+        }, {})
+        return block
+      },
+
+      set(block) {
+        this.$store.commit('page/setBlock', block)
+      },
     },
   },
 }
