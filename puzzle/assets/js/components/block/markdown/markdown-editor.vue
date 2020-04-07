@@ -1,5 +1,5 @@
 <template>
-  <textarea :id="`mde_${id}`" />
+  <textarea ref="textarea" style="margin-top: 1.5em" v-model="handler" />
 </template>
 
 <script>
@@ -14,23 +14,38 @@ export default {
   },
 
   props: {
-    id: String,
     value: String,
   },
 
+  computed: {
+    handler: {
+      get() {
+        return this.value
+      },
+
+      set(value) {
+        this.$emit('input', value)
+      },
+    },
+  },
+
+  beforeDestroy() {
+    this.mde = null
+  },
+
   mounted() {
-    this.mde = new EasyMDE({
-      element: document.getElementById(`mde_${this.id}`),
-      minHeight: '6em',
-      placeholder: 'Markdown',
-      spellChecker: false,
-      status: false,
-      toolbar: false,
-    })
-    this.mde.value(this.value != null ? this.value : '')
-    this.mde.codemirror.on('change', () => {
-      this.$emit('input', this.mde.value())
-    })
+    //   this.mde = new EasyMDE({
+    //     element: this.$refs.textarea,
+    //     minHeight: '6em',
+    //     placeholder: 'Markdown',
+    //     spellChecker: false,
+    //     status: false,
+    //     toolbar: false,
+    //   })
+    //   this.mde.value(this.value != null ? this.value : '')
+    //   this.mde.codemirror.on('change', () => {
+    //     this.$emit('input', this.mde.value())
+    //   })
   },
 }
 </script>
