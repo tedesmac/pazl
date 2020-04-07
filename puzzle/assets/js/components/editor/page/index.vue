@@ -58,7 +58,10 @@
         </div>
       </div>
       <!-- Block Settings -->
-      <BlockSettings v-if="activeTab === 'Settings'" />
+      <BlockSettings v-if="activeTab === 'Settings' && selected" />
+      <div v-else-if="activeTab === 'Settings'" class="setting">
+        Select a block to change its properties
+      </div>
 
       <!-- Blocks -->
       <div v-if="activeTab === 'Blocks'">
