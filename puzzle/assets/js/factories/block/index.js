@@ -10,7 +10,7 @@ const block = (type, setters = []) => ({
 })
 
 const blockFactories = {
-  container: () => block('container', ['direction']),
+  container: () => block('container', ['direction', 'alignment']),
 
   markdown: () => block('markdown', ['fontStyle']),
 
