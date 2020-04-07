@@ -3,16 +3,24 @@
 </template>
 
 <script>
+const alignmentSetter = () =>
+  import(
+    /* webpackChunkName: 'alignmentSetter' */
+    './alignment'
+  )
+
 const blockStyleSetter = () =>
   import(
     /* webpackChunkName: 'blockStyleSetter' */
     './blockStyle'
   )
+
 const directionSetter = () =>
   import(
     /* webpackChunkName: 'directionSetter' */
     './direction'
   )
+
 const fontStyleSetter = () =>
   import(
     /* webpackChunkName: 'fontStyleSetter' */
@@ -21,6 +29,7 @@ const fontStyleSetter = () =>
 
 export default {
   components: {
+    alignmentSetter,
     blockStyleSetter,
     directionSetter,
     fontStyleSetter,

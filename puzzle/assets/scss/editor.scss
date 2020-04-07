@@ -264,6 +264,56 @@ body {
   label {
     font-size: 0.8rem;
   }
+
+  .button-group {
+    align-items: center;
+    border: 1px solid $grey;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    margin: 0.5em 0;
+    overflow: hidden;
+
+    a {
+      align-items: center;
+      border-radius: 0;
+      cursor: pointer;
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+
+      &:hover {
+        background: $white;
+      }
+    }
+
+    img {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    .active {
+      background: $cyan !important;
+
+      &:hover {
+        background: $white;
+      }
+    }
+
+    .down {
+      transform: rotate(90deg);
+    }
+
+    .left {
+      transform: rotate(180deg);
+    }
+
+    .up {
+      transform: rotate(-90deg);
+    }
+  }
 }
 
 .setting-list {
