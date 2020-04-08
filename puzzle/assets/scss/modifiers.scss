@@ -5,6 +5,11 @@
   align-items: center;
 }
 
+.align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .container {
   align-items: center;
   display: flex;
@@ -23,7 +28,8 @@
 }
 
 .is-horizontal {
-  @extend .container;
+  display: flex;
+  flex-direction: row;
 }
 
 .is-red {

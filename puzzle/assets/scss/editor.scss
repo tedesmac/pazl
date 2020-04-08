@@ -261,6 +261,19 @@ body {
     border: 1px solid $grey;
   }
 
+  img {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  input {
+    margin: 0 0.5em;
+  }
+
+  input[type='number'] {
+    width: 4em;
+  }
+
   label {
     font-size: 0.8rem;
   }
@@ -289,11 +302,6 @@ body {
       }
     }
 
-    img {
-      width: 1.5em;
-      height: 1.5em;
-    }
-
     .active {
       background: $cyan !important;
 
@@ -301,18 +309,44 @@ body {
         background: $white;
       }
     }
+  }
 
-    .down {
-      transform: rotate(90deg);
-    }
+  .down {
+    transform: rotate(90deg);
+  }
 
-    .left {
-      transform: rotate(180deg);
-    }
+  .left {
+    transform: rotate(180deg);
+  }
 
-    .up {
-      transform: rotate(-90deg);
-    }
+  .side {
+    border: 2px dashed $grey;
+    border-right: 2px solid $black-ter;
+    height: 1.2em;
+    width: 1.2em;
+  }
+
+  .sides-all {
+    border: 2px solid $black-ter;
+    height: 1.2em;
+    width: 1.2em;
+  }
+
+  .small-button {
+    height: 1.5em;
+    margin: 0;
+    padding: 0.2em;
+    width: 1.5em;
+  }
+
+  .subsetter {
+    align-items: center;
+    display: flex;
+    margin: 0.5em;
+  }
+
+  .up {
+    transform: rotate(-90deg);
   }
 }
 
