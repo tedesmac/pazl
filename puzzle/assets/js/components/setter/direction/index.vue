@@ -16,16 +16,12 @@ export default {
 
   computed: {
     direction: {
-      get() {},
+      get() {
+        return this.getData('direction', 'horizontal')
+      },
 
-      set(direction) {
-        this.block = {
-          ...this.block,
-          data: {
-            ...this.block.data,
-            direction,
-          },
-        }
+      set(value) {
+        this.setData('direction', value)
       },
     },
   },

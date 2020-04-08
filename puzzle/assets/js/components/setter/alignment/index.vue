@@ -17,29 +17,24 @@ export default {
 
   computed: {
     isHorizontal() {
-      const { direction } = this.block.data
-      if (direction == null) {
-        return true
-      }
+      const direction = this.getData('direction', 'horizontal')
       return direction === 'horizontal'
     },
 
     horizontal: {
       get() {
         if (this.isHorizontal) {
-          const { justifyContent = 'center' } = this.style
-          return justifyContent
+          return this.getStyle('justifyContent', 'center')
         } else {
-          const { alignItems = 'center' } = this.style
-          return alignItems
+          return this.getStyle('alignItems', 'center')
         }
       },
 
       set(value) {
         if (this.isHorizontal) {
-          this.style = { justifyContent: value }
+          this.setStyle('justifyContent', value)
         } else {
-          this.style = { alignItems: value }
+          this.setStyle('alignItems', value)
         }
       },
     },
@@ -47,21 +42,29 @@ export default {
     vertical: {
       get() {
         if (this.isHorizontal) {
-          const { alignItems = 'center' } = this.style
-          return alignItems
+          return this.getStyle('alignItems', 'center')
         } else {
-          const { justifyContent = 'center' } = this.style
-          return justifyContent
+          return this.getStyle('justifyContent', 'center')
         }
       },
 
       set(value) {
         if (this.isHorizontal) {
-          this.style = { alignItems: value }
+          this.setStyle('alignItems', value)
         } else {
-          this.style = { justifyContent: value }
+          this.setStyle('justifyContent', value)
         }
       },
+    },
+  },
+
+  watch: {
+    isHorizontal(value, oldValue) {
+      if (value !== oldValue) {
+        const tmp = this.horizontal
+        this.horizontal = this.vertical
+        this.vertical = tmp
+      }
     },
   },
 }

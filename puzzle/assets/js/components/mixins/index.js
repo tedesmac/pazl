@@ -278,18 +278,15 @@ export const SetterMixin = {
       },
     },
 
-    blockData: {
+    data: {
       get() {
         return this.block.data
       },
 
-      set(value) {
+      set(data) {
         this.block = {
           ...this.block,
-          data: {
-            ...this.block.data,
-            ...value,
-          },
+          data,
         }
       },
     },
@@ -299,15 +296,54 @@ export const SetterMixin = {
         return this.block.style
       },
 
-      set(value) {
+      set(style) {
         this.block = {
           ...this.block,
-          style: {
-            ...this.block.style,
-            ...value,
-          },
+          style,
         }
       },
+    },
+  },
+
+  methods: {
+    getData(key, _default = '') {
+      const value = this.data[key]
+      if (value == null) {
+        return _default
+      }
+      return value
+    },
+
+    getStyle(key, _default = '') {
+      const value = this.style[key]
+      if (value == null) {
+        return _default
+      }
+      return value
+    },
+
+    removeData(key) {
+      const { data = {} } = this
+      delete data[key]
+      this.data = data
+    },
+
+    removeStyle(key) {
+      const { style = {} } = this
+      delete style[key]
+      this.style = style
+    },
+
+    setData(key, value) {
+      const { data = {} } = this
+      data[key] = value
+      this.data = data
+    },
+
+    setStyle(key, value) {
+      const { style = {} } = this
+      style[key] = value
+      this.style = style
     },
   },
 }
