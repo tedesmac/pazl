@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 const carouselBlock = () =>
   import(
     /* webpackChunkName: 'carouselBlock' */
@@ -80,11 +82,6 @@ export default {
       required: true,
     },
 
-    isEntry: {
-      type: Boolean,
-      default: false,
-    },
-
     parent: {
       type: String,
       required: true,
@@ -119,6 +116,10 @@ export default {
     style() {
       return this.block.style
     },
+
+    ...mapState({
+      isEntry: state => state.page.isEntry,
+    }),
   },
 
   created() {
