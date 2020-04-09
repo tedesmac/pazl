@@ -9,6 +9,7 @@ export default {
     description: '',
     error: false,
     image: '',
+    isEntry: false,
     modelBlock: null, // for entry
     name: '',
     slug: '',
@@ -24,6 +25,7 @@ export default {
           context.commit('setBlocks', data.data.blocks)
           context.commit('setDescription', data.description)
           context.commit('setImage', data.image)
+          context.commit('setIsEntry', true)
           context.commit('setName', data.name)
           context.commit('setSlug', data.slug)
         })
@@ -203,11 +205,17 @@ export default {
 
   mutations: {
     setBlock(state, block) {
-      state.blocks = state.blocks.map(pageBlock => {
-        if (pageBlock.id === block.id) {
-          return { ...pageBlock, ...block }
+      let index
+      if (state.isEntry) {
+        index = state.blocks.findIndex(b => b.name === block.name)
+      } else {
+        index = state.blocks.findIndex(b => b.id === block.id)
+      }
+      state.blocks = state.blocks.map((b, i) => {
+        if (i === index) {
+          return { ...b, ...block }
         }
-        return pageBlock
+        return b
       })
     },
 
@@ -215,24 +223,8 @@ export default {
       state.blocks = blocks
     },
 
-    setBlockSetting(state, payload) {
-      const { id, name, root, value } = payload
-      const index = state.blocks.findIndex(b => b.id === id)
-      let block = state.blocks[index]
-      block[root][name] = value
-      state.blocks = [...state.blocks.filter(b => b.id !== id), block]
-    },
-
     setDescription(state, description) {
       state.description = description
-    },
-
-    setEntryBlock(state, payload) {
-      const { name, value } = payload
-      const index = state.blocks.findIndex(b => b.name === name)
-      let block = state.blocks[index]
-      block = { ...block, value }
-      state.blocks = state.blocks.map(b => (b.name === name ? block : b))
     },
 
     setError(state, error) {
