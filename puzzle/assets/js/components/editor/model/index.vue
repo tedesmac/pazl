@@ -78,7 +78,6 @@
 <script>
 import { BlockEditorMixin } from '@/components/mixins'
 import { modelTypes } from '@/constants'
-import blockFactory from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 
@@ -129,8 +128,7 @@ export default {
       })
     },
 
-    onClone(data) {
-      const { style, ...block } = blockFactory(data.type)
+    onClone(block) {
       return {
         ...block,
         name: '',
