@@ -9,6 +9,12 @@
         :key="block.name"
       >
         <label>{{ block.name }} - {{ block.type }}</label>
+        <Block
+          parent="root"
+          :block="block.name"
+          :index="index"
+          :type="block.type"
+        />
       </div>
     </Workspace>
 
@@ -182,28 +188,22 @@ export default {
         })
     },
 
-    redirectToAdmin() {
-      window.location = '/puzzle/admin/'
+    redirectToAdmin(extra = '') {
+      window.location = `/pazl/admin/${extra}`
     },
   },
 
-  beforeDestroy() {
-    this.$store.unregisterModule('editor')
-    this.$store.unregisterModule('page')
-  },
-
   created() {
-    this.$store.registerModule('editor', EditorStore)
-    this.$store.registerModule('page', PageStore)
-
     if (this.modelId > 0) {
       this.$store
         .dispatch('page/setupEntry', this.modelId)
         .then(() => {
           if (this.id > 0) {
             this.$store.dispatch('page/fetchEntry', this.id).catch(() => {
-              window.location = `/puzzle/admin/entries/${this.model}`
+              this.redirectToAdmin(`entries/${this.model}`)
             })
+          } else {
+            this.$store.commit('page/isEntry', true)
           }
         })
         .catch(() => {
