@@ -17,19 +17,7 @@ export const AdminListingMixin = {
   components: { Entry },
 }
 
-export const BlockMixin = {
-  props: {
-    block: {
-      type: Object,
-      required: true,
-    },
-
-    isEntry: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
+const BlockGetRemoveSetMixin = {
   computed: {
     data: {
       get() {
@@ -37,10 +25,10 @@ export const BlockMixin = {
         return data
       },
 
-      set(value) {
+      set(data) {
         this.$store.commit('page/setBlock', {
           ...this.block,
-          data: { ...this.block.data, ...value },
+          data,
         })
       },
     },
@@ -51,14 +39,69 @@ export const BlockMixin = {
         return style
       },
 
-      set(value) {
+      set(style) {
         this.$store.commit('page/setBlock', {
           ...this.block,
-          style: { ...this.block.style, ...value },
+          style,
         })
       },
     },
+  },
 
+  methods: {
+    getData(key, _default = '') {
+      const value = this.data[key]
+      if (value == null) {
+        return _default
+      }
+      return value
+    },
+
+    getStyle(key, _default = '') {
+      const value = this.style[key]
+      if (value == null) {
+        return _default
+      }
+      return value
+    },
+
+    removeData(key) {
+      const { data = {} } = this
+      delete data[key]
+      this.data = data
+    },
+
+    removeStyle(key) {
+      const { style = {} } = this
+      delete style[key]
+      this.style = style
+    },
+
+    setData(key, value) {
+      const { data = {} } = this
+      data[key] = value
+      this.data = data
+    },
+
+    setStyle(key, value) {
+      const { style = {} } = this
+      style[key] = value
+      this.style = style
+    },
+  },
+}
+
+export const BlockMixin = {
+  mixins: [BlockGetRemoveSetMixin],
+
+  props: {
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  computed: {
     ...mapState({
       edit: state => {
         const { editor } = state
@@ -254,6 +297,8 @@ export const LogoMixin = {
 }
 
 export const SetterMixin = {
+  mixins: [BlockGetRemoveSetMixin],
+
   props: {
     id: {
       type: String,
@@ -276,74 +321,6 @@ export const SetterMixin = {
       set(block) {
         this.$store.commit('page/setBlock', block)
       },
-    },
-
-    data: {
-      get() {
-        return this.block.data
-      },
-
-      set(data) {
-        this.block = {
-          ...this.block,
-          data,
-        }
-      },
-    },
-
-    style: {
-      get() {
-        return this.block.style
-      },
-
-      set(style) {
-        this.block = {
-          ...this.block,
-          style,
-        }
-      },
-    },
-  },
-
-  methods: {
-    getData(key, _default = '') {
-      const value = this.data[key]
-      if (value == null) {
-        return _default
-      }
-      return value
-    },
-
-    getStyle(key, _default = '') {
-      const value = this.style[key]
-      if (value == null) {
-        return _default
-      }
-      return value
-    },
-
-    removeData(key) {
-      const { data = {} } = this
-      delete data[key]
-      this.data = data
-    },
-
-    removeStyle(key) {
-      const { style = {} } = this
-      delete style[key]
-      this.style = style
-    },
-
-    setData(key, value) {
-      const { data = {} } = this
-      data[key] = value
-      this.data = data
-    },
-
-    setStyle(key, value) {
-      const { style = {} } = this
-      style[key] = value
-      this.style = style
     },
   },
 }
