@@ -2,6 +2,32 @@ const path = require('path')
 const BundleTracker = require('webpack-bundle-tracker')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const Webpack = require('webpack')
+
+let baseConfig = {
+  PAZL_BASE_PATH: 'pazl',
+}
+let config = {}
+
+try {
+  config = require('./pazl.config.json')
+  config = Object.keys(baseConfig).reduce((acc, key) => {
+    let value
+    if (key in config) {
+      value = config[key]
+    } else {
+      value = baseConfig[key]
+    }
+    if (typeof value === 'string') {
+      value = JSON.stringify(value)
+    }
+    acc[key] = value
+    return acc
+  }, {})
+} catch {
+  config = baseConfig
+}
+console.log('Pazl config:', config)
 
 module.exports = [
   // JS
@@ -14,7 +40,7 @@ module.exports = [
       chunkFilename: '[name].bundle.js',
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'puzzle/assets/bundles/js'),
-      publicPath: '/pazl/static/bundles/js/',
+      publicPath: `/${JSON.parse(config.PAZL_BASE_PATH)}/static/bundles/js/`,
     },
     resolve: {
       alias: {
@@ -55,6 +81,7 @@ module.exports = [
         path: __dirname,
       }),
       new VueLoaderPlugin(),
+      new Webpack.DefinePlugin(config),
     ],
     mode: 'development',
   },

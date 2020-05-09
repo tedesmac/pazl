@@ -83,8 +83,8 @@ export const isImage = mime => image_re.test(mime)
 export const isLogo = mime => logo_re.test(mime)
 
 export const routes = {
-  admin: '/puzzle/admin/',
-  api: '/puzzle/api/',
-  editor: '/puzzle/editor/',
-  login: '/puzzle/login',
+  admin: '/${PAZL_BASE_PATH}/admin/',
+  api: '/${PAZL_BASE_PATH}/api/',
+  editor: '/${PAZL_BASE_PATH}/editor/',
+  login: '/${PAZL_BASE_PATH}/login/',
 }

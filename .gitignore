@@ -1,4 +1,5 @@
 __pycache__
+pazl.config.json
 *.sqlite3
 puzzle/assets/bundles
 media
