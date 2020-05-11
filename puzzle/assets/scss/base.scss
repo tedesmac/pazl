@@ -45,7 +45,7 @@ p {
   border-radius: 50%;
   bottom: 1.5em;
   box-shadow: 0 0 5px 5px $grey;
-  color: $cyan;
+  color: $blue-grey;
   cursor: pointer;
   display: flex;
   font-size: 1.5em;
@@ -54,7 +54,11 @@ p {
   position: fixed;
   right: 1.5em;
   width: 2em;
-  z-index: 1000;
+  z-index: 999;
+
+  &:hover {
+    color: $cyan;
+  }
 }
 
 .__puzzle_edit_menu {
