@@ -21,6 +21,8 @@
       </a>
     </div>
 
+    <div v-if="show" class="__pazl_nav_background" @click="show = false" />
+
     <nav class="__pazl_nav" :style="menuStyle">
       <div>
         <a>
