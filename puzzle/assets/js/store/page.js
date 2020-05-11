@@ -17,6 +17,20 @@ export default {
   }),
 
   actions: {
+    fetchBlock(context, id) {
+      Api.blocks
+        .get({ id })
+        .then(_ => {
+          const { data, name } = _
+          const { blocks } = data
+          context.commit('setBlocks', blocks)
+          context.commit('setName', name)
+        })
+        .catch(error => {
+          console.error('[pageStore.fetchBlock] =>', error)
+        })
+    },
+
     fetchEntry(context, id) {
       Api.entries
         .get({ id })
@@ -95,9 +109,9 @@ export default {
 
     saveBlock(context, payload) {
       const { id, model } = payload
-      const { blocks } = context.state
+      const { blocks, name } = context.state
 
-      let data = { data: { blocks } }
+      let data = { data: { blocks }, name }
       if (model) {
         data['model'] = model
       }

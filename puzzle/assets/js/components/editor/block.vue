@@ -43,6 +43,13 @@
         >
           Blocks
         </div>
+
+        <div
+          :class="['tab', { active: currentTab === 'Properties' }]"
+          @click="currentTab = 'Properties'"
+        >
+          Properties
+        </div>
       </div>
 
       <!-- Settings -->
@@ -81,6 +88,14 @@
             </div>
           </Draggable>
         </Collapsible>
+      </div>
+
+      <!-- Properties -->
+      <div v-if="currentTab === 'Properties'" class="form">
+        <div class="field" style="margin-top: 0.5rem;">
+          <label>Block Name</label>
+          <input type="text" />
+        </div>
       </div>
     </Sidebar>
 
@@ -147,6 +162,16 @@ export default {
       },
     },
 
+    name: {
+      get() {
+        return this.$store.state.page.name
+      },
+
+      set(value) {
+        this.$store.commit('page/setName', value)
+      },
+    },
+
     nonModelBlocks() {
       const blocks = [{ type: 'container' }, { type: 'spacer' }]
       if (this.modelId === 0) {
@@ -170,6 +195,10 @@ export default {
   },
 
   methods: {
+    fetchBlock() {
+      this.$store.dispatch('page/fetchBlock', this.id)
+    },
+
     fetchModel() {
       this.$api.models
         .get({ id: this.modelId })
@@ -255,6 +284,9 @@ export default {
   },
 
   created() {
+    if (this.id) {
+      this.fetchBlock()
+    }
     if (this.modelId) {
       this.fetchModel()
     }

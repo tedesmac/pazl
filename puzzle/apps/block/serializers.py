@@ -10,4 +10,5 @@ class BlockSerializer(BaseSerializer):
             'id',
             'data',
             'model',
+            'name',
         ]

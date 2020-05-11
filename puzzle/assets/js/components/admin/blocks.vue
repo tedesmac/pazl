@@ -19,7 +19,7 @@
           v-for="(block, index) in blocks[model.id]"
           :index="index"
           :key="`block_${block.id}`"
-          name="Some name"
+          :name="block.name"
           @delete="onDelete(block.id)"
           @edit="onEdit(block.id, model.id)"
         />
@@ -37,7 +37,7 @@
           v-for="(block, index) in blocks[0]"
           :index="index"
           :key="`block_${block.id}`"
-          name="Some name"
+          :name="block.name"
           @delete="onDelete(block.id)"
           @edit="onEdit(block.id)"
         />
