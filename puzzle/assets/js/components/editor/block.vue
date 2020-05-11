@@ -226,7 +226,7 @@ export default {
       this.$store
         .dispatch('page/saveBlock', {
           id: this.id,
-          model: this.model,
+          model: this.modelId,
         })
         .then(data => {
           const { id } = data
