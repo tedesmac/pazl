@@ -10,11 +10,17 @@ const block = (type, setters = []) => ({
 })
 
 const blockFactories = {
+  carousel: () => block('carousel', ['carousel']),
+
   container: () => block('container', ['direction', 'alignment']),
 
-  markdown: () => block('markdown', ['fontStyle']),
+  feed: () => block('feed', ['feed']),
 
-  string: () => block('string', ['fontStyle']),
+  markdown: () => block('markdown', ['font']),
+
+  spacer: () => block('spacer', ['direction']),
+
+  string: () => block('string', ['font']),
 
   text: () => block('text', ['fontStyle']),
 }

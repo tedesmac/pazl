@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-y: auto">
     <Setter
       v-for="setter in uniqueSetters"
       :block="block"

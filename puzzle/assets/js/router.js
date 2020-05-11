@@ -167,6 +167,7 @@ const routes = [
   // Editor
   {
     component: BlockEditor,
+    name: 'blockEditor',
     path: '/pazl/editor/block',
     props: route => ({
       id: Number(route.query.id) || 0,
@@ -175,6 +176,7 @@ const routes = [
   },
   {
     component: EntryEditor,
+    name: 'entryEditor',
     path: '/pazl/editor/entry',
     props: route => ({
       id: Number(route.query.id) || 0,
@@ -183,6 +185,7 @@ const routes = [
   },
   {
     component: ModelEditor,
+    name: 'modelEditor',
     path: '/pazl/editor/model',
     props: route => ({
       id: Number(route.query.id) || 0,
@@ -190,6 +193,7 @@ const routes = [
   },
   {
     component: PageEditor,
+    name: 'pageEditor',
     path: '/pazl/editor/page',
     props: route => ({
       id: Number(route.query.id) || 0,

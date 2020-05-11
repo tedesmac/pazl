@@ -93,6 +93,34 @@ export default {
         })
     },
 
+    saveBlock(context, payload) {
+      const { id, model } = payload
+      const { blocks } = context.state
+
+      let data = { data: { blocks } }
+      if (model) {
+        data['model'] = model
+      }
+
+      if (id) {
+        return Api.blocks
+          .put({ ...data, id })
+          .then(_ => _)
+          .catch(error => {
+            console.error('[pageStore.saveBlock.put] =>', error)
+            return Promise.reject(error)
+          })
+      } else {
+        return Api.blocks
+          .post(data)
+          .then(_ => _)
+          .catch(error => {
+            console.error('[pageStore.saveBlock.post] =>', error)
+            return Promise.reject(error)
+          })
+      }
+    },
+
     saveEntry(context, payload) {
       const { id, model } = payload
       const { blocks, description, image, name, slug } = context.state

@@ -21,6 +21,12 @@ const directionSetter = () =>
     './direction'
   )
 
+const fontSetter = () =>
+  import(
+    /* webpackChunkName: 'fontSetter' */
+    './font'
+  )
+
 const fontStyleSetter = () =>
   import(
     /* webpackChunkName: 'fontStyleSetter' */
@@ -32,6 +38,7 @@ export default {
     alignmentSetter,
     blockStyleSetter,
     directionSetter,
+    fontSetter,
     fontStyleSetter,
   },
 

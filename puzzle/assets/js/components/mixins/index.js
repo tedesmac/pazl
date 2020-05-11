@@ -140,7 +140,11 @@ export const BlockContainerMixin = {
     },
 
     onClone(block) {
-      return blockFactory(block.type)
+      const b = {
+        ...block,
+        ...blockFactory(block.type),
+      }
+      return b
     },
 
     onDragOver(event) {

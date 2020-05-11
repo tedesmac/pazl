@@ -1,27 +1,87 @@
 <template>
   <Editor>
-    <Topbar />
+    <Topbar :backUrl="`${$routes.admin}blocks`" @save="onSave" />
 
-    <Workspace></Workspace>
+    <Workspace>
+      <Draggable
+        v-model="blocks"
+        group="blocks"
+        :class="{ 'block-container': edit, __puzzle_page: !edit }"
+        @end="onEnd"
+      >
+        <div
+          v-for="(block, index) in blocks"
+          :block="block.id"
+          :class="{ block: edit, 'block-selected': block.id === selected }"
+          :key="block.id"
+          @click.stop="onClickBlock(block)"
+        >
+          <div v-if="edit" class="type">{{ block.type }}</div>
+
+          <Block
+            parent="root"
+            :block="block.id"
+            :index="index"
+            :type="block.type"
+          />
+        </div>
+      </Draggable>
+    </Workspace>
 
     <Sidebar>
-      <Collapsible string="Model Blocks" v-if="modelId > 0">
-        <Draggable
-          v-model="modelBlocks"
-          :clone="onCloneModelBlock"
-          :group="{ name: 'blocks', pull: 'clone', put: false }"
+      <div class="tab-list">
+        <div
+          :class="['tab', { active: currentTab === 'Settings' }]"
+          @click="currentTab = 'Settings'"
         >
-          <div
-            v-for="block in modelBlocks"
-            class="model-block"
-            :key="`model_block_${block.name}`"
-          >
-            {{ block.name }}
-          </div>
-        </Draggable>
-      </Collapsible>
+          Settings
+        </div>
 
-      <Collapsible string="Blocks" />
+        <div
+          :class="['tab', { active: currentTab === 'Blocks' }]"
+          @click="currentTab = 'Blocks'"
+        >
+          Blocks
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <BlockSettings v-if="currentTab === 'Settings'" />
+
+      <!-- Blocks -->
+      <div v-if="currentTab === 'Blocks'">
+        <Collapsible string="Model Blocks" v-if="modelId > 0">
+          <Draggable
+            v-model="modelBlocks"
+            :clone="onCloneModelBlock"
+            :group="{ name: 'blocks', pull: 'clone', put: false }"
+          >
+            <div
+              v-for="block in modelBlocks"
+              class="model-block"
+              :key="`model_block_${block.name}`"
+            >
+              {{ block.name }}
+            </div>
+          </Draggable>
+        </Collapsible>
+
+        <Collapsible string="Blocks">
+          <Draggable
+            v-model="nonModelBlocks"
+            :group="{ name: 'blocks', pull: 'clone', put: false }"
+            :clone="onClone"
+          >
+            <div
+              v-for="block in nonModelBlocks"
+              class="model-block"
+              :key="`non_model_block_${block.type}`"
+            >
+              {{ block.type }}
+            </div>
+          </Draggable>
+        </Collapsible>
+      </div>
     </Sidebar>
 
     <modal height="auto" name="block-settings" width="80%" :scrollable="true">
@@ -40,12 +100,9 @@
 
 <script>
 import { BlockContainerMixin, EditorMixin } from '@/components/mixins'
+import { modelTypes } from '@/constants'
 
-const BlockSettings = () =>
-  import(
-    /* webpackChunkName: 'pageBlockSettings' */
-    '@/components/editor/blockSettings'
-  )
+const BlockSettings = () => import('@/components/editor/blockSettings')
 
 export default {
   mixins: [BlockContainerMixin, EditorMixin],
@@ -66,7 +123,51 @@ export default {
     },
   },
 
-  computed: {},
+  computed: {
+    blocks: {
+      get() {
+        return this.$store.getters['page/getChildren']('root')
+      },
+
+      set(blocks) {
+        this.$store.commit('page/updateBlocks', {
+          blocks: blocks.map(b => ({ ...b, parent: 'root' })),
+          parent: 'root',
+        })
+      },
+    },
+
+    currentTab: {
+      get() {
+        return this.$store.state.editor.currentTab
+      },
+
+      set(value) {
+        this.$store.commit('editor/setCurrentTab', value)
+      },
+    },
+
+    nonModelBlocks() {
+      const blocks = [{ type: 'container' }, { type: 'spacer' }]
+      if (this.modelId === 0) {
+        return [
+          ...Object.keys(modelTypes).map(key => ({
+            type: key,
+          })),
+          ...blocks,
+        ].sort((a, b) => {
+          if (a.type < b.type) {
+            return -1
+          }
+          if (a.type > b.type) {
+            return 1
+          }
+          return 0
+        })
+      }
+      return blocks
+    },
+  },
 
   methods: {
     fetchModel() {
@@ -74,7 +175,39 @@ export default {
         .get({ id: this.modelId })
         .then(model => {
           this.model = model
-          this.modelBlocks = model.data.blocks
+          this.modelBlocks = [
+            ...model.data.blocks,
+            ...[
+              {
+                name: 'author',
+                type: 'author',
+              },
+              {
+                name: 'date',
+                type: 'date',
+              },
+              {
+                name: 'description',
+                type: 'string',
+              },
+              {
+                name: 'image',
+                type: 'image',
+              },
+              {
+                name: 'name',
+                type: 'string',
+              },
+            ],
+          ].sort((a, b) => {
+            if (a.name < b.name) {
+              return -1
+            }
+            if (a.name > b.name) {
+              return 1
+            }
+            return 0
+          })
         })
         .catch(error => {
           console.error('[Block Editor] =>', error)
@@ -87,12 +220,45 @@ export default {
         id: block.id,
       }
     },
+
+    onSave() {
+      this.$store.commit('editor/setSaving', true)
+      this.$store
+        .dispatch('page/saveBlock', {
+          id: this.id,
+          model: this.model,
+        })
+        .then(data => {
+          const { id } = data
+          if (this.id !== id) {
+            let query = { id }
+            if (this.model) {
+              query['model'] = this.model
+            }
+            this.$router.push({ name: 'blockEditor', query })
+          }
+          this.$store.commit('editor/setSaving', false)
+          this.$notify({
+            group: 'messages',
+            text: 'Block saved',
+          })
+        })
+        .catch(error => {
+          console.error('[blockEditor.onSave] =>', error)
+          this.$store.commit('editor/setSaving', false)
+          this.$notify({
+            group: 'errors',
+            text: 'Unable to save block, please try later',
+          })
+        })
+    },
   },
 
   created() {
     if (this.modelId) {
       this.fetchModel()
     }
+    this.currentTab = 'Blocks'
   },
 }
 </script>
