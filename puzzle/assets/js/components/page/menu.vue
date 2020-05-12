@@ -37,7 +37,10 @@
       <a href="/">Home</a>
 
       <a v-for="page in pages" :href="page.path" :key="page.path">
-        {{ page.name }}
+        {{
+          page.name.substr(0, 1).toUpperCase() +
+            page.name.substr(1).toLowerCase()
+        }}
       </a>
 
       <div class="__pazl_nav_spacer"></div>
@@ -63,6 +66,7 @@
 
 <script>
 import { LogoMixin } from '@/components/mixins'
+import { buildMenu } from '@/utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faFacebookF,
@@ -70,7 +74,7 @@ import {
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [LogoMixin],
@@ -94,14 +98,6 @@ export default {
       return {}
     },
 
-    pages() {
-      const { children } = this.menu
-      if (children) {
-        return children
-      }
-      return []
-    },
-
     faBars: () => faBars,
 
     faFacebookF: () => faFacebookF,
@@ -112,7 +108,9 @@ export default {
 
     faTwitter: () => faTwitter,
 
-    ...mapGetters(['menu']),
+    ...mapState({
+      pages: state => state.pages.filter(p => p.id !== state.site.home_page),
+    }),
   },
 }
 </script>
