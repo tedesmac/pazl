@@ -33,6 +33,12 @@ const fontStyleSetter = () =>
     './fontStyle'
   )
 
+const imageSetter = () =>
+  import(
+    /* webpackChunkName: 'imageSetter' */
+    './image'
+  )
+
 export default {
   components: {
     alignmentSetter,
@@ -40,6 +46,7 @@ export default {
     directionSetter,
     fontSetter,
     fontStyleSetter,
+    imageSetter,
   },
 
   props: {

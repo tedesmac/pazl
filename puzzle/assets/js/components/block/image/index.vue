@@ -10,11 +10,11 @@ export default {
 
   computed: {
     alt() {
-      return this.data.alt
+      return this.getData('alt')
     },
 
     src() {
-      return this.data.src
+      return this.getData('src')
     },
   },
 }
