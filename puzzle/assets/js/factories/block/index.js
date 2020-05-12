@@ -7,9 +7,9 @@ const blockSetters = {
 
   feed: ['feed'],
 
-  markdown: ['font'],
+  image: ['image'],
 
-  spacer: ['direction'],
+  markdown: ['font'],
 
   string: ['font'],
 
