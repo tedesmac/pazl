@@ -195,7 +195,7 @@ export const EditorMixin = {
 
   data() {
     return {
-      validators: [],
+      _validators: [],
     }
   },
 
@@ -208,10 +208,46 @@ export const EditorMixin = {
   methods: {
     addValidator(validator) {
       if (typeof validator === 'function') {
-        this.validators = [...this.validators, validator]
+        try {
+          this._validators = [...this._validators, validator]
+        } catch {
+          this._validators = [validator]
+        }
       } else {
         console.error('[EditorMixin] => validator must be a function')
       }
+    },
+
+    validate() {
+      let allValid = true
+      for (let i = 0; i < this._validators.length; i++) {
+        const { message, valid } = this._validators[i]()
+        allValid = allValid && valid
+        if (!valid) {
+          console.error(message)
+          this.$notify({
+            group: 'errors',
+            text: message,
+          })
+        }
+        return allValid
+      }
+    },
+
+    // Validators
+
+    _blocksNoEmptyValidator() {
+      const { blocks } = this.$store.state.page
+      const message = 'Component should have at least one block'
+      const valid = blocks.length > 0
+      return { message, valid }
+    },
+
+    _nameValidator() {
+      const { name } = this.$store.state.page
+      const message = 'Name should not be empty'
+      const valid = name.length > 0
+      return { message, valid }
     },
   },
 
@@ -228,12 +264,7 @@ export const EditorMixin = {
 
 export const BlockEditorMixin = {
   components: {
-    Collapsible,
     Draggable,
-    Editor,
-    Sidebar,
-    Topbar,
-    Workspace,
   },
 
   data() {
@@ -242,12 +273,6 @@ export const BlockEditorMixin = {
       mouseX: 0,
       saving: false,
     }
-  },
-
-  props: {
-    id: {
-      type: Number,
-    },
   },
 
   methods: {
