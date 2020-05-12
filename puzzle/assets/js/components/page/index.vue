@@ -21,7 +21,7 @@
 
     <Block
       v-else
-      v-for="block in blocks"
+      v-for="(block, index) in blocks"
       parent="root"
       :block="block.id"
       :index="index"
@@ -34,7 +34,7 @@
 <script>
 import Block from '@/components/block'
 import PageStore from '@/store/page'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import EditMenu from './edit-menu'
 import Menu from './menu'
 
@@ -50,18 +50,22 @@ export default {
     },
   },
 
-  computed: mapState({
-    blocks: state => state.page.blocks,
+  computed: {
+    blocks() {
+      return this.$store.getters['page/getChildren']('root')
+    },
 
-    error: state => state.page.error,
+    ...mapState({
+      error: state => state.page.error,
 
-    modelBlock: state => state.page.modelBlock,
+      modelBlock: state => state.page.modelBlock,
 
-    user: state => state.user,
-  }),
+      user: state => state.user,
+    }),
 
-  beforeDestroy() {
-    this.$store.unregisterModule('page')
+    beforeDestroy() {
+      this.$store.unregisterModule('page')
+    },
   },
 
   created() {
