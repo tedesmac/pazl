@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar :backUrl="`/pazl/admin/entries/${modelId}`" @save="onSave" />
+    <Topbar :backUrl="`${$routes.admin}entries/${modelId}`" @save="onSave" />
 
     <Workspace class="entry-workspace">
       <div
@@ -172,7 +172,7 @@ export default {
         .then(data => {
           if (data.id !== this.id) {
             this.$router.push({
-              path: `/puzzle/editor/entry?id=${data.id}&model=${this.modelId}`,
+              path: `${this.$routes.editor}entry?id=${data.id}&model=${this.modelId}`,
             })
             this.$notify({
               group: 'messages',

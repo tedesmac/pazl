@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar backUrl="/pazl/admin/models/" @save="onSave" />
+    <Topbar :backUrl="`${$routes.admin}models/`" @save="onSave" />
 
     <Sidebar>
       <Draggable
@@ -153,7 +153,9 @@ export default {
                 group: 'messages',
                 text: 'Model saved',
               })
-              this.$router.push({ path: `/puzzle/editor/model?id=${data.id}` })
+              this.$router.push({
+                path: `${this.$routes.editor}model?id=${data.id}`,
+              })
             })
             .catch(error => {
               console.error('[editor/model.post] =>', error)
@@ -267,7 +269,7 @@ export default {
           this.blocks = data.data.blocks
         })
         .catch(() => {
-          window.location = '/puzzle/admin/models'
+          window.location = `${this.$routes.admin}models/`
         })
     }
   },

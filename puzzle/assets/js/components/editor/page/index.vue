@@ -1,6 +1,6 @@
 <template>
   <Editor>
-    <Topbar backUrl="/pazl/admin/pages" @save="onSave">
+    <Topbar :backUrl="`${$routes.admin}pages`" @save="onSave">
       <Toggle @mode="onModeChange" />
     </Topbar>
 
@@ -291,7 +291,7 @@ export default {
         .then(data => {
           if (data.id !== this.id) {
             this.$router.push({
-              path: `/puzzle/editor/page?id=${data.id}`,
+              path: `${this.$routes.editor}page?id=${data.id}`,
             })
           }
           this.$notify({
