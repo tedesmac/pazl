@@ -59,9 +59,9 @@
     }
   },
   "scripts": {
-    "build": "webpack -p",
-    "dev": "webpack -d",
+    "build": "rm -fr puzzle/assets/bundles && webpack -p",
+    "dev": "rm -fr puzzle/assets/bundles && webpack -d",
     "test": "jest",
-    "watch": "webpack --watch"
+    "watch": "rm -fr puzzle/assets/bundles && webpack --watch"
   }
 }
