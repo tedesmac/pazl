@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { setters } from '@/factories/block'
 import { mapState } from 'vuex'
 import Collapsible from './collapsible'
 
@@ -29,16 +30,14 @@ export default {
 
     uniqueSetters: state => {
       const { selected } = state.editor
-      const block = state.page.blocks.reduce((acc, b) => {
+      const type = state.page.blocks.reduce((acc, b) => {
         if (b.id === selected) {
-          return b
+          return b.type
         }
         return acc
       }, null)
-      if (block && block.setters) {
-        return block.setters
-      }
-      return []
+
+      return setters(type)
     },
   }),
 }
