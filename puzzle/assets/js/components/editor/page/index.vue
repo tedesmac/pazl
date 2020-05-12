@@ -127,7 +127,7 @@
 <script>
 import Block from '@/components/block'
 import ImagePicker from '@/components/editor/image-picker'
-import { BlockEditorMixin } from '@/components/mixins'
+import { BlockEditorMixin, EditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory from '@/factories/block'
 import EditorStore from '@/store/editor'
@@ -155,7 +155,7 @@ const defaultBlocks = Object.keys(blockTypes)
   }))
 
 export default {
-  mixins: [BlockEditorMixin],
+  mixins: [BlockEditorMixin, EditorMixin],
 
   components: {
     Block,
@@ -285,29 +285,31 @@ export default {
     },
 
     onSave() {
-      this.$store.commit('editor/setSaving', true)
-      this.$store
-        .dispatch('page/savePage', this.id)
-        .then(data => {
-          if (data.id !== this.id) {
-            this.$router.push({
-              path: `${this.$routes.editor}page?id=${data.id}`,
+      if (this.validate()) {
+        this.$store.commit('editor/setSaving', true)
+        this.$store
+          .dispatch('page/savePage', this.id)
+          .then(data => {
+            if (data.id !== this.id) {
+              this.$router.push({
+                path: `${this.$routes.editor}page?id=${data.id}`,
+              })
+            }
+            this.$notify({
+              group: 'messages',
+              text: 'Page saved',
             })
-          }
-          this.$notify({
-            group: 'messages',
-            text: 'Page saved',
+            this.$store.commit('editor/setSaving', false)
           })
-          this.$store.commit('editor/setSaving', false)
-        })
-        .catch(error => {
-          console.error('[Page Editor] =>', error)
-          this.$notify({
-            group: 'errors',
-            text: 'Unable to save page, please try again later',
+          .catch(error => {
+            console.error('[Page Editor] =>', error)
+            this.$notify({
+              group: 'errors',
+              text: 'Unable to save page, please try again later',
+            })
           })
-        })
-      this.$store.commit('editor/setSaving', false)
+        this.$store.commit('editor/setSaving', false)
+      }
     },
 
     removeBlock(id) {
@@ -321,16 +323,6 @@ export default {
     },
   },
 
-  beforeDestroy() {
-    this.$store.unregisterModule('editor')
-    this.$store.unregisterModule('page')
-  },
-
-  created() {
-    this.$store.registerModule('editor', EditorStore)
-    this.$store.registerModule('page', PageStore)
-  },
-
   beforeMount() {
     if (this.id > 0) {
       this.$store.dispatch('page/fetchPageById', this.id).catch(() => {
@@ -338,6 +330,11 @@ export default {
       })
     }
     this.activeTab = 'Blocks'
+  },
+
+  mounted() {
+    this.addValidator(this._blocksNoEmptyValidator)
+    this.addValidator(this._nameValidator)
   },
 }
 </script>
