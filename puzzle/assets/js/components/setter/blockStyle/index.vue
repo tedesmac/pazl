@@ -39,6 +39,20 @@
     <Collapsible string="Padding" :show="false">
       <MultiNumber :options="['px', 'rem']" v-model="padding" />
     </Collapsible>
+
+    <Collapsible string="Size" :show="false">
+      <Number
+        v-model="height"
+        label="Height"
+        :options="['', 'px', 'rem', 'vh', '%']"
+      />
+
+      <Number
+        v-model="width"
+        label="Width"
+        :options="['', 'px', 'rem', 'vw', '%']"
+      />
+    </Collapsible>
   </div>
 </template>
 
@@ -97,6 +111,20 @@ export default {
       },
     },
 
+    height: {
+      get() {
+        return this.getStyle('height')
+      },
+
+      set(value) {
+        if (value) {
+          this.setStyle('height', value)
+        } else {
+          this.removeStyle('height')
+        }
+      },
+    },
+
     margin: {
       get() {
         const {
@@ -144,6 +172,20 @@ export default {
         this.setStyle('paddingLeft', left)
         this.setStyle('paddingRight', right)
         this.setStyle('paddingTop', top)
+      },
+    },
+
+    width: {
+      get() {
+        return this.getStyle('width')
+      },
+
+      set(value) {
+        if (value) {
+          this.setStyle('width', value)
+        } else {
+          this.removeStyle('width')
+        }
       },
     },
   },

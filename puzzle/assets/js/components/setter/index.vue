@@ -33,12 +33,6 @@ const fontStyleSetter = () =>
     './fontStyle'
   )
 
-const sizeStyleSetter = () =>
-  import(
-    /* webpackChunkName: 'sizeStyleSetter' */
-    './sizeStyle'
-  )
-
 export default {
   components: {
     alignmentSetter,
@@ -46,7 +40,6 @@ export default {
     directionSetter,
     fontSetter,
     fontStyleSetter,
-    sizeStyleSetter,
   },
 
   props: {
