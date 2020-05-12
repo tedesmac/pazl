@@ -17,7 +17,7 @@ export const AdminListingMixin = {
   components: { Entry },
 }
 
-const BlockGetRemoveSetMixin = {
+export const BlockGetRemoveSetMixin = {
   computed: {
     data: {
       get() {
