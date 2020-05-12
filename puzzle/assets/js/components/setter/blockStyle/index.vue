@@ -24,7 +24,13 @@
       </Number>
 
       <div class="subsetter">
-        <select></select>
+        <label>Style: </label>
+        <select v-model="borderStyle">
+          <option value="none"></option>
+          <option value="dashed">-----</option>
+          <option value="dotted">·····</option>
+          <option value="solid">_____</option>
+        </select>
       </div>
 
       <Number class="subsetter" :options="['px', 'rem']" v-model="borderWidth">
@@ -98,6 +104,20 @@ export default {
 
       set(value) {
         this.setStyle('borderRadius', value)
+      },
+    },
+
+    borderStyle: {
+      get() {
+        return this.getStyle('borderStyle', 'none')
+      },
+
+      set(value) {
+        if (value === 'none') {
+          this.removeStyle('borderStyle')
+        } else {
+          this.setStyle('borderStyle', value)
+        }
       },
     },
 
