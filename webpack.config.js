@@ -84,6 +84,7 @@ module.exports = [
       new Webpack.DefinePlugin(config),
     ],
     mode: 'development',
+    devtool: 'source-map',
   },
   // SCSS
   {
