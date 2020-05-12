@@ -7,7 +7,7 @@
       <select></select>
     </div>
 
-    <Number class="subsetter" v-model="fontSize">
+    <Number class="subsetter" :options="['px', 'rem']" v-model="fontSize">
       Size:
     </Number>
 
