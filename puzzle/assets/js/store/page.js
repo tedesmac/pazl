@@ -8,9 +8,11 @@ export default {
     blocks: [],
     description: '',
     error: false,
+    id: 0,
     image: '',
     isEntry: false,
     modelBlock: null, // for entry
+    modelId: 0,
     name: '',
     slug: '',
     style: {},
@@ -92,6 +94,7 @@ export default {
             Api.pages.get({ id }).then(data => {
               context.commit('setBlocks', data.data.blocks)
               context.commit('setDescription', data.description)
+              context.commit('setId', data.id)
               context.commit('setImage', data.image)
               context.commit('setName', data.name)
               context.commit('setSlug', data.slug)
@@ -271,6 +274,10 @@ export default {
 
     setError(state, error) {
       state.error = error
+    },
+
+    setId(state, id) {
+      state.id = id
     },
 
     setImage(state, image) {
