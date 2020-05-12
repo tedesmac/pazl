@@ -45,6 +45,9 @@
     "vuex-router-sync": "^5.0.0"
   },
   "jest": {
+    "globals": {
+      "PAZL_BASE_PATH": "pazl"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
