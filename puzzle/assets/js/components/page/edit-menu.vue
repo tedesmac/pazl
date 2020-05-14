@@ -1,9 +1,10 @@
 <template>
-  <div class="__puzzle_edit">
-    <div v-if="show" class="__puzzle_edit_menu">
-      <a>Edit</a>
-      <a>Unpublish</a>
-      <a>Remove</a>
+  <div class="__pazl_edit">
+    <div v-if="show" class="__pazl_edit_menu">
+      <a :href="$routes.admin">Admin</a>
+      <a :href="edit">Edit</a>
+      <a :href="``">Unpublish</a>
+      <a :href="``">Remove</a>
     </div>
 
     <FontAwesomeIcon :icon="faPencilRuler" @click="show = !show" />
@@ -13,6 +14,7 @@
 <script>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPencilRuler } from '@fortawesome/free-solid-svg-icons'
+import { mapState } from 'vuex'
 
 export default {
   components: { FontAwesomeIcon },
@@ -24,7 +26,20 @@ export default {
   },
 
   computed: {
+    edit() {
+      if (this.isEntry) {
+        return `${this.$routes.editor}entyr?id=${this.id}&model=${this.modelId}`
+      }
+      return `${this.$routes.editor}page?id=${this.id}`
+    },
+
     faPencilRuler: () => faPencilRuler,
+
+    ...mapState({
+      id: state => state.page.id,
+      isEntry: state => state.page.isEntry,
+      modelId: state => state.page.modelId,
+    }),
   },
 }
 </script>
