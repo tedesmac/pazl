@@ -20,11 +20,11 @@ class Page(BasePageModel):
             if home_page.id == self.id:
                 self.parent = None
                 self.slug = ''
-                return self.slug
+                return '/'
 
         slug = super().build_path()
         if self.parent:
             slug = '{}{}/'.format(self.parent.build_path(), slug)
         else:
-            slug = '{}/'.format(slug)
+            slug = '/{}/'.format(slug)
         return slug

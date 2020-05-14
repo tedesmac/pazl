@@ -22,4 +22,4 @@ class Entry(BasePageModel):
     def build_path(self):
         slug = super().build_path()
         model = self.model.name.lower()
-        return '{}/{}/{}/'.format(model, self.id, slug)
+        return '/{}/{}/{}/'.format(model, self.id, slug)
