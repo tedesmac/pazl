@@ -1,8 +1,11 @@
 <template>
   <nav class="__puzzle_menu">
     <a>
-      <FontAwesomeIcon class="__pazl_menu_icon"" :icon="faBars"
-      @click="show=true" />
+      <FontAwesomeIcon
+        class="__pazl_menu_icon"
+        :icon="faBars"
+        @click="show = true"
+      />
     </a>
 
     <a class="__puzzle_logo" href="/" :style="logoStyle" />
@@ -34,14 +37,14 @@
         </a>
       </div>
 
-      <a href="/">Home</a>
+      <router-link to="/">Home</router-link>
 
-      <a v-for="page in pages" :href="page.path" :key="page.path">
+      <router-link v-for="page in pages" :key="page.path" :to="page.path">
         {{
           page.name.substr(0, 1).toUpperCase() +
             page.name.substr(1).toLowerCase()
         }}
-      </a>
+      </router-link>
 
       <div class="__pazl_nav_spacer"></div>
 
