@@ -55,28 +55,54 @@ export default {
       return this.$store.getters['page/getChildren']('root')
     },
 
+    path() {
+      return this.$route.fullPath
+    },
+
     ...mapState({
       error: state => state.page.error,
+
+      isEntry: state => state.page.isEntry,
 
       modelBlock: state => state.page.modelBlock,
 
       user: state => state.user,
     }),
+  },
 
-    beforeDestroy() {
-      this.$store.unregisterModule('page')
+  methods: {
+    fetchEntry() {
+      this.$store
+        .dispatch('page/fetchEntry', this.entryId)
+        .then(this.fetchModel)
     },
+
+    fetchPage() {
+      const path = this.$route.fullPath
+      this.$store.dispatch('page/fetchPageByPath', path)
+    },
+  },
+
+  watch: {
+    path(value) {
+      if (this.isEntry) {
+        this.fetchEntry()
+      } else {
+        this.fetchPage()
+      }
+    },
+  },
+
+  beforeDestroy() {
+    this.$store.unregisterModule('page')
   },
 
   created() {
     this.$store.registerModule('page', PageStore)
     if (this.entryId) {
-      this.$store
-        .dispatch('page/fetchEntry', this.entryId)
-        .then(this.fetchModel)
+      this.fetchEntry()
     } else {
-      const path = window.location.pathname.substring(1)
-      this.$store.dispatch('page/fetchPageByPath', path)
+      this.fetchPage()
     }
   },
 }
