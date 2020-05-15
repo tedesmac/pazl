@@ -19,12 +19,8 @@ body {
 }
 
 .block {
-  border: 1px solid $grey;
-  box-shadow: 0 0 2px $grey;
-  margin: 0.5em;
-  min-height: 4em;
-  min-width: 4em;
-  padding: 0.5em;
+  min-height: 2rem;
+  min-width: 2rem;
   position: relative;
 
   .edit-icon {
@@ -34,8 +30,9 @@ body {
     height: 0.8em;
     padding: 0.2em 0.2em;
     position: absolute;
-    right: 3px;
-    top: 3px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 0.8em;
   }
 
@@ -56,10 +53,15 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  padding: 0.5rem;
+}
+
+.block-hover {
+  outline: 1px solid $cyan !important;
 }
 
 .block-selected {
-  border: 1px dashed $cyan !important;
+  outline: 1px dashed $cyan !important;
   box-shadow: 0 0 2px $cyan !important;
 }
 
