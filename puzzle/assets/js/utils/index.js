@@ -87,4 +87,6 @@ export const routes = {
   api: `/${PAZL_BASE_PATH}/api/`,
   editor: `/${PAZL_BASE_PATH}/editor/`,
   login: `/${PAZL_BASE_PATH}/login/`,
+  media: `/${PAZL_BASE_PATH}/media/`,
+  static: `/${PAZL_BASE_PATH}/static/`,
 }
