@@ -1,6 +1,8 @@
 <template>
   <Editor>
-    <Topbar :backUrl="`${$routes.admin}blocks`" @save="onSave" />
+    <Topbar :backUrl="`${$routes.admin}blocks`" @save="onSave">
+      <Toggle />
+    </Topbar>
 
     <Workspace>
       <Draggable
@@ -12,12 +14,15 @@
         <div
           v-for="(block, index) in blocks"
           :block="block.id"
-          :class="{ block: edit, 'block-selected': block.id === selected }"
+          :class="{
+            block: edit,
+            'block-hover': block.id === mouseover && edit,
+            'block-selected': block.id === selected && edit,
+          }"
           :key="block.id"
           @click.stop="onClickBlock(block)"
+          @mouseover.stop="onMouseOver(block.id)"
         >
-          <div v-if="edit" class="type">{{ block.type }}</div>
-
           <Block
             parent="root"
             :block="block.id"
@@ -94,7 +99,7 @@
       <div v-if="currentTab === 'Properties'" class="form">
         <div class="field" style="margin-top: 0.5rem;">
           <label>Block Name</label>
-          <input type="text" />
+          <input type="text" v-model="name" />
         </div>
       </div>
     </Sidebar>
@@ -114,6 +119,7 @@
 </template>
 
 <script>
+import Toggle from '@/components/editor/mode-toggle'
 import { BlockContainerMixin, EditorMixin } from '@/components/mixins'
 import { modelTypes } from '@/constants'
 
@@ -122,7 +128,7 @@ const BlockSettings = () => import('@/components/editor/blockSettings')
 export default {
   mixins: [BlockContainerMixin, EditorMixin],
 
-  components: { BlockSettings },
+  components: { BlockSettings, Toggle },
 
   data() {
     return {
@@ -251,36 +257,43 @@ export default {
     },
 
     onSave() {
-      this.$store.commit('editor/setSaving', true)
-      this.$store
-        .dispatch('page/saveBlock', {
-          id: this.id,
-          model: this.modelId,
-        })
-        .then(data => {
-          const { id } = data
-          if (this.id !== id) {
-            let query = { id }
-            if (this.model) {
-              query['model'] = this.model
+      if (this.validate()) {
+        this.$store.commit('editor/setSaving', true)
+        this.$store
+          .dispatch('page/saveBlock', {
+            id: this.id,
+            model: this.modelId,
+          })
+          .then(data => {
+            const { id } = data
+            if (this.id !== id) {
+              let query = { id }
+              if (this.modelId) {
+                query['model'] = this.modelId
+              }
+              this.$router.push({ name: 'blockEditor', query })
             }
-            this.$router.push({ name: 'blockEditor', query })
-          }
-          this.$store.commit('editor/setSaving', false)
-          this.$notify({
-            group: 'messages',
-            text: 'Block saved',
+            this.$store.commit('editor/setSaving', false)
+            this.$notify({
+              group: 'messages',
+              text: 'Block saved',
+            })
           })
-        })
-        .catch(error => {
-          console.error('[blockEditor.onSave] =>', error)
-          this.$store.commit('editor/setSaving', false)
-          this.$notify({
-            group: 'errors',
-            text: 'Unable to save block, please try later',
+          .catch(error => {
+            console.error('[blockEditor.onSave] =>', error)
+            this.$store.commit('editor/setSaving', false)
+            this.$notify({
+              group: 'errors',
+              text: 'Unable to save block, please try later',
+            })
           })
-        })
+      }
     },
+  },
+
+  beforeMount() {
+    this.addValidator(this._blocksNoEmptyValidator)
+    this.addValidator(this._nameValidator)
   },
 
   created() {
