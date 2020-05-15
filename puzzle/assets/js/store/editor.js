@@ -4,6 +4,7 @@ export default {
   state: () => ({
     currentTab: '',
     edit: true,
+    mode: 'edit',
     saving: false,
     selected: '',
   }),
@@ -19,6 +20,10 @@ export default {
 
     setEdit(state, value) {
       state.edit = value
+    },
+
+    setMode(state, value) {
+      state.mode = value
     },
 
     setSaving(state, value) {

@@ -1,9 +1,16 @@
 <template>
   <div class="mode-toggle">
-    <FontAwesomeIcon class="icon" :icon="faEdit" @click="onChange(0)" />
-    <FontAwesomeIcon class="icon" :icon="faMobileAlt" @click="onChange(1)" />
-    <FontAwesomeIcon class="icon" :icon="faTabletAlt" @click="onChange(2)" />
-    <FontAwesomeIcon class="icon" :icon="faDesktop" @click="onChange(3)" />
+    <FontAwesomeIcon class="icon" :icon="faEdit" @click="onChange(0, 'edit')" />
+    <FontAwesomeIcon
+      class="icon"
+      :icon="faMobileAlt"
+      @click="onChange(1, 'mobile')"
+    />
+    <FontAwesomeIcon
+      class="icon"
+      :icon="faDesktop"
+      @click="onChange(2, 'desktop')"
+    />
     <div class="slider" :style="slider" />
   </div>
 </template>
@@ -14,7 +21,6 @@ import {
   faDesktop,
   faEdit,
   faMobileAlt,
-  faTabletAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default {
@@ -36,27 +42,14 @@ export default {
     faDesktop: () => faDesktop,
     faEdit: () => faEdit,
     faMobileAlt: () => faMobileAlt,
-    faTabletAlt: () => faTabletAlt,
   },
 
   methods: {
-    onChange(index) {
+    onChange(index, mode) {
+      // TODO Remove emit event
       this.current = index
-
-      switch (index) {
-        case 0:
-          this.$emit('mode', 'edit')
-          break
-        case 1:
-          this.$emit('mode', 'mobile')
-          break
-        case 2:
-          this.$emit('mode', 'tablet')
-          break
-        case 3:
-          this.$emit('mode', 'desktop')
-          break
-      }
+      this.$emit('mode', mode)
+      this.$store.commit('editor/setMode', mode)
     },
   },
 }
