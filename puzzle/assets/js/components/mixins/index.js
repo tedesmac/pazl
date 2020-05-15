@@ -105,8 +105,8 @@ export const BlockMixin = {
     ...mapState({
       edit: state => {
         const { editor } = state
-        if (editor && editor.edit) {
-          return editor.edit
+        if (editor && editor.mode) {
+          return editor.mode === 'edit'
         }
         return false
       },
@@ -126,7 +126,14 @@ export const BlockContainerMixin = {
 
   computed: {
     ...mapState({
-      edit: state => (state.editor ? state.editor.edit : false),
+      edit: state => {
+        const { editor } = state
+        if (editor && editor.mode) {
+          return editor.mode === 'edit'
+        }
+        return false
+      },
+      mouseover: state => state.editor.mouseover,
       selected: state => state.editor.selected,
     }),
   },
@@ -159,6 +166,10 @@ export const BlockContainerMixin = {
         const id = event.item.attributes.block.value
         this.removeBlock(id)
       }
+    },
+
+    onMouseOver(id) {
+      this.$store.commit('editor/setMouseOver', id)
     },
 
     removeBlock(id) {
@@ -219,10 +230,8 @@ export const EditorMixin = {
     },
 
     validate() {
-      let allValid = true
-      for (let i = 0; i < this._validators.length; i++) {
-        const { message, valid } = this._validators[i]()
-        allValid = allValid && valid
+      return this._validators.reduce((acc, validator) => {
+        const { message, valid } = validator()
         if (!valid) {
           console.error(message)
           this.$notify({
@@ -230,8 +239,8 @@ export const EditorMixin = {
             text: message,
           })
         }
-        return allValid
-      }
+        return acc && valid
+      }, true)
     },
 
     // Validators
