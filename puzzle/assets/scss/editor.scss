@@ -193,7 +193,7 @@ body {
   height: 1em;
   justify-content: center;
   position: relative;
-  width: 8em;
+  width: 6em;
 
   .icon {
     cursor: pointer;
@@ -208,7 +208,7 @@ body {
     height: 1.8em;
     left: 0;
     position: absolute;
-    transition: all ease 0.5s;
+    transition: all 0.5s ease;
     width: 1.8em;
     z-index: 1;
   }
@@ -364,6 +364,8 @@ body {
   position: fixed;
   right: 0;
   top: 0;
+  transform: translateX(0);
+  transition: all 0.5s ease;
   width: 20vw;
   z-index: 0;
 
