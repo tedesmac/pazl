@@ -5,6 +5,7 @@ export default {
     currentTab: '',
     edit: true,
     mode: 'edit',
+    mouseover: '',
     saving: false,
     selected: '',
   }),
@@ -24,6 +25,10 @@ export default {
 
     setMode(state, value) {
       state.mode = value
+    },
+
+    setMouseOver(state, value) {
+      state.mouseover = value
     },
 
     setSaving(state, value) {
