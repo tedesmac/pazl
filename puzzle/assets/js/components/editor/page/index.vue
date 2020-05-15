@@ -127,6 +127,7 @@
 <script>
 import Block from '@/components/block'
 import ImagePicker from '@/components/editor/image-picker'
+import Toggle from '@/components/editor/mode-toggle'
 import { BlockEditorMixin, EditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory from '@/factories/block'
@@ -135,7 +136,6 @@ import PageStore from '@/store/page'
 import { genId } from '@/utils'
 import Slug from 'slug'
 import { mapState } from 'vuex'
-import Toggle from './toggle'
 
 const BlockSettings = () =>
   import(
