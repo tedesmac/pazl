@@ -10,12 +10,15 @@
     <div
       v-for="(block, index) in blocks"
       :block="block.id"
-      :class="{ block: edit, 'block-selected': block.id === selected }"
+      :class="{
+        block: edit,
+        'block-hover': block.id === mouseover && edit,
+        'block-selected': block.id === selected && edit,
+      }"
       :key="block.id"
       @click.stop="onClickBlock(block)"
+      @mouseover.stop="onMouseOver(block.id)"
     >
-      <div class="type">{{ block.type }}</div>
-
       <Block :block="block.id" :index="index" :parent="id" :type="block.type" />
     </div>
   </Draggable>
@@ -63,14 +66,11 @@ export default {
 
     direction: {
       get() {
-        return this.data.direction
+        return this.getData('direction', 'horizontal')
       },
 
-      set(direction) {
-        this.data = {
-          ...this.data,
-          direction,
-        }
+      set(value) {
+        this.setData('direction', value)
       },
     },
 
