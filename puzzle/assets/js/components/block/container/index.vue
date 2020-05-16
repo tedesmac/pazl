@@ -7,20 +7,21 @@
     :style="style"
     @end="onEnd"
   >
-    <div
+    <Block
       v-for="(block, index) in blocks"
+      parent="root"
       :block="block.id"
       :class="{
         block: edit,
         'block-hover': block.id === mouseover && edit,
         'block-selected': block.id === selected && edit,
       }"
+      :index="index"
       :key="block.id"
-      @click.stop="onClickBlock(block)"
-      @mouseover.stop="onMouseOver(block.id)"
-    >
-      <Block :block="block.id" :index="index" :parent="id" :type="block.type" />
-    </div>
+      :type="block.type"
+      @click.stop.native="onClickBlock(block)"
+      @mouseover.stop.native="onMouseOver(block.id)"
+    />
   </Draggable>
 
   <div v-else :class="classes" :style="style">
