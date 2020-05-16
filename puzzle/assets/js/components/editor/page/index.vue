@@ -1,7 +1,7 @@
 <template>
   <Editor>
     <Topbar :backUrl="`${$routes.admin}pages`" @save="onSave">
-      <Toggle @mode="onModeChange" />
+      <Toggle />
     </Topbar>
 
     <Workspace>
@@ -11,22 +11,21 @@
         :class="{ 'block-container': edit, __puzzle_page: !edit }"
         @end="onEnd"
       >
-        <div
+        <Block
           v-for="(block, index) in pageBlocks"
+          parent="root"
           :block="block.id"
-          :class="{ block: edit, 'block-selected': block.id === selected }"
+          :class="{
+            block: edit,
+            'block-hover': block.id === mouseover && edit,
+            'block-selected': block.id === selected && edit,
+          }"
+          :index="index"
           :key="block.id"
-          @click.stop="onClickBlock(block)"
-        >
-          <div v-if="edit" class="type">{{ block.type }}</div>
-
-          <Block
-            parent="root"
-            :block="block.id"
-            :index="index"
-            :type="block.type"
-          />
-        </div>
+          :type="block.type"
+          @click.stop.native="onClickBlock(block)"
+          @mouseover.stop.native="onMouseOver(block.id)"
+        />
       </Draggable>
     </Workspace>
 
@@ -125,17 +124,16 @@
 </template>
 
 <script>
-import Block from '@/components/block'
 import ImagePicker from '@/components/editor/image-picker'
 import Toggle from '@/components/editor/mode-toggle'
-import { BlockEditorMixin, EditorMixin } from '@/components/mixins'
+import {
+  BlockContainerMixin,
+  BlockEditorMixin,
+  EditorMixin,
+} from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory from '@/factories/block'
-import EditorStore from '@/store/editor'
-import PageStore from '@/store/page'
-import { genId } from '@/utils'
 import Slug from 'slug'
-import { mapState } from 'vuex'
 
 const BlockSettings = () =>
   import(
@@ -155,10 +153,9 @@ const defaultBlocks = Object.keys(blockTypes)
   }))
 
 export default {
-  mixins: [BlockEditorMixin, EditorMixin],
+  mixins: [BlockContainerMixin, BlockEditorMixin, EditorMixin],
 
   components: {
-    Block,
     BlockSettings,
     ImageGallery,
     ImagePicker,
@@ -245,11 +242,6 @@ export default {
         this.$store.commit('page/setStyle', value)
       },
     },
-
-    ...mapState({
-      edit: state => state.editor.edit,
-      selected: state => state.editor.selected,
-    }),
   },
 
   methods: {
@@ -264,24 +256,12 @@ export default {
       }
     },
 
-    onClone(block) {
-      return blockFactory(block.type)
-    },
-
     onImageSelected(image) {
       if (this.imageSelectedCallbak) {
         this.imageSelectedCallbak(image)
       }
 
       this.$modal.hide('image-select')
-    },
-
-    onModeChange(mode) {
-      if (mode === 'edit') {
-        this.$store.commit('editor/setEdit', true)
-      } else {
-        this.$store.commit('editor/setEdit', false)
-      }
     },
 
     onSave() {
@@ -311,22 +291,12 @@ export default {
         this.$store.commit('editor/setSaving', false)
       }
     },
-
-    removeBlock(id) {
-      this.pageBlocks = this.pageBlocks.filter((block, index) => {
-        if (block.id && block.id !== id) {
-          return block
-        } else if (!block.id && index !== Number(id)) {
-          return block
-        }
-      })
-    },
   },
 
   beforeMount() {
     if (this.id > 0) {
       this.$store.dispatch('page/fetchPageById', this.id).catch(() => {
-        window.location = '/pazl/admin/pages'
+        window.location = `${this.$routes.admin}pages`
       })
     }
     this.activeTab = 'Blocks'
