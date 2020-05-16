@@ -21,6 +21,12 @@ const directionSetter = () =>
     './direction'
   )
 
+const feedSetter = () =>
+  import(
+    /* webpackChunkName: 'feedSetter' */
+    './feed'
+  )
+
 const fontSetter = () =>
   import(
     /* webpackChunkName: 'fontSetter' */
@@ -44,6 +50,7 @@ export default {
     alignmentSetter,
     blockStyleSetter,
     directionSetter,
+    feedSetter,
     fontSetter,
     fontStyleSetter,
     imageSetter,
