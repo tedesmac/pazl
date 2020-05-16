@@ -106,12 +106,17 @@ class ListAPIView(BaseAPIView):
                     value = value[0]
                 if re_number.match(value):
                     value = int(value)
+                    if value == 0:
+                        value = None
                 query[f] = value
 
         instances = self.model.objects.all().filter(**query)
         serializer = self.get_serializer(instances, many=True)
-        for d in serializer.data:
-            del d['data']
+
+        if not 'include_data' in request.GET:
+            for d in serializer.data:
+                del d['data']
+
         return JsonResponse(serializer.data, safe=False)
 
     @method_decorator(private)
