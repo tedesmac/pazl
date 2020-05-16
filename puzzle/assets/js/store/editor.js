@@ -3,6 +3,7 @@ export default {
 
   state: () => ({
     currentTab: '',
+    // TODO remove 'edit' from store
     edit: true,
     mode: 'edit',
     mouseover: '',

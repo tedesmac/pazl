@@ -5,7 +5,7 @@ import Editor from '@/components/editor'
 import Sidebar from '@/components/editor/sidebar'
 import Topbar from '@/components/editor/topbar'
 import Workspace from '@/components/editor/workspace'
-import blockFactory, { mergeBlockToSettings } from '@/factories/block'
+import blockFactory from '@/factories/block'
 import EditorStore from '@/store/editor'
 import PageStore from '@/store/page'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -127,14 +127,29 @@ export const BlockContainerMixin = {
   computed: {
     ...mapState({
       edit: state => {
-        const { editor } = state
-        if (editor && editor.mode) {
-          return editor.mode === 'edit'
+        try {
+          const { mode } = state.editor
+          return mode === 'edit'
+        } catch {
+          return false
         }
-        return false
       },
-      mouseover: state => state.editor.mouseover,
-      selected: state => state.editor.selected,
+      mouseover: state => {
+        try {
+          const { mouseover } = state.editor
+          return mouseover
+        } catch {
+          return ''
+        }
+      },
+      selected: state => {
+        try {
+          const { selected } = state.editor
+          return selected
+        } catch {
+          return ''
+        }
+      },
     }),
   },
 
@@ -147,11 +162,10 @@ export const BlockContainerMixin = {
     },
 
     onClone(block) {
-      const b = {
+      return {
         ...block,
         ...blockFactory(block.type),
       }
-      return b
     },
 
     onDragOver(event) {
@@ -215,6 +229,10 @@ export const EditorMixin = {
       type: Number,
     },
   },
+
+  computed: mapState({
+    edit: state => state.editor.mode === 'edit',
+  }),
 
   methods: {
     addValidator(validator) {
