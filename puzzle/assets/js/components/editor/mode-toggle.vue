@@ -46,9 +46,7 @@ export default {
 
   methods: {
     onChange(index, mode) {
-      // TODO Remove emit event
       this.current = index
-      this.$emit('mode', mode)
       this.$store.commit('editor/setMode', mode)
     },
   },
