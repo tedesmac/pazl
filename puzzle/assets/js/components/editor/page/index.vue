@@ -6,13 +6,13 @@
 
     <Workspace>
       <Draggable
-        v-model="pageBlocks"
+        v-model="blocks"
         group="blocks"
         :class="{ 'block-container': edit, __puzzle_page: !edit }"
         @end="onEnd"
       >
         <Block
-          v-for="(block, index) in pageBlocks"
+          v-for="(block, index) in blocks"
           parent="root"
           :block="block.id"
           :class="{
@@ -64,19 +64,37 @@
 
       <!-- Blocks -->
       <div v-if="activeTab === 'Blocks'">
-        <Draggable
-          v-model="defaultBlocks"
-          :clone="onClone"
-          :group="{ name: 'blocks', pull: 'clone', put: false }"
-        >
-          <div
-            v-for="(block, index) in defaultBlocks"
-            class="model-block"
-            :key="`default_block_${index}`"
+        <Collapsible string="Default Blocks">
+          <Draggable
+            v-model="defaultBlocks"
+            :clone="onClone"
+            :group="{ name: 'blocks', pull: 'clone', put: false }"
           >
-            {{ block.type }}
-          </div>
-        </Draggable>
+            <div
+              v-for="(block, index) in defaultBlocks"
+              class="model-block"
+              :key="`default_block_${index}`"
+            >
+              {{ block.type }}
+            </div>
+          </Draggable>
+        </Collapsible>
+
+        <Collapsible string="User Blocks">
+          <Draggable
+            v-model="userBlocks"
+            :clone="onCloneUserBlock"
+            :group="{ name: 'blocks', pull: 'clone', put: false }"
+          >
+            <div
+              v-for="(block, index) in userBlocks"
+              class="model-block"
+              :key="`user_block_${index}`"
+            >
+              {{ block.name }}
+            </div>
+          </Draggable>
+        </Collapsible>
       </div>
 
       <!-- Page Settings -->
@@ -133,6 +151,7 @@ import {
 } from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory from '@/factories/block'
+import { genId, mergeArrays } from '@/utils'
 import Slug from 'slug'
 
 const BlockSettings = () =>
@@ -166,6 +185,7 @@ export default {
     return {
       defaultBlocks,
       imageSelectedCallbak: null,
+      userBlocks: [],
     }
   },
 
@@ -180,15 +200,16 @@ export default {
       },
     },
 
-    pageBlocks: {
+    blocks: {
       get() {
         return this.$store.getters['page/getChildren']('root')
       },
 
       set(value) {
+        const blocks = mergeArrays(value, 'root')
         this.$store.commit('page/updateBlocks', {
-          blocks: value.map(b => ({ ...b, parent: 'root' })),
           parent: 'root',
+          blocks,
         })
       },
     },
@@ -249,10 +270,65 @@ export default {
       this.imageSelectedCallbak = event.params.callback
     },
 
+    fetchUserBlocks() {
+      this.$api.blocks
+        .get({ include_data: 1, model: 0 })
+        .then(data => {
+          this.userBlocks = data
+        })
+        .catch(error => {
+          console.error('[PageEditor.fetchUserBlocks] =>', error)
+        })
+    },
+
     onClickBlock(block) {
       if (this.edit) {
         this.$store.commit('editor/setSelected', block.id)
         this.activeTab = 'Settings'
+      }
+    },
+
+    /**
+     * This function does the following operations:
+     *
+     * 1. Filter container blocks.
+     * 2. Generete new ids for the container blocks, but dont assign them yet.
+     * 3. Generete and assign new ids for all the blocks.
+     *    a. If block is a container, use the already generated id.
+     *    b. If block parent is not root, update its parent id using the
+     *       previusly generated container ids.
+     */
+    onCloneUserBlock(userBlock) {
+      try {
+        const containers = userBlock.data.blocks.filter(
+          block => block.type === 'container'
+        )
+
+        const containerIds = containers.reduce((acc, block) => {
+          const { id } = block
+          acc[id] = genId()
+          return acc
+        }, {})
+
+        const blocks = userBlock.data.blocks.map(block => {
+          if (block.parent in containerIds) {
+            block.parent = containerIds[block.parent]
+          }
+
+          if (block.type === 'container') {
+            block.id = containerIds[block.id]
+          } else {
+            block.id = genId()
+          }
+
+          return block
+        })
+
+        console.log(blocks)
+
+        return blocks
+      } catch (e) {
+        console.error('[PageEditor.onCloneUserBlock] =>', e)
       }
     },
 
@@ -299,6 +375,7 @@ export default {
         window.location = `${this.$routes.admin}pages`
       })
     }
+    this.fetchUserBlocks()
     this.activeTab = 'Blocks'
   },
 

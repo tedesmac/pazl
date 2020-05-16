@@ -39,6 +39,7 @@
 <script>
 import { direction } from '@/constants'
 import { BlockMixin, BlockContainerMixin } from '@/components/mixins'
+import { mergeArrays } from '@/utils'
 
 export default {
   mixins: [BlockMixin, BlockContainerMixin],
@@ -50,9 +51,10 @@ export default {
       },
 
       set(value) {
+        const blocks = mergeArrays(value, this.id)
         this.$store.commit('page/updateBlocks', {
-          blocks: value.map(b => ({ ...b, parent: this.id })),
           parent: this.id,
+          blocks,
         })
       },
     },
