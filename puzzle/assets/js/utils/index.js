@@ -82,6 +82,27 @@ export const isImage = mime => image_re.test(mime)
 
 export const isLogo = mime => logo_re.test(mime)
 
+/**
+ * Utility function. User defined blocks are cloned as arrays, this function
+ * merge the contents of those arrays into the main array "blocks" and sets the
+ * right parent for those blocks.
+ */
+export const mergeArrays = (blocks, rootId = 'root') => {
+  const arrays = blocks.filter(e => Array.isArray(e))
+  return arrays.reduce(
+    (acc, a) => [
+      ...acc,
+      ...a.map(b => {
+        if (b.parent == 'root' && rootId !== 'root') {
+          b.parent = rootId
+        }
+        return b
+      }),
+    ],
+    blocks.filter(e => !Array.isArray(e)).map(b => ({ ...b, parent: rootId }))
+  )
+}
+
 export const routes = {
   admin: `/${PAZL_BASE_PATH}/admin/`,
   api: `/${PAZL_BASE_PATH}/api/`,
