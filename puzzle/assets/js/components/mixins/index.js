@@ -305,57 +305,6 @@ export const EditorMixin = {
   },
 }
 
-export const BlockEditorMixin = {
-  components: {
-    Draggable,
-  },
-
-  data() {
-    return {
-      eventListener: false,
-      mouseX: 0,
-      saving: false,
-    }
-  },
-
-  methods: {
-    onDragOver(event) {
-      this.mouseX = event.clientX
-    },
-
-    onEnd(event) {
-      const workspace = document
-        .getElementById('workspace')
-        .getBoundingClientRect()
-      if (this.mouseX < workspace.left || workspace.right < this.mouseX) {
-        const id = event.item.attributes.block.value
-        this.removeBlock(id)
-      }
-    },
-
-    removeBlock(id) {
-      this.blocks = this.blocks.filter((block, index) => {
-        if (block.id && block.id !== id) {
-          return block
-        } else if (!block.id && index !== Number(id)) {
-          return block
-        }
-      })
-    },
-  },
-
-  beforeDestroy() {
-    if (this.eventListener) {
-      document.removeEventListener('dragover', this.onDragOver)
-    }
-  },
-
-  mounted() {
-    document.addEventListener('dragover', this.onDragOver)
-    this.eventListener = true
-  },
-}
-
 export const LogoMixin = {
   computed: {
     logoStyle() {
