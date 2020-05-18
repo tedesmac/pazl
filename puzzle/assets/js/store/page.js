@@ -176,6 +176,31 @@ export default {
       }
     },
 
+    saveModel(context, id) {
+      const { state } = context
+      const data = {
+        data: { blocks: state.blocks },
+        name: state.name,
+      }
+      if (id) {
+        return Api.models
+          .put({ ...data, id })
+          .then(_ => _)
+          .catch(error => {
+            console.error('[pageStore.saveModel.put]', error)
+            Promise.reject(error)
+          })
+      } else {
+        return Api.models
+          .post(data)
+          .then(_ => _)
+          .catch(error => {
+            console.error('[pageStore.saveModel.post]', error)
+            Promise.reject(error)
+          })
+      }
+    },
+
     savePage(context, id) {
       const { state } = context
       const data = {
@@ -304,7 +329,11 @@ export default {
       state.style = style
     },
 
+    /**
+     *
+     */
     updateBlocks(state, payload) {
+      // TODO make sure user defined blocks are not filtered here
       const { blocks, parent } = payload
       const notParent = state.blocks.filter(b => b.parent !== parent)
       const newBlocks = [
