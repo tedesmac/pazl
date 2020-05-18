@@ -76,15 +76,13 @@
 </template>
 
 <script>
-import { BlockEditorMixin } from '@/components/mixins'
+import { BlockContainerMixin, EditorMixin } from '@/components/mixins'
 import { modelTypes } from '@/constants'
-import EditorStore from '@/store/editor'
-import PageStore from '@/store/page'
 
 const defaultBlocks = Object.keys(modelTypes).map(type => ({ type }))
 
 export default {
-  mixins: [BlockEditorMixin],
+  mixins: [BlockContainerMixin, EditorMixin],
 
   data() {
     return {
@@ -249,14 +247,7 @@ export default {
     },
   },
 
-  beforeDestroy() {
-    this.$store.unregisterModule('editor')
-    this.$store.unregisterModule('page')
-  },
-
   created() {
-    this.$store.registerModule('editor', EditorStore)
-    this.$store.registerModule('page', PageStore)
     this.$store.commit('page/setIsEntry', true)
   },
 
