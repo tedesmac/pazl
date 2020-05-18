@@ -99,7 +99,7 @@ export default {
       },
 
       set(value) {
-        this.$store.commit('page/setName', value.toLowerCase().replace(' ', ''))
+        this.$store.commit('page/setName', this.$utils.capitalize(value))
       },
     },
   },
@@ -111,7 +111,7 @@ export default {
         if (i === index) {
           return {
             ...b,
-            name: value.toLowerCase().replace(' ', ''),
+            name: this.$utils.capitalize(value),
           }
         }
         return b
@@ -126,67 +126,25 @@ export default {
     },
 
     onSave() {
-      const errors = this.verifyAll()
-      if (errors.length === 0) {
+      if (this.validate()) {
         this.$store.commit('editor/setSaving', true)
-        if (this.id == 0) {
-          this.$api.models
-            .post({
-              data: {
-                blocks: this.blocks,
-              },
-              name: this.name,
+        this.$store
+          .dispatch('page/saveModel', this.id)
+          .then(() => {
+            this.$store.commit('editor/setSaving', false)
+            this.$notify({
+              group: 'messages',
+              text: 'Model saved',
             })
-            .then(data => {
-              this.$store.commit('editor/setSaving', false)
-              this.$notify({
-                group: 'messages',
-                text: 'Model saved',
-              })
-              this.$router.push({
-                path: `${this.$routes.editor}model?id=${data.id}`,
-              })
-            })
-            .catch(error => {
-              console.error('[editor/model.post] =>', error)
-              this.$store.commit('editor/setSaving', false)
-              this.$notify({
-                group: 'errors',
-                text: 'Unable to save, please try again later',
-              })
-            })
-        } else {
-          this.$api.models
-            .put({
-              id: this.id,
-              data: {
-                blocks: this.blocks,
-              },
-              name: this.name,
-            })
-            .then(data => {
-              this.$store.commit('editor/setSaving', false)
-              this.$notify({
-                group: 'messages',
-                text: 'Model saved',
-              })
-            })
-            .catch(error => {
-              console.error('[editor/model.post] =>', error)
-              this.$store.commit('editor/setSaving', false)
-              this.$notify({
-                group: 'errors',
-                text: 'Unable to save, please try again later',
-              })
-            })
-        }
-      } else {
-        errors.map(e => {
-          this.$notify({
-            group: 'errors',
-            text: e,
           })
-        })
+          .catch(error => {
+            console.error('[ModelEditor.onSave] =>', error)
+            this.$store.commit('editor/setSaving', false)
+            this.$notify({
+              group: 'errors',
+              text: 'Unable to save, please try again later',
+            })
+          })
       }
     },
 
@@ -207,40 +165,51 @@ export default {
       return errors
     },
 
-    verifyBlocksNamed() {
-      let allBlocksNamed = true
+    // Validators
+
+    /**
+     * Verifies that all blocks are named
+     */
+    blocksNamedValidator() {
+      const message = 'All blocks must be named'
+      let valid = true
       for (let i = 0; i < this.blocks.length; i++) {
         if (this.blocks[i].name === '') {
-          allBlocksNamed = false
+          valid = false
           break
         }
       }
-      return allBlocksNamed
+      return { message, valid }
     },
 
-    verifyNamed() {
-      return this.name !== ''
-    },
-
-    verifyUniqueNames() {
-      let allUniqueNames = true
+    /**
+     * Verifies that all blocks have a unique name
+     */
+    blocksHaveUniqueNameValidator() {
+      const message = 'All blocks must have an unique name'
+      let valid = true
       for (let i = 0; i < this.blocks.length - 1; i++) {
         for (let j = i + 1; j < this.blocks.length; j++) {
           if (this.blocks[i].name === this.blocks[j].name) {
-            allUniqueNames = false
+            valid = false
             break
           }
         }
-        if (!allUniqueNames) {
+        if (!valid) {
           break
         }
       }
-      return allUniqueNames
+      return { message, valid }
     },
   },
 
   created() {
     this.$store.commit('page/setIsEntry', true)
+
+    this.addValidator(this._blocksNoEmptyValidator)
+    this.addValidator(this._nameValidator)
+    this.addValidator(this.blocksNamedValidator)
+    this.addValidator(this.blocksHaveUniqueNameValidator)
   },
 
   mounted() {
