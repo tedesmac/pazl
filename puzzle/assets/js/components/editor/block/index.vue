@@ -100,8 +100,14 @@
       </div>
     </Sidebar>
 
-    <modal height="auto" name="block-settings" width="80%" :scrollable="true">
-      <BlockSettings />
+    <modal
+      height="auto"
+      name="image-select"
+      width="80%"
+      :scrollable="true"
+      @before-open="beforeImageGallery"
+    >
+      <ImageGallery @image="onImageSelected" />
     </modal>
 
     <notifications group="messages" position="bottom right" />
@@ -120,11 +126,16 @@ import { BlockContainerMixin, EditorMixin } from '@/components/mixins'
 import { modelTypes } from '@/constants'
 
 const BlockSettings = () => import('@/components/editor/blockSettings')
+const ImageGallery = () =>
+  import(
+    /* webpackChunkName: 'imageGallery' */
+    'components/misc/image-gallery'
+  )
 
 export default {
   mixins: [BlockContainerMixin, EditorMixin],
 
-  components: { BlockSettings, Toggle },
+  components: { BlockSettings, ImageGallery, Toggle },
 
   data() {
     return {

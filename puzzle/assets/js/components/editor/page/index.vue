@@ -184,7 +184,6 @@ export default {
   data() {
     return {
       defaultBlocks,
-      imageSelectedCallbak: null,
       userBlocks: [],
     }
   },
@@ -266,10 +265,6 @@ export default {
   },
 
   methods: {
-    beforeImageGallery(event) {
-      this.imageSelectedCallbak = event.params.callback
-    },
-
     fetchUserBlocks() {
       this.$api.blocks
         .get({ include_data: 1, model: 0 })
@@ -330,14 +325,6 @@ export default {
       } catch (e) {
         console.error('[PageEditor.onCloneUserBlock] =>', e)
       }
-    },
-
-    onImageSelected(image) {
-      if (this.imageSelectedCallbak) {
-        this.imageSelectedCallbak(image)
-      }
-
-      this.$modal.hide('image-select')
     },
 
     onSave() {

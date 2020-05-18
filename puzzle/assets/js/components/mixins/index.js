@@ -220,6 +220,7 @@ export const EditorMixin = {
 
   data() {
     return {
+      _imageSelectedCallback: null,
       _validators: [],
     }
   },
@@ -245,6 +246,21 @@ export const EditorMixin = {
       } else {
         console.error('[EditorMixin] => validator must be a function')
       }
+    },
+
+    /**
+     */
+    beforeImageGallery(event) {
+      this._imageSelectedCallback = event.params.callback
+    },
+
+    /**
+     */
+    onImageSelected(image) {
+      if (this._imageSelectedCallback) {
+        this._imageSelectedCallback(image)
+      }
+      this.$modal.hide('image-select')
     },
 
     validate() {
