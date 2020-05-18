@@ -144,11 +144,7 @@
 <script>
 import ImagePicker from '@/components/editor/image-picker'
 import Toggle from '@/components/editor/mode-toggle'
-import {
-  BlockContainerMixin,
-  BlockEditorMixin,
-  EditorMixin,
-} from '@/components/mixins'
+import { BlockContainerMixin, EditorMixin } from '@/components/mixins'
 import { blockTypes } from '@/constants'
 import blockFactory from '@/factories/block'
 import { genId, mergeArrays } from '@/utils'
@@ -172,7 +168,7 @@ const defaultBlocks = Object.keys(blockTypes)
   }))
 
 export default {
-  mixins: [BlockContainerMixin, BlockEditorMixin, EditorMixin],
+  mixins: [BlockContainerMixin, EditorMixin],
 
   components: {
     BlockSettings,
