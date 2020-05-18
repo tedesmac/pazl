@@ -34,7 +34,7 @@ export const buildMenu = (pages, rootId) => {
  * Capitalize the first character of each word in "string".
  */
 export const capitalize = string => {
-  const array = string.split(' ')
+  const array = string.split(' ').filter(e => e.length > 0)
   return array.reduce((acc, s) => {
     const capitalized = s.substr(0, 1).toUpperCase() + s.substr(1).toLowerCase()
     return `${acc} ${capitalized}`
