@@ -6,7 +6,7 @@
   >
     <div>
       <p>
-        {{ name }}
+        {{ $utils.capitalize(name) }}
         <FontAwesomeIcon v-if="published != null" :icon="publishedIcon" />
       </p>
     </div>

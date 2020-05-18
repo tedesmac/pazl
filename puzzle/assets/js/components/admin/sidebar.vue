@@ -21,7 +21,7 @@
         :key="`model_${model.name}`"
         :to="{ name: 'adminEntries', params: { model: model.id } }"
       >
-        {{ model.name }}
+        {{ $utils.capitalize(model.name) }}
       </router-link>
     </div>
 

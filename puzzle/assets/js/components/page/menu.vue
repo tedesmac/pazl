@@ -40,10 +40,7 @@
       <router-link to="/">Home</router-link>
 
       <router-link v-for="page in pages" :key="page.path" :to="page.path">
-        {{
-          page.name.substr(0, 1).toUpperCase() +
-            page.name.substr(1).toLowerCase()
-        }}
+        {{ $utils.capitalize(page.name) }}
       </router-link>
 
       <div class="__pazl_nav_spacer"></div>
