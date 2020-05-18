@@ -1,11 +1,11 @@
-import Api from 'api'
-import App from 'components/app'
-import { routes } from 'utils'
+import Api from '@/api'
+import App from '@/components/app'
+import Router from '@/router'
+import Store from '@/store'
+import { capitalize, routes } from '@/utils'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { sync } from 'vuex-router-sync'
-import Router from './router'
-import Store from './store'
 
 import(
   /* webpackChunkName: 'modal' */
@@ -36,6 +36,7 @@ import(
 
 Vue.prototype.$api = Api
 Vue.prototype.$routes = routes
+Vue.prototype.$utils = { capitalize }
 
 const router = Router()
 
