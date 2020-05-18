@@ -64,14 +64,6 @@
         </div>
       </Draggable>
     </Workspace>
-
-    <notifications group="messages" position="bottom right" />
-
-    <notifications
-      group="errors"
-      position="top right"
-      classes="vue-notification error"
-    />
   </Editor>
 </template>
 

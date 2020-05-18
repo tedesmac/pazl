@@ -109,14 +109,6 @@
     >
       <ImageGallery @image="onImageSelected" />
     </modal>
-
-    <notifications group="messages" position="bottom right" />
-
-    <notifications
-      group="errors"
-      position="bottom right"
-      classes="vue-notification error"
-    />
   </Editor>
 </template>
 
