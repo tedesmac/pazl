@@ -1,6 +1,8 @@
 <template>
   <div>
-    <MDE v-if="edit" v-model="markdown" />
+    <div v-if="edit" style="padding: 0.5rem;">
+      <MDE v-model="markdown" />
+    </div>
 
     <div v-else v-html="html" />
   </div>

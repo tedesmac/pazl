@@ -30,22 +30,23 @@ export default {
   },
 
   beforeDestroy() {
+    console.log(this.$el)
     this.mde = null
   },
 
   mounted() {
-    //   this.mde = new EasyMDE({
-    //     element: this.$refs.textarea,
-    //     minHeight: '6em',
-    //     placeholder: 'Markdown',
-    //     spellChecker: false,
-    //     status: false,
-    //     toolbar: false,
-    //   })
-    //   this.mde.value(this.value != null ? this.value : '')
-    //   this.mde.codemirror.on('change', () => {
-    //     this.$emit('input', this.mde.value())
-    //   })
+    this.mde = new EasyMDE({
+      element: this.$refs.textarea,
+      minHeight: '6em',
+      placeholder: 'Markdown',
+      spellChecker: false,
+      status: false,
+      toolbar: false,
+    })
+    this.mde.value(this.value != null ? this.value : '')
+    this.mde.codemirror.on('change', () => {
+      this.$emit('input', this.mde.value())
+    })
   },
 }
 </script>
