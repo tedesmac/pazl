@@ -8,7 +8,7 @@ body {
   margin: 0;
   max-width: 100%;
   min-height: 100vh;
-  min-width: 100vw;
+  width: 100vw;
 }
 
 h1,
@@ -37,6 +37,35 @@ p {
 
 .__puzzle_block {
   max-width: 100%;
+}
+
+.__pazl_carousel {
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.__pazl_carousel_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 100%;
+  position: absolute;
+  transition: all 0.5s linear;
+  transform: translateX(0);
+}
+
+.__pazl_carousel_image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+}
+
+.__pazl_carousel_element {
+  height: 100%;
 }
 
 .__pazl_edit {

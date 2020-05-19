@@ -15,6 +15,12 @@ const blockStyleSetter = () =>
     './blockStyle'
   )
 
+const carouselSetter = () =>
+  import(
+    /* webpackChunkName: 'carouselSetter' */
+    './carousel'
+  )
+
 const directionSetter = () =>
   import(
     /* webpackChunkName: 'directionSetter' */
@@ -49,6 +55,7 @@ export default {
   components: {
     alignmentSetter,
     blockStyleSetter,
+    carouselSetter,
     directionSetter,
     feedSetter,
     fontSetter,
