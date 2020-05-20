@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="section is-horizontal space-between">
-      <h2>{{ modelName }}</h2>
+      <h2>{{ $utils.capitalize(modelName) }}</h2>
 
       <button class="is-cyan" @click="onNew">New</button>
     </div>
@@ -47,19 +47,37 @@ export default {
   computed: mapState({
     modelName: state => {
       const modelId = Number(state.route.params.model)
-      return state.admin.models.reduce((_, model) => {
+      return state.admin.models.reduce((acc, model) => {
         if (model.id === modelId) {
-          console.log('here')
           return model.name
         }
-        return _
+        return acc
       }, 'Entries')
     },
   }),
 
   methods: {
+    fetchEntries() {
+      this.$api.entries
+        .get({ model: this.modelId })
+        .then(entries => {
+          this.entries = entries
+        })
+        .catch(error => {
+          console.error('[admin.entries.fetchEntries] =>', error)
+          this.entries = []
+        })
+    },
+
     onDelete(id) {
-      // do something
+      this.$api.entries
+        .delete({ id })
+        .then(() => {
+          this.fetchEntries()
+        })
+        .catch(error => {
+          console.error('[admin.entries.onDelete] =>', error)
+        })
     },
 
     onEdit(id) {
@@ -71,10 +89,14 @@ export default {
     },
   },
 
+  watch: {
+    modelId() {
+      this.fetchEntries()
+    },
+  },
+
   mounted() {
-    this.$api.entries.get().then(entries => {
-      this.entries = entries
-    })
+    this.fetchEntries()
   },
 }
 </script>
