@@ -86,12 +86,6 @@ export default {
 
   components: { Block, ImageGallery, ImagePicker },
 
-  data() {
-    return {
-      imageSelectedCallbak: null,
-    }
-  },
-
   props: {
     modelId: {
       type: Number,
@@ -151,45 +145,35 @@ export default {
   },
 
   methods: {
-    beforeImageGallery(event) {
-      this.imageSelectedCallbak = event.params.callback
-    },
-
-    onImageSelected(image) {
-      if (this.imageSelectedCallbak) {
-        this.imageSelectedCallbak(image)
-      }
-
-      this.$modal.hide('image-select')
-    },
-
     onSave() {
-      this.$store
-        .dispatch('page/saveEntry', {
-          id: this.id,
-          model: this.modelId,
-        })
-        .then(data => {
-          if (data.id !== this.id) {
-            this.$router.push({
-              path: `${this.$routes.editor}entry?id=${data.id}&model=${this.modelId}`,
-            })
-            this.$notify({
-              group: 'messages',
-              text: 'Entry saved',
-            })
-          }
-        })
-        .catch(() => {
-          this.$notify({
-            group: 'errors',
-            text: 'Unable to save, please try again later',
+      if (this.validate()) {
+        this.$store
+          .dispatch('page/saveEntry', {
+            id: this.id,
+            model: this.modelId,
           })
-        })
+          .then(data => {
+            if (data.id !== this.id) {
+              this.$router.push({
+                path: `${this.$routes.editor}entry?id=${data.id}&model=${this.modelId}`,
+              })
+              this.$notify({
+                group: 'messages',
+                text: 'Entry saved',
+              })
+            }
+          })
+          .catch(() => {
+            this.$notify({
+              group: 'errors',
+              text: 'Unable to save, please try again later',
+            })
+          })
+      }
     },
 
     redirectToAdmin(extra = '') {
-      window.location = `/pazl/admin/${extra}`
+      window.location = `${this.$routes.admin}${extra}`
     },
   },
 
@@ -203,7 +187,7 @@ export default {
               this.redirectToAdmin(`entries/${this.model}`)
             })
           } else {
-            this.$store.commit('page/isEntry', true)
+            this.$store.commit('page/setIsEntry', true)
           }
         })
         .catch(() => {
@@ -212,6 +196,8 @@ export default {
     } else {
       this.redirectToAdmin()
     }
+
+    this.addValidator(this._nameValidator)
   },
 }
 </script>
