@@ -61,7 +61,7 @@
         <Collapsible string="Model Blocks" v-if="modelId > 0">
           <Draggable
             v-model="modelBlocks"
-            :clone="onCloneModelBlock"
+            :clone="onClone"
             :group="{ name: 'blocks', pull: 'clone', put: false }"
           >
             <div
@@ -248,13 +248,6 @@ export default {
         })
     },
 
-    onCloneModelBlock(block) {
-      return {
-        ...this.onClone(block),
-        id: block.id,
-      }
-    },
-
     onSave() {
       if (this.validate()) {
         this.$store.commit('editor/setSaving', true)
@@ -296,6 +289,7 @@ export default {
   },
 
   created() {
+    this.$store.commit('editor/setBlockMode', true)
     if (this.id) {
       this.fetchBlock()
     }
