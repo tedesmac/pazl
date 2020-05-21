@@ -17,7 +17,10 @@
         @edit="onEdit(entry.id)"
       >
         <template #actions>
-          <button class="is-yellow">
+          <button
+            class="is-yellow"
+            @click="onPublish(entry.id, !entry.published)"
+          >
             {{ entry.published ? 'Unpublish' : 'Publish' }}
           </button>
         </template>
@@ -86,6 +89,17 @@ export default {
 
     onNew() {
       window.location = `/pazl/editor/entry?model=${this.modelId}`
+    },
+
+    onPublish(id, published) {
+      this.$api.entries
+        .put({ model: this.modelId, id, published })
+        .then(entry => {
+          this.entries = this.entries.map(e => (e.id === entry.id ? entry : e))
+        })
+        .catch(error => {
+          console.error('[admin.entries.onPublish] =>', error)
+        })
     },
   },
 
