@@ -17,6 +17,38 @@ export const AdminListingMixin = {
   components: { Entry },
 }
 
+export const BlockGetMixin = {
+  computed: {
+    data() {
+      const { data = {} } = this.block
+      return data
+    },
+
+    style() {
+      const { style = {} } = this.block
+      return style
+    },
+  },
+
+  methods: {
+    getData(key, _default = '') {
+      const value = this.data[key]
+      if (value == null) {
+        return _default
+      }
+      return value
+    },
+
+    getStyle(key, _default = '') {
+      const value = this.style[key]
+      if (value == null) {
+        return _default
+      }
+      return value
+    },
+  },
+}
+
 export const BlockGetRemoveSetMixin = {
   computed: {
     data: {
@@ -103,6 +135,14 @@ export const BlockMixin = {
 
   computed: {
     ...mapState({
+      blockMode: state => {
+        const { editor } = state
+        if (editor && editor.blockMode) {
+          return true
+        }
+        return false
+      },
+
       edit: state => {
         const { editor } = state
         if (editor && editor.mode) {

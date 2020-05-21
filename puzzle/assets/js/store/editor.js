@@ -2,6 +2,7 @@ export default {
   namespaced: true,
 
   state: () => ({
+    blockMode: false,
     currentTab: '',
     // TODO remove 'edit' from store
     edit: true,
@@ -12,6 +13,10 @@ export default {
   }),
 
   mutations: {
+    setBlockMode(state, mode) {
+      state.blockMode = mode
+    },
+
     setBlockSettings(state, settings) {
       state.blockSettings = settings
     },
