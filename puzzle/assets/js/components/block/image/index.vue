@@ -21,8 +21,10 @@ export default {
     },
 
     src() {
-      const src = this.getData('src')
-      return src
+      if (this.blockMode) {
+        return `${this.$routes.static}img/pazl-logo.svg/`
+      }
+      return this.getData('src')
     },
 
     faImage: () => faImage,

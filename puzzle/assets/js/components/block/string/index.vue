@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <input v-if="edit" type="text" v-model="string" />
+  <div v-if="edit && !blockMode" style="padding: 0.5rem;">
+    <input type="text" v-model="string" />
+  </div>
 
-    <p v-else>{{ string }}</p>
+  <div v-else>
+    {{ string }}
   </div>
 </template>
 
@@ -15,6 +17,9 @@ export default {
   computed: {
     string: {
       get() {
+        if (this.blockMode) {
+          return 'My Awesome String'
+        }
         return this.getData('string')
       },
 

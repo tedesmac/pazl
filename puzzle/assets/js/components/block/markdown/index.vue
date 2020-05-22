@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div v-if="edit" style="padding: 0.5rem;">
-      <MDE v-model="markdown" />
-    </div>
-
-    <div v-else v-html="html" />
+  <div v-if="edit && !blockMode" style="padding: 0.5rem;">
+    <MDE v-model="markdown" />
   </div>
+
+  <div v-else v-html="html" />
 </template>
 
 <script>
@@ -32,6 +30,15 @@ export default {
 
     markdown: {
       get() {
+        if (this.blockMode) {
+          return `# Header 1
+
+## Header 2
+
+Normal Text. Lorem markdownum lugebere modo.
+
+### Header 3`
+        }
         if (this.data.markdown) {
           return this.data.markdown
         }
