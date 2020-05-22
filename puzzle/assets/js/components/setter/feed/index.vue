@@ -1,6 +1,14 @@
 <template>
   <div>
     <div class="is-horizontal subsetter">
+      <label>Mode</label>
+      <select v-model="mode">
+        <option value="gallery">Gallery</option>
+        <option value="timeline">Timeline</option>
+      </select>
+    </div>
+
+    <div class="is-horizontal subsetter">
       <label>Model:</label>
       <select v-model="modelId">
         <option :value="0"></option>
@@ -9,10 +17,7 @@
           :key="`model_${model.id}`"
           :value="model.id"
         >
-          {{
-            model.name.substr(0, 1).toUpperCase() +
-              model.name.substr(1).toLowerCase()
-          }}
+          {{ $utils.capitalize(model.name) }}
         </option>
       </select>
     </div>
@@ -25,9 +30,14 @@
           :key="`block_${block.id}`"
           :value="block.id"
         >
-          {{ block.name }}
+          {{ $utils.capitalize(block.name) }}
         </option>
       </select>
+    </div>
+
+    <div class="is-horizontal subsetter">
+      <label>Show</label>
+      <input type="number" v-model="show" />
     </div>
   </div>
 </template>
@@ -40,19 +50,57 @@ export default {
 
   data() {
     return {
-      blockId: 0,
       fetchedBlocks: {},
-      modelId: 0,
       models: [],
     }
   },
 
   computed: {
+    blockId: {
+      get() {
+        return this.getData('blockId', 0)
+      },
+
+      set(value) {
+        this.setData('blockId', value)
+      },
+    },
+
     blocks() {
       if (this.modelId in this.fetchedBlocks) {
         return this.fetchedBlocks[this.modelId]
       }
       return []
+    },
+
+    mode: {
+      get() {
+        return this.getData('mode', 'timeline')
+      },
+
+      set(value) {
+        this.setData('mode', value)
+      },
+    },
+
+    modelId: {
+      get() {
+        return this.getData('modelId', 0)
+      },
+
+      set(value) {
+        this.setData('modelId', value)
+      },
+    },
+
+    show: {
+      get() {
+        return this.getData('show', 20)
+      },
+
+      set(value) {
+        this.setData('show', value)
+      },
     },
   },
 

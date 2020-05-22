@@ -13,6 +13,29 @@ const file_re = new RegExp(
 const image_re = /^image\/(gif|jpeg|png|svg\+xml|webp)$/i
 const logo_re = /^image\/(png|svg\+xml)$/i
 
+/**
+ * Sort blocks by their index property, not their position in the array.
+ */
+export const sortBlocksByIndex = (a, b) => a.index - b.index
+
+/**
+ * Takes an array of blocks and returns a tree of blocks.
+ */
+export const blocksToTree = (blocks, root = 'root') => {
+  const rootBlocks = blocks
+    .filter(b => b.parent === root)
+    .sort(sortBlocksByIndex)
+  const rootIds = rootBlocks.map(b => b.id)
+  const nonRoot = blocks.filter(b => !rootIds.includes(b.id))
+  return rootBlocks.map(block => {
+    const children = blocksToTree(nonRoot, block.id)
+    if (children.length) {
+      return { ...block, children }
+    }
+    return block
+  })
+}
+
 export const buildMenu = (pages, rootId) => {
   const root = pages.reduce((acc, page) => {
     if (page.id === rootId) return page
@@ -78,6 +101,38 @@ export const deepMerge = (base, source) => {
   return merged
 }
 
+/**
+ *
+ */
+export const entryToBlocks = entry => {
+  const { data, description, image, name } = entry
+  const { blocks } = data
+  return [
+    ...blocks,
+    {
+      type: 'string',
+      name: 'description',
+      data: {
+        string: description,
+      },
+    },
+    {
+      type: 'image',
+      name: 'image',
+      data: {
+        src: image,
+      },
+    },
+    {
+      type: 'string',
+      name: 'name',
+      data: {
+        string: name,
+      },
+    },
+  ]
+}
+
 export const genId = (
   length = 8,
   charMap = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -118,6 +173,28 @@ export const mergeArrays = (blocks, rootId = 'root') => {
     blocks.filter(e => !Array.isArray(e)).map(b => ({ ...b, parent: rootId }))
   )
 }
+
+/**
+ * Merge Entry data with Block data.
+ */
+export const mergeEntryToBlock = (entry = {}, block = {}) => {
+  const entryBlocks = entryToBlocks(entry)
+  return block.data.blocks.map(b => {
+    const { name } = b
+    if (name) {
+      const data = entryBlocks.reduce((acc, e) => {
+        if (e.name === name) {
+          return e.data
+        }
+        return acc
+      }, {})
+      return { ...b, data }
+    }
+    return b
+  })
+}
+
+export const replaceIds = () => {}
 
 export const routes = {
   admin: `/${PAZL_BASE_PATH}/admin/`,

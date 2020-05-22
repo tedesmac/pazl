@@ -114,9 +114,14 @@ body {
 
 .entry-block {
   margin-bottom: 1em;
+  width: 100%;
 
   label {
+    background: $grey;
+    border-radius: 10px;
     font-size: 0.8em;
+    margin-bottom: 0.5rem;
+    padding: 0.2rem 0.5rem;
   }
 }
 

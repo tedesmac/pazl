@@ -1,4 +1,80 @@
-import { buildMenu, deepMerge, isAudio, isFile, isImage } from './index'
+import {
+  blocksToTree,
+  buildMenu,
+  deepMerge,
+  isAudio,
+  isFile,
+  isImage,
+  mergeEntryToBlock,
+  sortBlocksByIndex,
+} from './index'
+
+describe('[utils.blocksToTree]', () => {
+  const blocks = [
+    {
+      id: '1',
+      index: 0,
+      parent: 'root',
+    },
+    {
+      id: '2',
+      index: 2,
+      parent: '1',
+    },
+    {
+      id: '3',
+      index: 1,
+      parent: '1',
+    },
+    {
+      id: '4',
+      index: 0,
+      parent: '1',
+    },
+    {
+      id: '5',
+      index: 0,
+      parent: '4',
+    },
+  ]
+
+  const expected = [
+    {
+      id: '1',
+      index: 0,
+      parent: 'root',
+      children: [
+        {
+          id: '4',
+          index: 0,
+          parent: '1',
+          children: [
+            {
+              id: '5',
+              index: 0,
+              parent: '4',
+            },
+          ],
+        },
+        {
+          id: '3',
+          index: 1,
+          parent: '1',
+        },
+        {
+          id: '2',
+          index: 2,
+          parent: '1',
+        },
+      ],
+    },
+  ]
+
+  test('1', () => {
+    const tree = blocksToTree(blocks)
+    expect(tree).toEqual(expected)
+  })
+})
 
 describe('[utils.buildMenu]', () => {
   test('0 pages', () => {
@@ -283,5 +359,68 @@ describe('[utils.isImage]', () => {
     test(t[0], () => {
       expect(isImage(t[1])).toBeTrue
     })
+  })
+})
+
+describe('[utils.mergeEntryToBlock]', () => {
+  const block = {
+    data: {
+      blocks: [
+        {
+          data: {},
+          name: 'Price',
+        },
+      ],
+    },
+    id: 1,
+    model: 1,
+    name: 'Some Block',
+  }
+  const entry = {
+    data: {
+      blocks: [
+        {
+          data: {
+            string: '$300',
+          },
+          name: 'Price',
+        },
+        {
+          data: {
+            string: 'Other Value',
+          },
+          name: 'Other Field',
+        },
+      ],
+    },
+    id: 5,
+    model: 1,
+    name: 'A Entry',
+    published: true,
+    slug: 'playas',
+  }
+  const expected = [
+    {
+      data: {
+        string: '$300',
+      },
+      name: 'Price',
+    },
+  ]
+
+  test('1', () => {
+    const merged = mergeEntryToBlock(entry, block)
+    expect(merged).toEqual(expected)
+  })
+})
+
+describe('[utils.sortBlocksByIndex]', () => {
+  const blocks = [{ index: 1 }, { index: 0 }]
+
+  const expected = [{ index: 0 }, { index: 1 }]
+
+  test('1', () => {
+    const sorted = blocks.sort(sortBlocksByIndex)
+    expect(sorted).toEqual(expected)
   })
 })

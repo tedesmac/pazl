@@ -1,10 +1,20 @@
 <template>
+  <div v-if="isFeedBlock" :class="classes" :style="style">
+    <Block
+      v-for="(block, index) in blocks"
+      :block="block.id"
+      :data="block"
+      :key="block.id"
+      :type="block.type"
+    />
+  </div>
+
   <Draggable
-    v-if="edit"
+    v-else-if="edit"
     v-model="blocks"
     group="blocks"
     :class="classes"
-    :style="style"
+    :style="{ ...style, padding: '0.5rem' }"
     @end="onEnd"
   >
     <Block
@@ -44,9 +54,19 @@ import { mergeArrays } from '@/utils'
 export default {
   mixins: [BlockMixin, BlockContainerMixin],
 
+  data() {
+    return {
+      isFeedBlock: false,
+    }
+  },
+
   computed: {
     blocks: {
       get() {
+        if (this.block.children) {
+          this.isFeedBlock = true
+          return this.block.children
+        }
         return this.$store.getters['page/getChildren'](this.id)
       },
 

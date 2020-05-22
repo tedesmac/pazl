@@ -3,7 +3,6 @@
     class="__puzzle_block"
     :block="block"
     :is="component"
-    :isEntry="isEntry"
     :style="style"
   />
 </template>
@@ -77,14 +76,18 @@ export default {
   },
 
   props: {
+    data: {
+      default: null,
+    },
+
     index: {
       type: Number,
-      required: true,
+      default: 1,
     },
 
     parent: {
       type: String,
-      required: true,
+      default: 'root',
     },
 
     type: {
@@ -99,6 +102,9 @@ export default {
     },
 
     block() {
+      if (this.data) {
+        return this.data
+      }
       const { blocks } = this.$store.state.page
       let index = 0
       if (this.isEntry) {
@@ -123,7 +129,7 @@ export default {
   },
 
   created() {
-    if (this.edit && !this.isEntry) {
+    if (this.edit && !this.isEntry && this.data == null) {
       this.$store.commit('page/setBlock', {
         id: this.id,
         index: this.index,
