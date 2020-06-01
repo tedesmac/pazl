@@ -60,6 +60,10 @@
           <FontAwesomeIcon class="__pazl_social_icon" :icon="faTwitter" />
         </a>
       </div>
+
+      <div class="__pazl_powered">
+        <a href="http://pazl.io">Powered by Pazl</a>
+      </div>
     </nav>
   </nav>
 </template>
