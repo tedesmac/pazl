@@ -184,7 +184,7 @@ p {
   flex-direction: column;
   height: 100vh;
   left: 0;
-  padding: 2rem;
+  padding: 2rem 2rem 1rem;
   position: fixed;
   top: 0;
   transition: 0.5s all ease;
@@ -223,6 +223,18 @@ p {
 
   .__pazl_nav_spacer {
     flex-grow: 1;
+  }
+
+  .__pazl_powered {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    a {
+      color: hsl(0, 0%, 50%);
+      font-size: 0.8rem;
+      text-align: center;
+    }
   }
 }
 
