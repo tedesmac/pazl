@@ -14,22 +14,21 @@
 }
 
 .form {
-  width: 50%;
-}
-
-.image {
-  background-image: url('/puzzle/static/img/clark-van-der-beken-Tk0B3Dfkf_4-unsplash.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 50%;
+  justify-content: center;
 }
 
 .login {
+  align-items: center;
   background: $white;
+  box-shadow: 0 0 10px hsl(0, 0%, 30%);
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  min-height: 50vh;
-  width: 50vw;
+  justify-content: center;
+  padding: 3rem 6rem;
+}
+
+.message {
+  color: $red;
+  font-size: 0.8rem;
 }
