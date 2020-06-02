@@ -35,12 +35,30 @@ class Website(models.Model):
         return website
 
     @staticmethod
+    def get_description():
+        try:
+           website = Website.objects.get(id=1)
+           return website.description
+        except:
+            return ''
+
+    @staticmethod
     def get_home_page():
         try:
             website = Website.objects.get(id=1)
             return website.home_page
         except:
             return None
+
+    @staticmethod
+    def get_logo():
+        try:
+            website = Website.objects.get(id=1)
+            return website.logo_url
+        except:
+            return '{}img/favicon/favicon-310.png/'.format(
+                settings.STATIC_URL
+            )
 
     @staticmethod
     def get_name():

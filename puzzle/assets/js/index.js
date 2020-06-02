@@ -42,6 +42,13 @@ const router = Router()
 
 const store = Store()
 
+const stateEl = document.getElementById('pazl-state')
+if (stateEl) {
+  const state = JSON.parse(stateEl.textContent)
+  store.replaceState(state)
+  store.commit('setHydrated', true)
+}
+
 sync(store, router)
 
 new Vue({

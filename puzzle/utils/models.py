@@ -12,6 +12,12 @@ class BaseModel(models.Model):
         abstract = True
 
     @property
+    def blocks(self):
+        if 'blocks' in self.data:
+            return self.data['blocks']
+        return []
+
+    @property
     def data(self):
         if type(self._data) == str:
             return json.loads(self._data)

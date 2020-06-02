@@ -8,6 +8,7 @@ Vue.use(Vuex)
 export default () =>
   new Vuex.Store({
     state: () => ({
+      hydrated: false,
       pages: [],
       site: {
         description: '',
@@ -80,6 +81,10 @@ export default () =>
     },
 
     mutations: {
+      setHydrated(state, hydrated) {
+        state.hydrated = hydrated
+      },
+
       setSiteLogo(state, logo) {
         state.site = {
           ...state.site,

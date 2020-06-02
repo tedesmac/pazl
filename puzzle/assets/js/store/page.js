@@ -325,6 +325,14 @@ export default {
       state.slug = slug
     },
 
+    setState(state, newState) {
+      Object.keys(newState).map(key => {
+        if (key in state) {
+          state[key] = newState[key]
+        }
+      })
+    },
+
     setStyle(state, style) {
       state.style = style
     },

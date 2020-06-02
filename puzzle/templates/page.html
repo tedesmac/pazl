@@ -1,22 +1,53 @@
 {% extends "base.html" %}
 
+<!-- -->
+
 {% load render_bundle from webpack_loader %}
 
-{% block og_description %}{{ description }}{% endblock %}
-{% block og_image %}{{ image }}{% endblock%}
-{% block og_site_name %}{{ site_name }}{% endblock %}
-{% block og_title %}{{ title }}{% endblock %}
-{% block og_url %}{{ url }}{% endblock %}
-{% block title %}{{ title }} | {{ site_name }}{% endblock %}
+<!-- -->
 
-{% block extra_css %}
-  {% render_bundle 'page' 'css' 'CSS' %}
+{% block og_description %}{{ description }}{% endblock %}
+
+<!-- -->
+
+{% block og_image %}{{ image }}{% endblock%}
+
+<!-- -->
+
+{% block og_site_name %}{{ site_name }}{% endblock %}
+
+<!-- -->
+
+{% block og_title %}{{ title | title }}{% endblock %}
+
+<!-- -->
+
+{% block og_url %}{{ url }}{% endblock %}
+
+<!-- -->
+
+{% block title %}{{ site_name | title }} | {{ title | title }}{% endblock %}
+
+<!-- -->
+
+{% block extra_css%}
+<!-- -->
+{% render_bundle 'page' 'css' 'CSS' %}
+<!-- -->
 {% endblock extra_css %}
 
-{% block extra_js %}
-  {% render_bundle 'app' %}
-{% endblock extra_js %}
+<!-- -->
+
+{% block extra_js %} {% render_bundle 'app' %} {% endblock extra_js %}
+
+<!-- -->
+
+{% block pazl_state %}{{ state | json_script:"pazl-state" }}{% endblock %}
+
+<!-- -->
 
 {% block content %}
-  {% include "puzzle.html" with id="app" %}
+<!-- -->
+{% include "puzzle.html" with id="app" %}
+<!-- -->
 {% endblock content %}
