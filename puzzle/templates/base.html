@@ -160,12 +160,14 @@
     <meta property="og:url" content="{% block og_url %}{% endblock %}" />
 
     <title>
-      {% block title %} Puzzle {% endblock title %}
+      {% block title %}{% endblock title %}
     </title>
     {% block extra_css %}{% endblock extra_css %}
   </head>
   <body>
     {% block content %} {% include "puzzle.html" %} {% endblock content %}
+    <!-- -->
+    {% block pazl_state %}{% endblock pazl_state %}
     <!-- -->
     {% block extra_js %}{% endblock extra_js %}
   </body>

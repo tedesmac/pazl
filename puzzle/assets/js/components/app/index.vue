@@ -19,9 +19,11 @@ export default {
   },
 
   created() {
-    this.fetchPages()
-    this.fetchSite()
-    this.fetchUser()
+    if (!this.$store.state.hydrated) {
+      this.fetchPages()
+      this.fetchSite()
+      this.fetchUser()
+    }
   },
 }
 </script>

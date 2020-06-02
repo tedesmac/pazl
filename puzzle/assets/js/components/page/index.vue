@@ -98,11 +98,16 @@ export default {
   },
 
   created() {
+    const page = this.$store.state.page
     this.$store.registerModule('page', PageStore)
-    if (this.entryId) {
-      this.fetchEntry()
+    if (page) {
+      this.$store.commit('page/setState', page)
     } else {
-      this.fetchPage()
+      if (this.entryId) {
+        this.fetchEntry()
+      } else {
+        this.fetchPage()
+      }
     }
   },
 }

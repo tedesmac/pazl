@@ -1,10 +1,22 @@
 import json
+
+import pytest
+
+from puzzle.apps.entry.models import Entry
+from puzzle.apps.model.models import Model
 from puzzle.apps.page.models import Page
 from puzzle.apps.page.serializers import PageSerializer
-from puzzle.apps.page.views import PageDetailAPI, PageListAPI
+from puzzle.apps.page.views import (
+    base_state,
+    entry_state,
+    page_state,
+    page,
+    PageDetailAPI,
+    PageListAPI
+)
+from puzzle.apps.user.models import User
 from puzzle.apps.website.models import Website
 from puzzle.apps.website.signals import *
-import pytest
 
 
 # Model
@@ -23,7 +35,7 @@ def test_page_data_property():
 def test_page_build_path_simple():
     page = Page.objects.create(name='Home')
     path = page.build_path()
-    assert path == 'home/'
+    assert path == '/home'
 
 
 @pytest.mark.django_db
@@ -31,7 +43,7 @@ def test_page_build_path_two():
     parent = Page.objects.create(name='Parent')
     child = Page.objects.create(name='Child', parent=parent)
     path = child.build_path()
-    assert path == 'parent/child/'
+    assert path == '/parent/child'
 
 
 @pytest.mark.django_db
@@ -40,14 +52,14 @@ def test_page_build_path_three():
     parent = Page.objects.create(name='Parent', parent=grandparent)
     child = Page.objects.create(name='Child', parent=parent)
     path = child.build_path()
-    assert path == 'grand-parent/parent/child/'
+    assert path == '/grand-parent/parent/child'
 
 
 @pytest.mark.django_db
 def test_home_page_path():
     page = Page.objects.create(name='test')
     site = Website.objects.create(home_page=page)
-    assert page.path == ''
+    assert page.path == '/'
 
 
 @pytest.mark.django_db
@@ -65,7 +77,7 @@ def test_auto_home_page():
 
 @pytest.fixture
 def setup():
-    first = Page.objects.create(name='first')
+    first = Page.objects.create(name='first', published=True)
     second = Page.objects.create(name='second')
     detail_view = PageDetailAPI.as_view()
     list_view = PageListAPI.as_view()
@@ -332,3 +344,187 @@ def test_list_post_same_path(setup, rf):
     response = list_view(request)
     print(response.content)
     assert response.status_code == 400
+
+
+# Utils
+
+@pytest.mark.django_db
+def test_base_state_not_authenticated(rf):
+    Website.objects.create(
+        description='Some description',
+        name='Some Site',
+    )
+    request = rf.get('/first/')
+    request.is_authenticated = False
+    state = base_state(request)
+    print(state)
+    assert state == {
+        'site': {
+            'description': 'Some description',
+            'home_page': None,
+            'logo': '/pazl/static/img/favicon/favicon-310.png/',
+            'name': 'Some Site',
+        },
+        'pages': [],
+        'user': None,
+    }
+
+
+@pytest.mark.django_db
+def test_base_state_published_pages(rf):
+    Website.objects.create(
+        description='Some description',
+        name='Some Site',
+    )
+    page = Page.objects.create(
+        name='Some Page',
+        description='Some description',
+        published=True,
+    )
+    request = rf.get('/{}/'.format(page.slug))
+    request.is_authenticated = False
+    state = base_state(request)
+    assert state == {
+        'site': {
+            'description': 'Some description',
+            'home_page': None,
+            'logo': '/pazl/static/img/favicon/favicon-310.png/',
+            'name': 'Some Site',
+        },
+        'pages': [{
+            'description': page.description,
+            'id': page.id,
+            'name': page.name,
+            'parent': None,
+            'path': page.slug,
+            'published': True,
+            'slug': page.slug,
+        }],
+        'user': None,
+    }
+
+
+@pytest.mark.django_db
+def test_base_state_with_home_page(rf):
+    page = Page.objects.create(
+        name='Some Page',
+        description='Some description',
+        published=True,
+    )
+    Website.objects.create(
+        description='Some description',
+        name='Some Site',
+        home_page=page,
+    )
+    request = rf.get('/{}/'.format(page.slug))
+    request.is_authenticated = False
+    state = base_state(request)
+    assert state['site']['home_page'] == page.id
+
+
+@pytest.mark.django_db
+def test_base_state_authenticated(rf):
+    Website.objects.create(
+        description='Some description',
+        name='Some Site',
+    )
+    request = rf.get('/first/')
+    user = User.objects.create(username='pazl_user')
+    request.user = user
+    request.is_authenticated = True
+    state = base_state(request)
+    print(state)
+    assert state == {
+        'site': {
+            'description': 'Some description',
+            'home_page': None,
+            'logo': '/pazl/static/img/favicon/favicon-310.png/',
+            'name': 'Some Site',
+        },
+        'pages': [],
+        'user': {
+            'id': user.id,
+            'perms': user.role_permissions(),
+            'role': user.role,
+            'username': user.username,
+        },
+    }
+
+
+@pytest.mark.django_db
+def test_entry_state(rf):
+    Website.objects.create(
+        description='Some description',
+        name='Some Site',
+    )
+    model = Model.objects.create(name='some_model')
+    entry = Entry.objects.create(
+        name='some_entry',
+        description='Some description',
+        model=model,
+        published=True
+    )
+    request = rf.get('/some_model/{}/{}'.format(entry.id, entry.slug))
+    request.is_authenticated = False
+    state = entry_state(request, entry)
+    assert state == {
+        'site': {
+            'description': 'Some description',
+            'home_page': None,
+            'logo': '/pazl/static/img/favicon/favicon-310.png/',
+            'name': 'Some Site',
+        },
+        'page': {
+            'blocks': [],
+            'description': entry.description,
+            'error': False,
+            'id': entry.id,
+            'image': entry.image,
+            'isEntry': True,
+            'modelBlock': None,
+            'modelId': model.id,
+            'name': entry.name,
+            'slug': entry.slug,
+            'style': {},
+        },
+        'pages': [],
+        'user': None,
+    }
+
+
+@pytest.mark.django_db
+def test_page_state(rf):
+    Website.objects.create(
+        description='Some description',
+        name='Some Site',
+    )
+    page = Page.objects.create(
+        name='Some Page',
+        description='Some description',
+    )
+    request = rf.get('/{}/'.format(page.slug))
+    request.is_authenticated = False
+    state = page_state(request, page)
+    assert state == {
+        'site': {
+            'description': 'Some description',
+            'home_page': None,
+            'logo': '/pazl/static/img/favicon/favicon-310.png/',
+            'name': 'Some Site',
+        },
+        'page': {
+            'blocks': [],
+            'description': page.description,
+            'error': False,
+            'id': page.id,
+            'image': page.image,
+            'isEntry': False,
+            'modelBlock': None,
+            'modelId': 0,
+            'name': page.name,
+            'slug': page.slug,
+            'style': {},
+        },
+        'pages': [],
+        'user': None,
+    }
