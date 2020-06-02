@@ -1,24 +1,30 @@
 <template>
-  <div class="login">
-    <div class="form">
-      <div class="field">
-        <input
-          type="text"
-          placeholder="Email or Username"
-          v-model="emailOrUser"
-        />
-      </div>
+  <div class="container">
+    <div class="login">
+      <form class="form">
+        <div class="field">
+          <input
+            type="text"
+            placeholder="Email or Username"
+            v-model="emailOrUser"
+          />
+        </div>
 
-      <div class="field">
-        <input type="password" placeholder="Password" v-model="password" />
-      </div>
+        <div class="field">
+          <input type="password" placeholder="Password" v-model="password" />
+        </div>
 
-      <div class="field">
-        <button @click="authenticate">Login</button>
-      </div>
+        <div v-if="error" class="field">
+          <p class="message">
+            {{ message }}
+          </p>
+        </div>
+
+        <div class="field">
+          <input type="submit" @click.prevent="authenticate" value="Login" />
+        </div>
+      </form>
     </div>
-
-    <div class="image" />
   </div>
 </template>
 
@@ -29,6 +35,8 @@ export default {
   data() {
     return {
       emailOrUser: '',
+      error: false,
+      message: '',
       password: '',
     }
   },
@@ -51,7 +59,8 @@ export default {
           if (loged) {
             window.location = this.$routes.admin
           } else {
-            // do something if loged is false
+            this.message = 'Invalid Credentials, please try again.'
+            this.error = true
           }
         })
         .catch(error => {
