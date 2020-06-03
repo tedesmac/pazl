@@ -10,9 +10,17 @@ class EntrySerializer(BaseSerializer):
             'id',
             'data',
             'description',
+            'date_created',
+            'date_modified',
+            'date_published',
             'image',
             'model',
             'name',
             'published',
-            'slug'
+            'slug',
+        ]
+        read_only_fields = [
+            'date_created',
+            'date_modified',
+            'date_published',
         ]

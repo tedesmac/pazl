@@ -9,11 +9,19 @@ class PageSerializer(BaseSerializer):
             'id',
             'data',
             'description',
+            'date_created',
+            'date_modified',
+            'date_published',
             'image',
             'name',
             'path',
             'parent',
             'published',
-            'slug'
+            'slug',
         ]
-        read_only_fields = ['path']
+        read_only_fields = [
+            'date_created',
+            'date_modified',
+            'date_published',
+            'path',
+        ]
