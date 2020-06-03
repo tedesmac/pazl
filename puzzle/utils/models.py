@@ -1,6 +1,7 @@
 import json
 
 from django.db import models
+from django.db.models.signals import post_init
 from django.utils.text import slugify
 from django.utils.timezone import now
 from simple_history.models import HistoricalRecords
@@ -52,12 +53,10 @@ class BasePageModel(BaseModel):
         inherit=True
     )
 
+    _published = False
+
     class Meta:
         abstract = True
-
-    def __init__(self, *args, **kwargs):
-        super().__init(*args, *kwargs)
-        self.__published = self.published
 
     def build_path(self):
         if not self.slug:
@@ -69,11 +68,18 @@ class BasePageModel(BaseModel):
     def save(self, *args, **kwargs):
         self.path = self.build_path()
 
-        if self.__published != self.published:
-            if self.__published:
+        if self._published != self.published:
+            if self.published:
                 self.date_published = now()
             else:
                 self.date_published = None
 
         super().save(*args, **kwargs)
-        self.__published = self.published
+        self._published = self.published
+
+
+def init_base_page_model(sender, instance, **kwargs):
+    instance._published == instance.published
+
+
+post_init.connect(init_base_page_model, sender=BasePageModel)
