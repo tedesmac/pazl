@@ -1,6 +1,6 @@
 {
   "name": "puzzle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "author": "Kremor Pärt <hello@kremor.xyz>",
   "license": "AGPL-3.0-or-later",
