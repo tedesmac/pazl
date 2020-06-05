@@ -30,6 +30,11 @@ def setup():
     }
 
 
+# ~~~~~~~~~~~~~~~~~~~~
+# Delete
+# ~~~~~~~~~~~~~~~~~~~~
+
+
 @pytest.mark.django_db
 def test_detail_delete_logged(setup, rf):
     detail_view = setup['detail']
@@ -60,6 +65,11 @@ def test_delete_object_does_not_exist(setup, rf):
     assert response.status_code == 404
 
 
+# ~~~~~~~~~~~~~~~~~~~~
+# Get - Detail
+# ~~~~~~~~~~~~~~~~~~~~
+
+
 @pytest.mark.django_db
 def test_detail_get_logged(setup, rf):
     detail_view = setup['detail']
@@ -87,88 +97,9 @@ def test_detail_get_object_does_not_exist(setup, rf):
     assert response.status_code == 404
 
 
-@pytest.mark.django_db
-def test_detail_put_data_property(setup, rf):
-    detail_view = setup['detail']
-    data = {
-        'blocks': [],
-        'style': {}
-    }
-    request = rf.put(
-        'puzzle/api/pages/1/',
-        {
-            'data': data
-        },
-        'application/json'
-    )
-    request.is_authenticated = True
-    response = detail_view(request, 1)
-    content = json.loads(response.content.decode('utf-8'))
-    print(content)
-    assert content['data'] == data
-
-
-@pytest.mark.django_db
-def test_detail_put_logged(setup, rf):
-    detail_view = setup['detail']
-    request = rf.put(
-        'puzzle/api/pages/1/',
-        {
-            'published': True,
-        },
-        'application/json',
-    )
-    request.is_authenticated = True
-    response = detail_view(request, 1)
-    print(response.content)
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_detail_put_not_logged(setup, rf):
-    detail_view = setup['detail']
-    request = rf.put(
-        'puzzle/api/pages/1/',
-        {
-            'published': True,
-        },
-        'application/json',
-    )
-    request.is_authenticated = False
-    response = detail_view(request, 1)
-    assert response.status_code == 403
-
-
-@pytest.mark.django_db
-def test_detail_put_object_does_not_exist(setup, rf):
-    detail_view = setup['detail']
-    request = rf.put(
-        'puzzle/api/pages/3/',
-        {
-            'published': True,
-        },
-        'application/json',
-    )
-    request.is_authenticated = True
-    response = detail_view(request, 3)
-    assert response.status_code == 404
-
-
-@pytest.mark.django_db
-def test_detail_put_same_path(setup, rf):
-    detail_view = setup['detail']
-    request = rf.put(
-        'puzzle/api/pages/2/',
-        {
-            'name': 'first',
-            'slug': 'first',
-        },
-        'application/json',
-    )
-    request.is_authenticated = True
-    response = detail_view(request, 2)
-    print(response.content)
-    assert response.status_code == 400
+# ~~~~~~~~~~~~~~~~~~~~
+# Get - List
+# ~~~~~~~~~~~~~~~~~~~~
 
 
 @pytest.mark.django_db
@@ -187,6 +118,92 @@ def test_list_get_not_logged(setup, rf):
     request.is_authenticated = False
     response = list_view(request)
     assert response.status_code == 200
+
+
+@pytest.fixture
+def pagination():
+    for i in range(20):
+        name = 'page {}'.format(i + 1)
+        Page.objects.create(name=name)
+    list_view = PageListAPI.as_view()
+    return {
+        'view': list_view,
+    }
+
+
+@pytest.mark.django_db
+def test_list_get_pagination_default(pagination, rf):
+    view = pagination['view']
+    request = rf.get('')
+    response = view(request)
+    decoded = response.content.decode()
+    data = json.loads(decoded)
+    assert data['has_more'] == False
+    assert len(data['items']) == 20
+    assert data['items_per_page'] == 100
+    assert data['page'] == 1
+
+
+@pytest.mark.django_db
+def test_list_get_pagination_page_1(pagination, rf):
+    view = pagination['view']
+    request = rf.get('?items_per_page=10&page=1')
+    response = view(request)
+    decoded = response.content.decode()
+    data = json.loads(decoded)
+    assert data['has_more'] == True
+    assert len(data['items']) == 10
+    assert data['items_per_page'] == 10
+    assert data['page'] == 1
+
+
+@pytest.mark.django_db
+def test_list_get_pagination_page_2(pagination, rf):
+    view = pagination['view']
+    request = rf.get('?items_per_page=10&page=2')
+    response = view(request)
+    decoded = response.content.decode()
+    data = json.loads(decoded)
+    assert data['has_more'] == False
+    assert len(data['items']) == 10
+    assert data['items_per_page'] == 10
+    assert data['page'] == 2
+
+
+@pytest.mark.django_db
+def test_list_get_pagination_out_of_range(pagination, rf):
+    view = pagination['view']
+    request = rf.get('?page=10')
+    response = view(request)
+    decoded = response.content.decode()
+    data = json.loads(decoded)
+    assert data['has_more'] == False
+    assert len(data['items']) == 0
+    assert data['items_per_page'] == 100
+    assert data['page'] == 10
+
+
+@pytest.mark.django_db
+def test_list_get_pagination_order(pagination, rf):
+    view = pagination['view']
+    request = rf.get('?order=-id')
+    response = view(request)
+    decoded = response.content.decode()
+    data = json.loads(decoded)
+    items = data['items']
+    ordered = True
+    last_id = 100
+    for i in items:
+        if last_id < i['id']:
+            ordered = False
+            break
+        last_id = i['id']
+    assert ordered
+
+
+# ~~~~~~~~~~~~~~~~~~~~
+# Post
+# ~~~~~~~~~~~~~~~~~~~~
 
 
 @pytest.mark.django_db
@@ -288,7 +305,97 @@ def test_list_post_same_path(setup, rf):
     assert response.status_code == 400
 
 
+# ~~~~~~~~~~~~~~~~~~~~
+# Put
+# ~~~~~~~~~~~~~~~~~~~~
+
+
+@pytest.mark.django_db
+def test_detail_put_data_property(setup, rf):
+    detail_view = setup['detail']
+    data = {
+        'blocks': [],
+        'style': {}
+    }
+    request = rf.put(
+        'puzzle/api/pages/1/',
+        {
+            'data': data
+        },
+        'application/json'
+    )
+    request.is_authenticated = True
+    response = detail_view(request, 1)
+    content = json.loads(response.content.decode('utf-8'))
+    print(content)
+    assert content['data'] == data
+
+
+@pytest.mark.django_db
+def test_detail_put_logged(setup, rf):
+    detail_view = setup['detail']
+    request = rf.put(
+        'puzzle/api/pages/1/',
+        {
+            'published': True,
+        },
+        'application/json',
+    )
+    request.is_authenticated = True
+    response = detail_view(request, 1)
+    print(response.content)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_detail_put_not_logged(setup, rf):
+    detail_view = setup['detail']
+    request = rf.put(
+        'puzzle/api/pages/1/',
+        {
+            'published': True,
+        },
+        'application/json',
+    )
+    request.is_authenticated = False
+    response = detail_view(request, 1)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_detail_put_object_does_not_exist(setup, rf):
+    detail_view = setup['detail']
+    request = rf.put(
+        'puzzle/api/pages/3/',
+        {
+            'published': True,
+        },
+        'application/json',
+    )
+    request.is_authenticated = True
+    response = detail_view(request, 3)
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_detail_put_same_path(setup, rf):
+    detail_view = setup['detail']
+    request = rf.put(
+        'puzzle/api/pages/2/',
+        {
+            'name': 'first',
+            'slug': 'first',
+        },
+        'application/json',
+    )
+    request.is_authenticated = True
+    response = detail_view(request, 2)
+    print(response.content)
+    assert response.status_code == 400
+
+# ~~~~~~~~~~~~~~~~~~~~
 # Utils
+# ~~~~~~~~~~~~~~~~~~~~
 
 
 @pytest.mark.django_db

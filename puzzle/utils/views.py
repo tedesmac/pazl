@@ -94,8 +94,20 @@ class DetailAPIView(BaseAPIView):
 class ListAPIView(BaseAPIView):
 
     def get(self, request):
-        query = {}
         fields = self.serializer.Meta.fields
+        has_more = False
+        items = 100
+        order = []
+        page = 1
+        query = {}
+
+        for f in request.GET:
+            if f == 'items_per_page':
+                items = max(int(request.GET.get('items_per_page', 0)), 10)
+            if f == 'order':
+                order = request.GET.getlist('order')
+            if f == 'page':
+                page = max(int(request.GET.get('page', 1)), 1)
 
         for f in fields:
             if f == 'data':
@@ -111,13 +123,33 @@ class ListAPIView(BaseAPIView):
                 query[f] = value
 
         instances = self.model.objects.all().filter(**query)
+        count = instances.count()
+        has_more = count > items * page
+
+        if order:
+            try:
+                instances = instances.order_by(*order)
+            except:
+                # TODO: Responde with an error
+                pass
+
+        instances = instances[items*(page-1):items*page]
+
         serializer = self.get_serializer(instances, many=True)
 
         if not 'include_data' in request.GET:
             for d in serializer.data:
                 del d['data']
 
-        return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(
+            {
+                'has_more': has_more,
+                'items': serializer.data,
+                'items_per_page': items,
+                'page': page,
+            },
+            safe=False
+        )
 
     @method_decorator(private)
     def post(self, request):
